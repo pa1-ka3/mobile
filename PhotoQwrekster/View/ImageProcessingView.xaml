@@ -1,0 +1,107 @@
+﻿<phone:PhoneApplicationPage x:Class="PhotoQwrekster.View.ImageProcessingView"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                            xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            xmlns:toolkit="clr-namespace:PhotoQwrekster.Input"
+                            mc:Ignorable="d"
+                            d:DesignWidth="480"
+                            d:DesignHeight="768"
+                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                            FontSize="{StaticResource PhoneFontSizeNormal}"
+                            Foreground="{StaticResource PhoneForegroundBrush}"
+                            SupportedOrientations="Portrait"
+                            Orientation="Portrait"
+                            shell:SystemTray.IsVisible="True"
+                            DataContext="{Binding ImageViewModel, Source={StaticResource Locator}}">
+
+    <Grid x:Name="LayoutRoot"
+          Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel"
+                    Grid.Row="0"
+                    Margin="12,17,0,28">
+            <Button Content="Send to Facebook" Height="71" 
+                    Command="{Binding Path=ShareInNet}"
+                    Name="button1" Width="267" />
+            <TextBlock x:Name="PageTitle"
+                       Text="preview"
+                       Margin="9,-7,0,0"
+                       Style="{StaticResource PhoneTextTitle2Style}" />
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel"
+              Grid.Row="1"
+              Margin="12,0,12,0">
+            <Image Name="imgSelectedPhoto" 
+               Stretch="Fill"  
+               Visibility="Visible" >
+
+                <toolkit:GestureService.GestureListener>
+                    <toolkit:GestureListener
+                        PinchStarted="OnPinchStarted"                        
+                        PinchDelta="OnPinchDelta" 
+                        PinchCompleted="OnPinchCompleted"/>
+                </toolkit:GestureService.GestureListener>
+
+            </Image>
+            <TextBlock x:Name="flickData" Text="Flick:" Foreground="Blue"
+                       Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="74" 
+                       TextWrapping="Wrap" Margin="12,0,12,113" />
+            <TextBlock x:Name="centerData" Text="C:" Foreground="Blue"
+                       Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="74" 
+                       TextWrapping="Wrap" Margin="12,0,12,13" />
+            <Ellipse Name="GestureElipse" Height="100"
+                     Margin="103,139,0,0" 
+                     Visibility="Visible" 
+                     RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100">
+                <Ellipse.Fill>
+                    <RadialGradientBrush   
+                        GradientOrigin="0.5,0.5" 
+                        Center="0.5,0.5"                         
+                        RadiusX="0.5" 
+                        RadiusY="0.5">
+                        <RadialGradientBrush.GradientStops>
+                            <GradientStop Color="#FFFF8300" Offset="0" />
+                            <GradientStop Color="#01FFC0CB" 
+                                          Offset="1" />
+                        </RadialGradientBrush.GradientStops>
+                    </RadialGradientBrush>
+
+                </Ellipse.Fill>
+                <Ellipse.RenderTransform>
+                    <CompositeTransform x:Name="transform"/>
+                </Ellipse.RenderTransform>
+
+
+
+
+
+            </Ellipse>
+
+
+
+        </Grid>
+    </Grid>
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

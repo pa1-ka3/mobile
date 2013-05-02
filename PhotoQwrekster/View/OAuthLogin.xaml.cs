@@ -1,0 +1,122 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
+using Microsoft.Phone.Controls;
+
+using System.Windows.Navigation;
+using PhotoQwrekster.Helpers;
+using PhotoQwrekster.ViewModel;
+
+namespace PhotoQwrekster.View
+{
+    public partial class OAuthLogin : PhoneApplicationPage
+    {
+        IOAuthHelper oauthHelper;
+        public OAuthLogin()
+        {
+            InitializeComponent();
+            oauthHelper = App.Container.Resolve<IOAuthHelper>();
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            while (NavigationService.CanGoBack)
+                NavigationService.RemoveBackEntry();
+            if (NetworkChecker.CheckInternetConnection())
+            {
+                Dispatcher.BeginInvoke(() => this.Browser.Navigate(oauthHelper.GetLoginUrl()));
+            }
+            else
+            {
+                MessageBox.Show("no internet, please, try to sign in later.");
+                NavigateToStorageSelectorPage();
+            }
+        }
+
+        private void Browser_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            connectTitle.Visibility = System.Windows.Visibility.Collapsed;
+            Browser.Visibility = System.Windows.Visibility.Collapsed;
+            ClearCookies();
+
+        }
+
+        private void ClearCookies()
+        {
+            try
+            {
+                CookieCollection cookies = this.Browser.GetCookies();
+                foreach (Cookie cookie in cookies)
+                {
+                    cookie.Discard = true;
+                    cookie.Expired = true;
+                }
+            }
+            catch (Exception)
+            { 
+            }
+        }
+                        
+        void Browser_Navigating(object sender, NavigatingEventArgs e)
+        {
+            if (e.Uri.ToString().Contains("code="))
+            {
+                e.Cancel = true;
+                var val = e.Uri.Query.Substring(6, e.Uri.Query.Length - 6);
+                Browser.Visibility = Visibility.Collapsed;
+                oauthHelper.SetTokenCode(val);
+                oauthHelper.GetRequestTokenQueryNonStatic(false, InspectTokenCallback);
+            }
+         /*   else if (e.Uri.ToString().Contains("error=access_denied"))
+            {
+                NavigateToStorageSelectorPage();
+            }*/
+        }
+
+        private void OnNavigatedFromAnimation()
+        {
+            MetroInMotionUtils.MetroInMotion.SlideDownOutAnimation(new FrameworkElement[] { Browser }.ToList<FrameworkElement>(), NavigateToStorageSelectorPage);
+        }
+
+        private void NavigateToStorageSelectorPage()
+        {
+            NavigationService.Navigate(new Uri("/View/ImageProcessingView.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void InspectTokenCallback(List<object> token)
+        {
+            /*
+            Runner.Invoke(() =>
+            {
+                //TileUpdateHelper.CreateTile(oauthHelper.GetAccountKey(), oauthHelper.GetStorage());
+                NavigationService.Navigate(new Uri("/View/ImageProcessingView.xaml?callback=true", UriKind.Relative));
+
+               
+            });
+            */
+            INavigationService navigation = App.Container.Resolve<INavigationService>();
+            Runner.Invoke(() =>
+            {
+                navigation.NavigateTo(new Uri(ViewModelLocator.ImageProcessing+"?callback=true", UriKind.RelativeOrAbsolute));
+            });
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            NavigateToStorageSelectorPage();
+        }
+
+        private void Browser_Navigated(object sender, NavigationEventArgs e)
+        {
+            connectTitle.Visibility = System.Windows.Visibility.Collapsed;
+        }
+    }
+}

@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoQwrekster", "PhotoQwrekster\PhotoQwrekster.csproj", "{97D87EAF-89F3-41B4-A649-F8095999173A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funq", "Funq\Core\Funq\Funq.csproj", "{56656B0F-90BB-44D1-8A70-D004F940E0D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funq.Tests", "Funq\Core\Funq.UnitTests\Funq.Tests.csproj", "{E655E463-B7E3-4BF4-B02F-3E1B98C1353D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExifLib", "ExifLib\ExifLib.csproj", "{727AA615-47F2-4606-8042-F346746599A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97D87EAF-89F3-41B4-A649-F8095999173A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D87EAF-89F3-41B4-A649-F8095999173A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97D87EAF-89F3-41B4-A649-F8095999173A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{97D87EAF-89F3-41B4-A649-F8095999173A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97D87EAF-89F3-41B4-A649-F8095999173A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97D87EAF-89F3-41B4-A649-F8095999173A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{56656B0F-90BB-44D1-8A70-D004F940E0D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56656B0F-90BB-44D1-8A70-D004F940E0D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56656B0F-90BB-44D1-8A70-D004F940E0D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56656B0F-90BB-44D1-8A70-D004F940E0D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E655E463-B7E3-4BF4-B02F-3E1B98C1353D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E655E463-B7E3-4BF4-B02F-3E1B98C1353D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E655E463-B7E3-4BF4-B02F-3E1B98C1353D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E655E463-B7E3-4BF4-B02F-3E1B98C1353D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{727AA615-47F2-4606-8042-F346746599A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{727AA615-47F2-4606-8042-F346746599A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{727AA615-47F2-4606-8042-F346746599A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{727AA615-47F2-4606-8042-F346746599A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

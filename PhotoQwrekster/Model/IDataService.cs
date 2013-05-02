@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace PhotoQwrekster.Model
+{
+    public interface IDataService
+    {
+        void GetData(Action<DataItem, Exception> callback);
+
+        void SetCapturedImageStream(System.IO.Stream capturedStream);
+
+        void SetCupturedImageByte(byte[] dest1);
+
+        System.IO.Stream GetCapturedStream();
+
+        byte[] GetCapturedImageByte();
+    }
+}

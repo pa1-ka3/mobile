@@ -1,7 +1,0 @@
-E:\Projects\WinPhone\PhotoTreqwister\Funq\Core\Funq\bin\Debug\Funq.dll
-E:\Projects\WinPhone\PhotoTreqwister\Funq\Core\Funq\bin\Debug\Funq.pdb
-E:\Projects\WinPhone\PhotoTreqwister\Funq\Core\Funq\bin\Debug\Funq.xml
-E:\Projects\WinPhone\PhotoTreqwister\Funq\Core\Funq\obj\Debug\Funq.Properties.Resources.resources
-E:\Projects\WinPhone\PhotoTreqwister\Funq\Core\Funq\obj\Debug\Funq.csproj.GenerateResource.Cache
-E:\Projects\WinPhone\PhotoTreqwister\Funq\Core\Funq\obj\Debug\Funq.dll
-E:\Projects\WinPhone\PhotoTreqwister\Funq\Core\Funq\obj\Debug\Funq.pdb

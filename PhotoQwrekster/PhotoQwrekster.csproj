@@ -153,6 +153,17 @@
     </Content>
     <Content Include="Libs\Newtonsoft.Json.dll" />
     <Content Include="Libs\RestSharp.WindowsPhone.dll" />
+    <Resource Include="Resources\appbar.add.rest.png" />
+    <Resource Include="Resources\appbar.cancel.rest.png" />
+    <Resource Include="Resources\appbar.check.rest.png" />
+    <Resource Include="Resources\AppBarSave.png" />
+    <Resource Include="Resources\Flash.png" />
+    <Resource Include="Resources\FlashA.png" />
+    <Resource Include="Resources\NoFlash.png" />
+    <Resource Include="Resources\Photo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Resolution.png" />
     <Content Include="SplashScreenImage.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

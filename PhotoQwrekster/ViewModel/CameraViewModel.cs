@@ -501,7 +501,7 @@ namespace PhotoQwrekster.ViewModel
                 TextDebug = "Camera initialized.";
 
                 // Set flash button text.
-                FlashButtonContent = "Fl:" + cam.FlashMode.ToString();
+                FlashButtonContent = "FlashA.png";
             }
         }
 
@@ -657,7 +657,7 @@ namespace PhotoQwrekster.ViewModel
                     {
                         // Specify that flash should be used.
                         cam.FlashMode = FlashMode.On;
-                        FlashButtonContent = "Fl:On";
+                        FlashButtonContent =/* "PhotoQwrekster;component/Resources/*/"Flash.png";
                         currentFlashMode = "Flash mode: On";
                     }
                     break;
@@ -673,14 +673,14 @@ namespace PhotoQwrekster.ViewModel
                     {
                         // If red-eye reduction is not supported, specify automatic mode.
                         cam.FlashMode = FlashMode.Auto;
-                        FlashButtonContent = "Fl:Auto";
+                        FlashButtonContent = "FlashA.png";
                         currentFlashMode = "Flash mode: Auto";
                     }
                     else
                     {
                         // If automatic is not supported, specify that no flash should be used.
                         cam.FlashMode = FlashMode.Off;
-                        FlashButtonContent = "Fl:Off";
+                        FlashButtonContent = "NoFlash.png";
                         currentFlashMode = "Flash mode: Off";
                     }
                     break;
@@ -689,14 +689,14 @@ namespace PhotoQwrekster.ViewModel
                     {
                         // Specify that the flash should be used in the automatic mode.
                         cam.FlashMode = FlashMode.Auto;
-                        FlashButtonContent = "Fl:Auto";
+                        FlashButtonContent = "FlashA.png";
                         currentFlashMode = "Flash mode: Auto";
                     }
                     else
                     {
                         // If automatic is not supported, specify that no flash should be used.
                         cam.FlashMode = FlashMode.Off;
-                        FlashButtonContent = "Fl:Off";
+                        FlashButtonContent = "NoFlash.png";
                         currentFlashMode = "Flash mode: Off";
                     }
                     break;
@@ -705,7 +705,7 @@ namespace PhotoQwrekster.ViewModel
                     {
                         // Specify that no flash should be used.
                         cam.FlashMode = FlashMode.Off;
-                        FlashButtonContent = "Fl:Off";
+                        FlashButtonContent = "NoFlash.png";
                         currentFlashMode = "Flash mode: Off";
                     }
                     break;

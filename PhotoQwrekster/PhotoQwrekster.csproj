@@ -83,6 +83,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\FlashImageConverter.cs" />
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Helpers\FacebookConfigHelper.cs" />
     <Compile Include="Helpers\FacebookHelper.cs" />
@@ -157,9 +158,11 @@
     <Resource Include="Resources\appbar.cancel.rest.png" />
     <Resource Include="Resources\appbar.check.rest.png" />
     <Resource Include="Resources\AppBarSave.png" />
-    <Resource Include="Resources\Flash.png" />
-    <Resource Include="Resources\FlashA.png" />
-    <Resource Include="Resources\NoFlash.png" />
+    <Content Include="Resources\Flash.png" />
+    <Content Include="Resources\FlashA.png" />
+    <Resource Include="Resources\NoFlash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Photo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

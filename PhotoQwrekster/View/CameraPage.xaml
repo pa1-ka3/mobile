@@ -5,6 +5,7 @@
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            xmlns:conv="clr-namespace:PhotoQwrekster.Converters"
                             mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
                             FontFamily="{StaticResource PhoneFontFamilyNormal}"
                             FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -13,6 +14,8 @@
                             Orientation="Portrait"
                             shell:SystemTray.IsVisible="True"
                             DataContext="{Binding MainCamera, Source={StaticResource Locator}}">
+    
+    
 	<phone:PhoneApplicationPage.Resources>
 		<Style x:Key="RoundCornerButton" TargetType="Button">
 			<Setter Property="Background" Value="#FF505050"/>
@@ -73,6 +76,8 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+        
+        <conv:FlashImageConverter x:Key="ImageConverter" />
 	</phone:PhoneApplicationPage.Resources>
 
 	<!--LayoutRoot contains the root grid where all other page content is placed-->
@@ -91,15 +96,18 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 				
-				<Button Name="FlashButton" 
-                    Grid.Column="0"
-					
-                    Command="{Binding Path=ChangeFlashClick}" 					
-                    FontSize="26" FontWeight="ExtraBold" Height="64"
-					Style="{StaticResource RoundCornerButton}" BorderThickness="3" HorizontalAlignment="Left" Width="95">					
-					<Grid>
-						<Image Source="/PhotoQwrekster;component/Resources/Flash.png" Margin="0" Height="48" ></Image>
-					</Grid>
+				<Button Name="FlashButton"
+                        Grid.Column="0"
+                        Command="{Binding Path=ChangeFlashClick}"
+                         
+                        Height="64"
+                        Style="{StaticResource RoundCornerButton}" 
+                        BorderThickness="3" HorizontalAlignment="Left" Width="95">
+                    <Grid>
+                        <Image  Source="{Binding Path=FlashButtonContent, Converter={StaticResource ImageConverter}}"  
+                            Margin="0" Height="48" >                            
+                        </Image>
+                    </Grid>
 				</Button>
 				
 				<Button Content="{Binding ResButtonContent}" 

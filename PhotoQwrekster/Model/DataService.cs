@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
+using Microsoft.Devices;
 
 namespace PhotoQwrekster.Model
 {
@@ -52,6 +54,63 @@ namespace PhotoQwrekster.Model
         public byte[] GetCapturedImageByte()
         {
             return CapturedImageByte;
+        }
+
+
+        private Size _cameraResolution;
+
+        public Size CameraResolution
+        {
+            get { return _cameraResolution; }
+            set
+            {
+                _cameraResolution = value;
+                var settings = ((App)App.Current).SettingsData.Settings;
+                settings["CameraResolution"] = value;
+            }
+        }
+
+        public Size GetResolutionSetting()
+        {
+            return CameraResolution;
+        }
+
+        public void SaveResolutionSettings(System.Windows.Size res)
+        {
+            CameraResolution = res;
+        }
+
+        public void InitPropertiesFromStorage()
+        {            
+            var settings = ((App)App.Current).SettingsData.Settings;
+            _cameraResolution = settings.Contains("CameraResolution") ? (Size)(settings["CameraResolution"]) : new Size(0, 0);
+            _cameraFlashMode = settings.Contains("CameraFlashMode") ? (FlashMode)(settings["CameraFlashMode"]) : FlashMode.Auto;
+        }
+
+
+        private FlashMode _cameraFlashMode;
+
+        public FlashMode CameraFlashMode
+        {
+            get { return _cameraFlashMode; }
+            set
+            {
+                _cameraFlashMode = value;
+                var settings = ((App)App.Current).SettingsData.Settings;
+                settings["CameraFlashMode"] = value;
+            }
+        }
+
+
+        public void SaveFlashModeSettings(FlashMode flashMode)
+        {
+            CameraFlashMode = flashMode;
+        }
+
+
+        public FlashMode GetFlashModeSettings()
+        {
+            return CameraFlashMode;
         }
     }
 }

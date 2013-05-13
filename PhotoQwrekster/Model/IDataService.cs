@@ -16,5 +16,15 @@ namespace PhotoQwrekster.Model
         System.IO.Stream GetCapturedStream();
 
         byte[] GetCapturedImageByte();
+
+        void InitPropertiesFromStorage();
+
+        System.Windows.Size GetResolutionSetting();
+
+        void SaveResolutionSettings(System.Windows.Size res);        
+
+        void SaveFlashModeSettings(Microsoft.Devices.FlashMode flashMode);
+
+        Microsoft.Devices.FlashMode GetFlashModeSettings();
     }
 }

@@ -43,7 +43,7 @@
 												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneBackgroundBrush}"/>
 											</ObjectAnimationUsingKeyFrames>
 											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
-												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneForegroundBrush}"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#FF202020"/>
 											</ObjectAnimationUsingKeyFrames>
 										</Storyboard>
 									</VisualState>
@@ -108,20 +108,34 @@
                             Margin="0" Height="48" >                            
                         </Image>
                     </Grid>
-				</Button>
+				</Button> 
 				
-				<Button Content="{Binding ResButtonContent}" 
-                    Grid.Column="2"
-                    Name="ResButton" 
-					
+				<Button 
+                    Grid.Column="1"
+                    Name="ResButton"
                     Command="{Binding Path=ChangeResClick}" 
                     FontSize="26" 
 					Style="{StaticResource RoundCornerButton}"
 					HorizontalAlignment="Right"
-                    FontWeight="ExtraBold" Height="64" Width="150" >
-	            </Button>
-				
-			</Grid>
+                    FontWeight="ExtraBold" Height="64" Width="248" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" 
+                               Source="/PhotoQwrekster;component/Resources/Resolution.png" 
+                               Height="48" 
+                               HorizontalAlignment="Left" >
+                            
+                        </Image>
+                        <TextBlock Grid.Column="1" 
+                                   Foreground="#FF1022D1"
+                                   Text="{Binding ResButtonContent}" Margin="0,5,26,7" FontFamily="Courier New" FontSize="21.333" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Button>
+            
+        </Grid>
 			
 		
 
@@ -134,6 +148,13 @@
             <Canvas.Background>
                 <VideoBrush x:Name="viewfinderBrush"  />
             </Canvas.Background>
+
+            <Button Name="SaveSize"
+                        Content="SaveSize"
+                        Command="{Binding Path=SaveSize}"/>
+            <Button Name="GetSize"
+                        Content="GetSize"
+                        Command="{Binding Path=LoadSize}" Canvas.Left="146" Canvas.Top="0" />
 
             <!-- Brackets for Touch Focus -->
             <TextBlock 
@@ -180,7 +201,7 @@
                     Grid.Column="2"
                     Name="SkipButton" 
 					
-                    Command="{Binding Path=FocusClick}" 
+                    Command="{Binding Path=SkipClick}" 
                     FontSize="26" 
 					Style="{StaticResource RoundCornerButton}"
                     FontWeight="ExtraBold" 

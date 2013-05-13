@@ -136,6 +136,34 @@ namespace PhotoQwrekster.ViewModel
             }
         }
 
+        private RelayCommand _skipCommand;
+
+        /// <summary>
+        /// Gets the SkipClick.
+        /// </summary>
+        public RelayCommand SkipClick
+        {
+            get
+            {
+                return _skipCommand
+                    ?? (_skipCommand = new RelayCommand(
+                                          () =>
+                                          {
+                                              skip_clicked();
+
+                                          }));
+            }
+        }
+
+        private void skip_clicked()
+        {
+            INavigationService navigation = App.Container.Resolve<INavigationService>();
+            Runner.Invoke(() =>
+            {
+                navigation.NavigateTo(new Uri(ViewModelLocator.ImageProcessing, UriKind.RelativeOrAbsolute));
+            });
+        }
+
         #endregion
         
         #region Labels
@@ -403,9 +431,6 @@ namespace PhotoQwrekster.ViewModel
 
         MediaLibrary library = new MediaLibrary();
 
-        // Holds the current flash mode.
-        private string currentFlashMode;
-
         // Holds the current resolution index.
         int currentResIndex = 0;
 
@@ -497,11 +522,67 @@ namespace PhotoQwrekster.ViewModel
         {
             if (e.Succeeded)
             {
+                _dataService.InitPropertiesFromStorage();
+
+                SetCameraResolutionFromSettings();
+
+                SetCameraFlashModeFromSettings();
+
                 // Write message.
                 TextDebug = "Camera initialized.";
 
-                // Set flash button text.
-                FlashButtonContent = "FlashA.png";
+                
+            }
+        }
+        
+
+        private void SetCameraResolutionFromSettings()
+        {
+            Size res = _dataService.GetResolutionSetting();
+            IEnumerable<Size> resList = cam.AvailableResolutions;
+            int resCount = resList.Count<Size>();
+
+            if (resList.Contains<Size>(res))
+            {
+                for (int i = 0; i < resCount; i++)
+                {
+                    if (res == resList.ElementAt<Size>(i))
+                    {
+                        currentResIndex = i;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                res = resList.ElementAt<Size>(0);
+                currentResIndex = 0;
+            }
+
+            cam.Resolution = res;
+            ResButtonContent = string.Format("{0}X{1}", res.Width, res.Height);
+
+        }
+
+        private void SetCameraFlashModeFromSettings()
+        {
+            // Set flash button image.
+            cam.FlashMode = _dataService.GetFlashModeSettings();
+
+            switch (cam.FlashMode)
+            {
+                case FlashMode.On:
+                    FlashButtonContent = "Flash.png";
+                    break;
+                case FlashMode.Auto:
+                    FlashButtonContent = "FlashA.png";
+                    break;
+                case FlashMode.Off:
+                    FlashButtonContent = "NoFlash.png";
+                    break;
+                case FlashMode.RedEyeReduction:
+                    FlashButtonContent = "NoFlash.png";
+                    break;
             }
         }
 
@@ -649,6 +730,9 @@ namespace PhotoQwrekster.ViewModel
         // Cycle through flash mode options when the flash button is pressed.
         private void changeFlash_Clicked()
         {
+            // Holds the current flash mode.
+            string currentFlashMode = string.Empty;
+
 
             switch (cam.FlashMode)
             {
@@ -657,7 +741,7 @@ namespace PhotoQwrekster.ViewModel
                     {
                         // Specify that flash should be used.
                         cam.FlashMode = FlashMode.On;
-                        FlashButtonContent =/* "PhotoQwrekster;component/Resources/*/"Flash.png";
+                        FlashButtonContent ="Flash.png";
                         currentFlashMode = "Flash mode: On";
                     }
                     break;
@@ -711,9 +795,10 @@ namespace PhotoQwrekster.ViewModel
                     break;
             }
 
+            _dataService.SaveFlashModeSettings(cam.FlashMode);
+
             // Display current flash mode.            
             TextDebug = currentFlashMode;
-            
         }
 
         // Provide auto-focus in the viewfinder.
@@ -774,7 +859,8 @@ namespace PhotoQwrekster.ViewModel
 
             // Update the UI.
             TextDebug = String.Format("Setting capture resolution: {0}x{1}", res.Width, res.Height);
-            ResButtonContent = "R" + res.Width;
+            ResButtonContent = res.Width + "X" + res.Height;
+            _dataService.SaveResolutionSettings(res);
         }
 
         // Provide auto-focus with a half button press using the hardware shutter button.
@@ -865,7 +951,50 @@ namespace PhotoQwrekster.ViewModel
                     TextDebug = "Camera does not support FocusAtPoint().";
                 }
             }
+        }
 
+        private RelayCommand _saveSize;
+        /// <summary>
+        /// Gets the SaveSize.
+        /// </summary>
+        public RelayCommand SaveSize
+        {
+            get
+            {
+                return _saveSize
+                    ?? (_saveSize = new RelayCommand(
+                                          () =>
+                                          {
+                                              Size ns = new Size(123, 456);
+                                              _dataService.SaveFlashModeSettings(FlashMode.On);
+                                              _dataService.SaveResolutionSettings(ns);
+                                              
+                                          }));
+            }
+        }
+
+
+        private RelayCommand _loadSize;
+
+        /// <summary>
+        /// Gets the LoadSize.
+        /// </summary>
+        public RelayCommand LoadSize
+        {
+            get
+            {
+                return _loadSize
+                    ?? (_loadSize = new RelayCommand(
+                                          () =>
+                                          {
+                                              _dataService.InitPropertiesFromStorage();
+                                              FlashMode fm = _dataService.GetFlashModeSettings();
+                                              Size s = _dataService.GetResolutionSetting();
+                                              int i = 8;
+                                              
+                                          }));
+            }
         }
     }
+
 }

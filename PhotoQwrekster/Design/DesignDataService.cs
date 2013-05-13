@@ -34,5 +34,37 @@ namespace PhotoQwrekster.Design
         {
             throw new NotImplementedException();
         }
+
+        
+
+
+       System.Windows.Size IDataService.GetResolutionSetting()
+        {
+            return new System.Windows.Size(3640, 3480);
+        }
+
+
+       public void SaveResolutionSettings(System.Windows.Size res)
+       {
+           throw new NotImplementedException();
+       }
+
+
+       public void InitPropertiesFromStorage()
+       {
+           throw new NotImplementedException();
+       }
+
+
+       public void SaveFlashModeSettings(Microsoft.Devices.FlashMode flashMode)
+       {
+           throw new NotImplementedException();
+       }
+
+
+       public Microsoft.Devices.FlashMode GetFlashModeSettings()
+       {
+           return Microsoft.Devices.FlashMode.Auto;
+       }
     }
 }

@@ -9,6 +9,8 @@ using System;
 using Microsoft.Phone;
 using PhotoQwrekster.Helpers;
 using PhotoQwrekster.Input;
+using Microsoft.Phone.Tasks;
+using System.Windows;
 
 namespace PhotoQwrekster.ViewModel
 {
@@ -24,6 +26,8 @@ namespace PhotoQwrekster.ViewModel
     public class ImageProcessingViewModel : ViewModelBase
     {
         private readonly IDataService _dataService;
+
+        PhotoChooserTask photoChooser = null; 
 
         /// <summary>
         /// Initializes a new instance of the ImageProcessingViewModel class.
@@ -42,56 +46,40 @@ namespace PhotoQwrekster.ViewModel
 
 
                 });
+
+            photoChooser = new PhotoChooserTask();
+            photoChooser.Completed += new EventHandler<PhotoResult>(photoChooser_Completed);
+        }
+
+        void photoChooser_Completed(object sender, PhotoResult e)
+        {            
+            App app = Application.Current as App;
+
+            if (e.TaskResult == TaskResult.OK)
+            {
+                byte[] data;
+                using (var br =  new BinaryReader(e.ChosenPhoto)) 
+                    data = br.ReadBytes((int)e.ChosenPhoto.Length);
+
+                _dataService.SetCupturedImageByte(data);
+
+                if (imageChooseComplete != null)
+                    imageChooseComplete.Invoke();
+                imageChooseComplete = null;             
+            }
+        }
+
+        private Action imageChooseComplete = null;
+
+        internal void LoadImageFromLibrary(Action callback)
+        {
+            imageChooseComplete = callback;
+            photoChooser.ShowCamera = false;
+            photoChooser.Show();
         }
 
         #region Commands
 
-        private RelayCommand _openImage;
-
-        /// <summary>
-        /// Gets the OpenImage.
-        /// </summary>
-        public RelayCommand OpenImage
-        {
-            get
-            {
-                return _openImage
-                    ?? (_openImage = new RelayCommand(
-                                          () =>
-                                          {
-                                              OnLoadImageFromStorage();
-                                          }));
-            }
-        }
-
-        private void OnLoadImageFromStorage()
-        {
-            throw new System.NotImplementedException();
-        }
-
-
-        private RelayCommand _applyTransformationFilter;
-
-        /// <summary>
-        /// Gets the ApplyTransformationFilter.
-        /// </summary>
-        public RelayCommand ApplyTransformationFilter
-        {
-            get
-            {
-                return _applyTransformationFilter
-                    ?? (_applyTransformationFilter = new RelayCommand(
-                                          () =>
-                                          {
-                                              OnApplyTransformationFilter();
-                                          }));
-            }
-        }
-
-        private void OnApplyTransformationFilter()
-        {
-            throw new System.NotImplementedException();
-        }
 
         private RelayCommand _shareInNet;
 

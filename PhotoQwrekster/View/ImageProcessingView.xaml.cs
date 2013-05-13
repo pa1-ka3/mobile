@@ -26,7 +26,7 @@ namespace PhotoQwrekster.View
         {
             base.OnNavigatedTo(e);
 
-            imgSelectedPhoto.Source = imageProcessingViewModel.GetCurrentImage();
+            SetSelectedPhotoSource();
             string isCallback;
             if (NavigationContext.QueryString.TryGetValue("callback", out isCallback))
             {
@@ -35,6 +35,11 @@ namespace PhotoQwrekster.View
                     imageProcessingViewModel.ProcessCallback();
                 }
             }
+        }
+
+        private void SetSelectedPhotoSource()
+        {
+            imgSelectedPhoto.Source = imageProcessingViewModel.GetCurrentImage();
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -111,6 +116,38 @@ namespace PhotoQwrekster.View
             GestureElipse.Visibility = System.Windows.Visibility.Collapsed;
 
             imageProcessingViewModel.UpdateImageAfterPinchComplete((int)GestureCenter.X, (int)GestureCenter.Y, transform.ScaleX, Radius);
+        }
+
+        private void ShareWithFacebook_Click(object sender, EventArgs e)
+        {
+
+        }
+        
+
+        private void ShareWithFlickr_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ShareWithGoogle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ShareWithTumblr_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ShareWithTwitter_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void Load_Click(object sender, EventArgs e)
+        {
+            imageProcessingViewModel.LoadImageFromLibrary(SetSelectedPhotoSource);
         }
 
         

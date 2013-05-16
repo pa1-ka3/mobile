@@ -67,7 +67,11 @@ namespace PhotoQwrekster.View
                         
         void Browser_Navigating(object sender, NavigatingEventArgs e)
         {
-            if (e.Uri.ToString().Contains("code="))
+            if (e.Uri.ToString().Contains("error_code="))
+            {
+                //just to skip
+            }
+            else if (e.Uri.ToString().Contains("code="))
             {
                 e.Cancel = true;
                 var val = e.Uri.Query.Substring(6, e.Uri.Query.Length - 6);
@@ -75,10 +79,6 @@ namespace PhotoQwrekster.View
                 oauthHelper.SetTokenCode(val);
                 oauthHelper.GetRequestTokenQueryNonStatic(false, InspectTokenCallback);
             }
-         /*   else if (e.Uri.ToString().Contains("error=access_denied"))
-            {
-                NavigateToStorageSelectorPage();
-            }*/
         }
 
         private void OnNavigatedFromAnimation()
@@ -91,23 +91,23 @@ namespace PhotoQwrekster.View
             NavigationService.Navigate(new Uri("/View/ImageProcessingView.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        private void InspectTokenCallback(List<object> token)
-        {
-            /*
-            Runner.Invoke(() =>
-            {
-                //TileUpdateHelper.CreateTile(oauthHelper.GetAccountKey(), oauthHelper.GetStorage());
-                NavigationService.Navigate(new Uri("/View/ImageProcessingView.xaml?callback=true", UriKind.Relative));
-
-               
-            });
-            */
+     /*   private void InspectTokenCallback(List<object> token)
+        {           
             INavigationService navigation = App.Container.Resolve<INavigationService>();
             Runner.Invoke(() =>
             {
                 navigation.NavigateTo(new Uri(ViewModelLocator.ImageProcessing+"?callback=true", UriKind.RelativeOrAbsolute));
             });
         }
+      * */
+        private static Action<List<object>> _inspectTokenCallback;
+
+        public static Action<List<object>> InspectTokenCallback
+        {
+            get { return _inspectTokenCallback; }
+            set { _inspectTokenCallback = value; }
+        }
+
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {

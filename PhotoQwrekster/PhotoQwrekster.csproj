@@ -97,6 +97,7 @@
     <Compile Include="Input\SafeRaise.cs" />
     <Compile Include="LinqToVisualTree.cs" />
     <Compile Include="MetroInMotion.cs" />
+    <Compile Include="Model\ActionDescriptionModel.cs" />
     <Compile Include="Model\InstagramFirstPhase.cs" />
     <Compile Include="NetworkChecker.cs" />
     <Compile Include="Services\Filters.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="ViewModel\INavigationService.cs" />
     <Compile Include="ViewModel\NavigationService.cs" />
     <Compile Include="ViewModel\Runner.cs" />
+    <Compile Include="ViewModel\ShareInNetViewModel.cs" />
     <Compile Include="View\CameraPage.xaml.cs">
       <DependentUpon>CameraPage.xaml</DependentUpon>
     </Compile>
@@ -119,6 +121,9 @@
     </Compile>
     <Compile Include="View\OAuthLogin.xaml.cs">
       <DependentUpon>OAuthLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ShareInNetView.xaml.cs">
+      <DependentUpon>ShareInNetView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +142,10 @@
     <Page Include="View\OAuthLogin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ShareInNetView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -48,12 +48,14 @@ namespace PhotoQwrekster.ViewModel
             App.Container.Register<CameraViewModel>((c) => new CameraViewModel(App.Container.Resolve<IDataService>()));
             App.Container.Register<ImageProcessingViewModel>((c) => new ImageProcessingViewModel(App.Container.Resolve<IDataService>()));
             App.Container.Register<INavigationService>(c => new NavigationService());
+            App.Container.Register<ShareInNetViewModel>(c => new ShareInNetViewModel());
             
         }
 
         public const string ImageProcessing = "/View/ImageProcessingView.xaml";
         public const string OAuthLogin = "/View/OAuthLogin.xaml";
         public const string Camera = "/View/CameraPage.xaml";
+        public const string ShareInNet = "/View/ShareInNetView.xaml";
 
         /// <summary>
         /// Gets the Main property.
@@ -76,6 +78,14 @@ namespace PhotoQwrekster.ViewModel
             {
                 //return ServiceLocator.Current.GetInstance<MainViewModel>();
                 return App.Container.Resolve<ImageProcessingViewModel>();
+            }
+        }
+
+        public ShareInNetViewModel ShareViewModel
+        {
+            get
+            {
+                return App.Container.Resolve<ShareInNetViewModel>();
             }
         }
 

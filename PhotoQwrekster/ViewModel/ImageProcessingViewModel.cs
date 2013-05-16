@@ -11,6 +11,7 @@ using PhotoQwrekster.Helpers;
 using PhotoQwrekster.Input;
 using Microsoft.Phone.Tasks;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace PhotoQwrekster.ViewModel
 {
@@ -105,17 +106,18 @@ namespace PhotoQwrekster.ViewModel
 
             if (!FacebookConfigHelper.IsLoggedIn)
             {
-                callbackAction = UploadToFacebook;
+               // callbackAction = UploadToFacebook;
+                PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = UploadToFacebook;
                 INavigationService navigation = App.Container.Resolve<INavigationService>();
                
                     navigation.NavigateTo(new Uri(ViewModelLocator.OAuthLogin, UriKind.RelativeOrAbsolute));
                 
             }
             else
-                UploadToFacebook();
+                UploadToFacebook(null);
         }
 
-        private void UploadToFacebook()
+        private void UploadToFacebook(List<object> obj)
         {
             using (MemoryStream ms = new MemoryStream())
             {

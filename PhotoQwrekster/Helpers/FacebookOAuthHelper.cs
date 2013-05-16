@@ -12,6 +12,8 @@ using System.IO.IsolatedStorage;
 using System.Collections.Generic;
 using RestSharp;
 using Newtonsoft.Json.Linq;
+using PhotoQwrekster.View;
+using PhotoQwrekster.ViewModel;
 
 
 namespace PhotoQwrekster.Helpers
@@ -63,8 +65,7 @@ namespace PhotoQwrekster.Helpers
         {
             var body = String.Format("client_id={0}&client_secret={1}&", FacebookConfigHelper.ClientId,
                                      FacebookConfigHelper.ClientSecret);
-            return isRefresh ? String.Format(body + "refresh_token={0}&grant_type=refresh_token", FacebookConfigHelper.RefreshToken) 
-                             : String.Format(body + "code={0}&redirect_uri={1}", FacebookConfigHelper.TokenCode, FacebookConfigHelper.RedirectUri);
+            return String.Format(body + "code={0}&redirect_uri={1}", FacebookConfigHelper.TokenCode, FacebookConfigHelper.RedirectUri);
         }
 
         public static void GetRequestTokenQuery(bool isRefresh, Action<List<object>> callback)
@@ -117,7 +118,14 @@ namespace PhotoQwrekster.Helpers
                 {
                     var secondsElapsed = TimeSpan.FromTicks(DateTime.Now.Ticks).TotalSeconds - (double)settings["Timestamp" + FacebookConfigHelper.AccountKey];
                     if (secondsElapsed > FacebookConfigHelper.TokenExpiry)
-                        GetRequestTokenQuery(true, callback);
+                    {
+                        //GetRequestTokenQuery(true, callback);
+                        OAuthLogin.InspectTokenCallback = callback;
+                        INavigationService navigation = App.Container.Resolve<INavigationService>();
+
+                        navigation.NavigateTo(new Uri(ViewModelLocator.OAuthLogin, UriKind.RelativeOrAbsolute));
+                
+                    }
                     else
                         callback(new List<object> { new List<string>() });
                 }

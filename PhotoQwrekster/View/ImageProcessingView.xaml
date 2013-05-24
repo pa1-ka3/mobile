@@ -101,7 +101,7 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Grid x:Name="SwitchRoot" Background="Transparent" Height="95" Width="136">
+                            <Grid x:Name="SwitchRoot" Background="Transparent" Height="45" Width="116">
                                 <Grid x:Name="SwitchTrack" Width="89">
                                     <Grid x:Name="SwitchBottom" Background="{TemplateBinding SwitchForeground}" Height="34">
                                         <Rectangle
@@ -116,7 +116,7 @@
                                             </Rectangle.RenderTransform>
                                         </Rectangle>
                                         <Border BorderBrush="{StaticResource PhoneForegroundBrush}" BorderThickness="3">
-                                            <Border BorderBrush="{StaticResource PhoneBackgroundBrush}" BorderThickness="4"/>
+                                            <Border BorderBrush="{StaticResource PhoneBackgroundBrush}" BorderThickness="4" Height="28" VerticalAlignment="Top"/>
                                         </Border>
                                     </Grid>
                                     <Border
@@ -156,17 +156,26 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
-                    Margin="12,17,0,28">
-            <Button Content="Send to Facebook" Height="71" 
-                    Command="{Binding Path=ShareInNet}"
-                    Name="button1" Width="267" />
-            <TextBlock x:Name="PageTitle"
-                       Text="preview"
-                       Margin="9,-7,0,0"
-                       Style="{StaticResource PhoneTextTitle2Style}" />
-            
-            <primitives:ToggleSwitchButton Style="{StaticResource MySwitchButton}" />
-            
+                    Margin="12,0,0,28">
+        	<Grid><Grid.ColumnDefinitions>
+        		<ColumnDefinition Width="160"></ColumnDefinition>     	
+			    	<ColumnDefinition Width="110"></ColumnDefinition>     	
+		    		<ColumnDefinition Width="185"></ColumnDefinition>     	
+		    		<ColumnDefinition></ColumnDefinition>     	
+		    	</Grid.ColumnDefinitions> 
+          <TextBlock Text="transform in one dimension" Grid.Column="0" TextWrapping="Wrap" 
+	        		Margin="0,5,5,5"
+	        		Foreground="Gray"
+	        		TextAlignment="Right"	>
+          </TextBlock>
+            <primitives:ToggleSwitchButton Grid.Column="1" 
+	      		Style="{StaticResource MySwitchButton}" 
+	      		 SwitchForeground="BlueViolet"
+	      		 Background="Green"	/>
+			<TextBlock Text="transform in two dimensions" Grid.Column="2" TextWrapping="Wrap"
+			Foreground="Gray"
+			Margin="10,5,0,5"></TextBlock>
+            </Grid>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->

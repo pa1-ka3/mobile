@@ -150,6 +150,11 @@ namespace PhotoQwrekster.View
             imageProcessingViewModel.LoadImageFromLibrary(SetSelectedPhotoSource);
         }
 
+        private void toggleSwitchButton1_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         
 
     }

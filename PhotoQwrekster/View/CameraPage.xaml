@@ -130,8 +130,13 @@
                             
                         </Image>
                         <TextBlock Grid.Column="1" 
-                                   Foreground="#FF1022D1"
-                                   Text="{Binding ResButtonContent}" Margin="0,5,26,7" FontFamily="Courier New" FontSize="21.333" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                   Text="{Binding ResButtonContent}" Margin="0,5,26,7" FontFamily="Courier New" 
+								   FontSize="21.333" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        	<TextBlock.Foreground>
+                        		<SolidColorBrush Color="{StaticResource NavyBlueColor}"/>
+							</TextBlock.Foreground>
+						</TextBlock>
+								   
                 </Grid>
             </Button>
             
@@ -189,24 +194,55 @@
             <Button Name="AFButton" 
                     Grid.Column="1"
 					
-                    Content="[AF]" 
+                     
                     Command="{Binding Path=FocusClick}" 
-					Foreground="#FF1022D1"
-                    FontSize="26" FontWeight="ExtraBold" 
+					                    FontSize="26" FontWeight="ExtraBold" 
 					Height="64" Width="120" Style="{StaticResource RoundCornerButton}" 
-					 />
+					 >
+            	<Button.Foreground>
+					<SolidColorBrush Color="{StaticResource NavyBlueColor}"/>
+				</Button.Foreground>
+				<Button.Content>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="14" />
+							<ColumnDefinition Width="54"/>
+							<ColumnDefinition Width="14" />
+						</Grid.ColumnDefinitions>
+						<TextBlock TextWrapping="Wrap" Text="[" FontSize="36" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left"/>
+					<TextBlock TextWrapping="Wrap" Text="Auto Focus" FontSize="20" Grid.Column="1" TextAlignment="Center"></TextBlock>
+					<TextBlock TextWrapping="Wrap" Text="]" FontSize="36" Grid.Column="2" VerticalAlignment="Center"/>
+					</Grid>
+				</Button.Content>      
+					 </Button>
 					
-			<Button Content="Skip >>" 
-			Foreground="#FF1022D1"
+			<Button 			
                     Grid.Column="2"
                     Name="SkipButton" 
 					
                     Command="{Binding Path=SkipClick}" 
-                    FontSize="26" 
+                    
 					Style="{StaticResource RoundCornerButton}"
                     FontWeight="ExtraBold" 
 					Width="120"
-					Height="64">
+					Height="64" 
+					>
+				<Button.Foreground>
+					<SolidColorBrush Color="{StaticResource NavyBlueColor}"/>
+				</Button.Foreground>
+				<Button.Content>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="32" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" 
+						Text="Skip Foto" 
+						FontSize="20" 
+						TextWrapping="Wrap" ></TextBlock>
+						<TextBlock Grid.Column="1" Text=">>" VerticalAlignment="Center" FontFamily="OCR A Extended" />
+					</Grid>
+				</Button.Content>
 	            </Button>
             
             </Grid>

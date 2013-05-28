@@ -115,6 +115,16 @@
                                                         Margin="30, 0"
                                                         Width="460" 
                                                  />
+                                            <TextBlock  Grid.Row="1"
+                                                        Text="{Binding Path=UserNane, Mode=OneWay }"
+                                                        VerticalAlignment="Center"                                                       
+                                                        HorizontalAlignment="Left"
+                                                        
+                                                        FontSize="20"
+                                                        TextWrapping="NoWrap"
+                                                        Margin="170, 0"
+                                                        Width="460" 
+                                                 />
 
                                             <TextBlock x:Name="dummyTextBlock" Text="     " />
                                         </Grid>

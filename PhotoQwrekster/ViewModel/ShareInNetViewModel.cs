@@ -15,6 +15,8 @@ namespace PhotoQwrekster.ViewModel
     /// </summary>
     public class ShareInNetViewModel : ViewModelBase
     {
+        
+
         /// <summary>
         /// Initializes a new instance of the ShareInNetViewModel class.
         /// </summary>
@@ -22,11 +24,11 @@ namespace PhotoQwrekster.ViewModel
         {
             ActionsList = new ObservableCollection<ActionDescriptionModel>()
             { 
-                new ActionDescriptionModel(){ ActionId="FCB", Description="facebuchek"},
-                new ActionDescriptionModel(){ ActionId="FLC", Description="flicer"},
-                new ActionDescriptionModel(){ ActionId="GPL", Description="google+"},
-                new ActionDescriptionModel(){ ActionId="TWT", Description="twpid"},
-                new ActionDescriptionModel(){ ActionId="TMB", Description="tumbler"}
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Facebook, Description="facebuchek"},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Flikr, Description="flikr", UserName="aaaa"},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Picassa, Description="google+"},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter, Description="twpid", UserName="bhh"},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler"}
             };
 
         }

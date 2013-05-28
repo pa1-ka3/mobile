@@ -39,7 +39,28 @@ namespace PhotoQwrekster.View
 
         private void SetSelectedPhotoSource()
         {
-            imgSelectedPhoto.Source = imageProcessingViewModel.GetCurrentImage();
+            ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = false; //Undo
+            
+         
+            System.Windows.Media.ImageSource img = imageProcessingViewModel.GetCurrentImage();
+            if (img != null)
+            {
+                imgSelectedPhoto.Source = img;
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = true;  //"Save" 
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = true;  //"Share" 
+                flickData.Visibility = System.Windows.Visibility.Collapsed;
+                Size s = imageProcessingViewModel.GetImageRecalculatedSize();
+                imgSelectedPhoto.Height = s.Height;
+                imgSelectedPhoto.Width = s.Width;
+            }
+            else
+            {
+                imgSelectedPhoto.Source = null;
+                flickData.Visibility = System.Windows.Visibility.Visible;
+                flickData.Text = "No image selected";
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = false;  //"Save" 
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = false;  //"Share"       
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -150,8 +171,28 @@ namespace PhotoQwrekster.View
             imageProcessingViewModel.LoadImageFromLibrary(SetSelectedPhotoSource);
         }
 
-        private void toggleSwitchButton1_Checked(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void Share_Click(object sender, EventArgs e)
+        {
+            if(imageProcessingViewModel.CanShare)
+                NavigationService.Navigate(new Uri("/View/ShareInNetView.xaml", UriKind.Relative));
+        }
+
+        private void Undo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TransformMode_Checked(object sender, RoutedEventArgs e)
+        {
+            if (TransformMode.IsChecked.HasValue)
+                imageProcessingViewModel.TransformMode = TransformMode.IsChecked.Value;
+            else
+                imageProcessingViewModel.TransformMode = false;
 
         }
 

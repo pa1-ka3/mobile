@@ -12,7 +12,13 @@
         <!--Global View Model Locator-->
         <vm:ViewModelLocator x:Key="Locator"
                              d:IsDataSource="True" />
-        <Color x:Key="NavyBlueColor">#FF22235E</Color>
+        <Color x:Key="NavyBlueColor">#FF02204E</Color>
+		<Color x:Key="ButtonTextColor">#FF00070E</Color>
+        <SolidColorBrush x:Key="PhoneBackgroundColorBrush" Color="#FF090909" />               
+        <SolidColorBrush x:Key="CameraButtonColorBrush" Color="#FF454949" />
+        <Color x:Key="SystemTrayColor">#FF191719</Color>
+        <Color x:Key="ApplicationBarBackgroundColor">#FF454949</Color>
+        <SolidColorBrush x:Key="ApplicationBarColorBrush" Color="#FF292929" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

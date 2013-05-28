@@ -560,7 +560,7 @@ namespace PhotoQwrekster.ViewModel
             }
 
             cam.Resolution = res;
-            ResButtonContent = string.Format("{0}X{1}", res.Width, res.Height);
+            ResButtonContent = string.Format("{0}x{1}", res.Width, res.Height);
 
         }
 
@@ -859,7 +859,7 @@ namespace PhotoQwrekster.ViewModel
 
             // Update the UI.
             TextDebug = String.Format("Setting capture resolution: {0}x{1}", res.Width, res.Height);
-            ResButtonContent = res.Width + "X" + res.Height;
+            ResButtonContent = res.Width + "x" + res.Height;
             _dataService.SaveResolutionSettings(res);
         }
 

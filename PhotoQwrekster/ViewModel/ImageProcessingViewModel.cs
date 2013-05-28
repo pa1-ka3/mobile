@@ -166,7 +166,8 @@ namespace PhotoQwrekster.ViewModel
             
             //bmpImg.SetSource(picCurrentImage.GetImage());
             // bmpImg.SetSource(library.Pictures[library.Pictures.Count - 1].GetImage());
-            byte[] imageData = _dataService.GetCapturedImageByte();            
+            byte[] imageData = _dataService.GetCapturedImageByte();
+            if (imageData == null) return null;
             MemoryStream capturedStream = new MemoryStream(imageData); 
            
             //RotateTransform transform = new RotateTransform(){ CenterX = 0.5, CenterY = 0.5 };
@@ -290,5 +291,27 @@ namespace PhotoQwrekster.ViewModel
 
             BitmapImageSource.Invalidate();
         }
+
+        public bool CanShare { get { return (BitmapImageSource != null); } }
+
+        public Size GetImageRecalculatedSize()
+        {
+            if (BitmapImageSource == null) return new Size(0,0);
+
+            Size s = new Size(BitmapImageSource.PixelWidth, BitmapImageSource.PixelHeight);
+            if (s.Height / 640 > s.Width / 480)
+            {
+                double mashtb = s.Height / 640;
+                s = new Size(s.Width / mashtb, s.Height / mashtb);
+            }
+            else
+            {
+                double mashtb = s.Width / 480;
+                s = new Size(s.Width / mashtb, s.Height / mashtb);
+            }
+            return s;
+        }
+
+        public bool TransformMode { get; set; }
     }
 }

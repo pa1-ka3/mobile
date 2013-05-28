@@ -13,12 +13,13 @@
                             SupportedOrientations="PortraitOrLandscape"
                             Orientation="Portrait"
                             shell:SystemTray.IsVisible="True"
+                            shell:SystemTray.BackgroundColor="{StaticResource SystemTrayColor}"
                             DataContext="{Binding MainCamera, Source={StaticResource Locator}}">
     
     
 	<phone:PhoneApplicationPage.Resources>
 		<Style x:Key="RoundCornerButton" TargetType="Button">
-			<Setter Property="Background" Value="#FF505050"/>
+            <Setter Property="Background" Value="{StaticResource CameraButtonColorBrush}"/>
 			<Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
 			<Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
 			<Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
@@ -62,8 +63,8 @@
 							<Border x:Name="ButtonBackground" 
 							BorderThickness="{TemplateBinding BorderThickness}" 
 							Background="{TemplateBinding Background}" 
-							CornerRadius="7" 
-							Margin="5,1,5,1" Grid.RowSpan="2">
+							CornerRadius="1" 
+							Margin="2,1,2,1" Grid.RowSpan="2">
 								<Border.BorderBrush>
 									<SolidColorBrush Color="#FF313131"/>
 								</Border.BorderBrush>
@@ -81,8 +82,7 @@
 	</phone:PhoneApplicationPage.Resources>
 
 	<!--LayoutRoot contains the root grid where all other page content is placed-->
-	<Grid x:Name="LayoutRoot"
-	      Background="Transparent">
+	<Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundColorBrush}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="64" />
 			<RowDefinition Height="Auto" />
@@ -92,7 +92,8 @@
 		
 			<Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition MaxWidth="95" />                    
+                    <ColumnDefinition Width="160" />                    
+                    <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 				
@@ -102,42 +103,37 @@
                          
                         Height="64"
                         Style="{StaticResource RoundCornerButton}" 
-                        BorderThickness="3" HorizontalAlignment="Left" Width="95">
+                        BorderThickness="3" HorizontalAlignment="Left" Width="160">
                     <Grid>
                         <Image  Source="{Binding Path=FlashButtonContent, Converter={StaticResource ImageConverter}}"  
                             Margin="0" Height="48" >                            
                         </Image>
                     </Grid>
-				</Button> 
+				</Button>
+            <Rectangle Grid.Column="1" Fill="{StaticResource CameraButtonColorBrush}" Margin="1,2,1,0">
+					
+				</Rectangle>
 				
 				<Button 
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Name="ResButton"
                     Command="{Binding Path=ChangeResClick}" 
-                    FontSize="26" 
+                    FontSize="20" 
 					Style="{StaticResource RoundCornerButton}"
 					HorizontalAlignment="Right"
-                    FontWeight="ExtraBold" Height="64" Width="248" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="48" />
-                        <ColumnDefinition Width="200" />
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0" 
-                               Source="/PhotoQwrekster;component/Resources/Resolution.png" 
-                               Height="48" 
-                               HorizontalAlignment="Left" >
-                            
-                        </Image>
-                        <TextBlock Grid.Column="1" 
-                                   Text="{Binding ResButtonContent}" Margin="0,5,26,7" FontFamily="Courier New" 
-								   FontSize="21.333" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    Height="64" Width="160" >
+                    
+                        
+                       
+                        <TextBlock 
+                                   Text="{Binding ResButtonContent}" Margin="1,5,1,7" 
+								   FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center">
                         	<TextBlock.Foreground>
-                        		<SolidColorBrush Color="{StaticResource NavyBlueColor}"/>
+                        		<SolidColorBrush Color="{StaticResource ButtonTextColor}"/>
 							</TextBlock.Foreground>
 						</TextBlock>
 								   
-                </Grid>
+                
             </Button>
             
         </Grid>
@@ -153,14 +149,6 @@
             <Canvas.Background>
                 <VideoBrush x:Name="viewfinderBrush"  />
             </Canvas.Background>
-
-            <Button Name="SaveSize"
-                        Content="SaveSize"
-                        Command="{Binding Path=SaveSize}"/>
-            <Button Name="GetSize"
-                        Content="GetSize"
-                        Command="{Binding Path=LoadSize}" Canvas.Left="146" Canvas.Top="0" />
-
             <!-- Brackets for Touch Focus -->
             <TextBlock 
                 x:Name="focusBrackets" 
@@ -185,7 +173,7 @@
                     Grid.Column="0"
 					
                     Command="{Binding Path=ShutterButtonClick}"                     
-                    FontSize="26" FontWeight="ExtraBold" Height="64" Width="120" Style="{StaticResource RoundCornerButton}" >
+                    FontSize="26" FontWeight="ExtraBold" Height="64" Width="160" Style="{StaticResource RoundCornerButton}" >
                 <StackPanel>
                     <Image Source="/PhotoQwrekster;component/Resources/Photo.png" Margin="0" Height="48" ></Image>
                 </StackPanel>
@@ -196,11 +184,11 @@
 					
                      
                     Command="{Binding Path=FocusClick}" 
-					                    FontSize="26" FontWeight="ExtraBold" 
-					Height="64" Width="120" Style="{StaticResource RoundCornerButton}" 
+					                    FontSize="26"
+					Height="64" Width="160" Style="{StaticResource RoundCornerButton}" 
 					 >
             	<Button.Foreground>
-					<SolidColorBrush Color="{StaticResource NavyBlueColor}"/>
+					<SolidColorBrush Color="{StaticResource ButtonTextColor}"/>
 				</Button.Foreground>
 				<Button.Content>
 					<Grid>
@@ -210,7 +198,7 @@
 							<ColumnDefinition Width="14" />
 						</Grid.ColumnDefinitions>
 						<TextBlock TextWrapping="Wrap" Text="[" FontSize="36" Grid.Column="0" VerticalAlignment="Center" TextAlignment="Left"/>
-					<TextBlock TextWrapping="Wrap" Text="Auto Focus" FontSize="20" Grid.Column="1" TextAlignment="Center"></TextBlock>
+					<TextBlock TextWrapping="Wrap" Text="auto focus" FontSize="20" Grid.Column="1" TextAlignment="Center"></TextBlock>
 					<TextBlock TextWrapping="Wrap" Text="]" FontSize="36" Grid.Column="2" VerticalAlignment="Center"/>
 					</Grid>
 				</Button.Content>      
@@ -223,12 +211,12 @@
                     Command="{Binding Path=SkipClick}" 
                     
 					Style="{StaticResource RoundCornerButton}"
-                    FontWeight="ExtraBold" 
-					Width="120"
+                    
+					Width="160"
 					Height="64" 
 					>
 				<Button.Foreground>
-					<SolidColorBrush Color="{StaticResource NavyBlueColor}"/>
+					<SolidColorBrush Color="{StaticResource ButtonTextColor}"/>
 				</Button.Foreground>
 				<Button.Content>
 					<Grid>
@@ -237,7 +225,7 @@
 							<ColumnDefinition Width="32" />
 						</Grid.ColumnDefinitions>
 						<TextBlock Grid.Column="0" 
-						Text="Skip Foto" 
+						Text="skip foto" 
 						FontSize="20" 
 						TextWrapping="Wrap" ></TextBlock>
 						<TextBlock Grid.Column="1" Text=">>" VerticalAlignment="Center" FontFamily="OCR A Extended" />

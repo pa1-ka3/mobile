@@ -164,6 +164,89 @@ namespace PhotoQwrekster.Service
         }
 
 
+        internal static bool SqueezeInOneDimansion(WriteableBitmap b, int cx, int cy, bool bSmoothing)
+        {
+
+            int nWidth = b.PixelWidth;
+            int nHeight = b.PixelHeight;
+
+            FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
+            Point[,] pt = new Point[nWidth, nHeight];
+
+            Point mid = new Point();
+            mid.X = cx;// nWidth / 2;
+            mid.Y = cy;// nHeight / 2;
+
+            double theta, radius;
+            double newX, newY;
+            double deg = 30 * Math.PI / 180;
+
+            for (int x = 1; x < nWidth; ++x)
+                for (int y = 1; y < nHeight; ++y)
+                {
+                    int trueX = (int)(x - mid.X);
+                    int trueY = (int)(y - mid.Y);
+                    theta = Math.Atan2((trueY), (trueX));
+
+                    radius = Math.Sqrt(trueX * trueX + trueY * trueY);
+
+                    double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / 90000));
+
+                    double newRadius = radius + 3 * deltaRadius;
+                    double transformKoef = newRadius / radius;
+                    if (radius == 0) transformKoef = 0;
+                    double a = 1 + (trueX / x) * (transformKoef - 1);
+                    double d = 1 + (trueY / y) * (transformKoef - 1);
+
+                    double nx = (x - mid.X) * transformKoef;
+                    double ny = (y - mid.Y) * 1;
+
+                    //  newX = mid.X + (newRadius * Math.Cos(theta + deg));// *Math.Cos(deg);
+                    // newX = mid.X + trueX * transformKoef ;
+                    // newX = a * x * Math.Cos(deg) - a* y * Math.Sin(deg);
+                    // newX = mid.X + Math.Cos(deg) * nx - Math.Sin(deg) * ny;
+                    newX = x + 5 * deltaRadius * Math.Cos(theta) * Math.Cos(deg);
+
+                    if (newX > 0 && newX < nWidth)
+                    {
+                        fp[x, y].X = newX;
+                        pt[x, y].X = (int)newX;
+                    }
+                    else
+                    {
+                        fp[x, y].X = fp[x, y].Y = 0.0;
+                        pt[x, y].X = pt[x, y].Y = 0;
+                    }
+
+                    //newY = mid.Y + (radius * Math.Sin(theta ));// *Math.Cos(deg);
+                    //newY = mid.Y + trueY ; 
+                    //newY = d * x * Math.Sin(deg) + d* y * Math.Cos(deg);
+                    //newY = mid.Y +  Math.Sin(deg) * nx + Math.Cos(deg) * ny;
+
+                    newY = y + 5 * deltaRadius * Math.Cos(theta) * Math.Sin(deg);
+
+                    if (newY > 0 && newY < nHeight && newX > 0 && newX < nWidth)
+                    {
+                        fp[x, y].Y = newY;
+                        pt[x, y].Y = (int)newY;
+                    }
+                    else
+                    {
+                        fp[x, y].X = fp[x, y].Y = 0.0;
+                        pt[x, y].X = pt[x, y].Y = 0;
+                    }
+                }
+
+            if (bSmoothing)
+                OffsetFilterAbs(b, pt);
+            else
+                OffsetFilterAntiAlias(b, fp);
+
+            return true;
+
+        }
+
+
         public static bool OffsetFilterAntiAlias(WriteableBitmap processed, FloatPoint[,] fp)
         {
             WriteableBitmap source = new  WriteableBitmap (processed);

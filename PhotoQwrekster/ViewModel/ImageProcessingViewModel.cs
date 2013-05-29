@@ -134,28 +134,6 @@ namespace PhotoQwrekster.ViewModel
             }
         }
 
-        private RelayCommand _configure;
-
-        /// <summary>
-        /// Gets the Configure.
-        /// </summary>
-        public RelayCommand Configure
-        {
-            get
-            {
-                return _configure
-                    ?? (_configure = new RelayCommand(
-                                          () =>
-                                          {
-                                              OnConfigure();
-                                          }));
-            }
-        }
-
-        private void OnConfigure()
-        {
-            throw new System.NotImplementedException();
-        }
         #endregion
 
         public WriteableBitmap BitmapImageSource { get; set; }
@@ -272,27 +250,27 @@ namespace PhotoQwrekster.ViewModel
 
         
 
-
-        internal void UpdateImageAfterPinchComplete(int x, int y)
-        {
-          //  PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapImageSource, x, y);
-            BitmapImageSource.Invalidate();
-
-        }
-
-        
-
         internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int Radius)
         {
-            if(transformScale > 1)
-                PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapImageSource, x, y, transformScale, Radius);
-            else
-                PhotoQwrekster.Service.Filters.SqueezeAroundPoint(BitmapImageSource, x, y, transformScale, Radius);
+            if (TransformMode) // transform in two directions
+            {
+                if (transformScale > 1)
+                    PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapImageSource,
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius);
+                else
+                    PhotoQwrekster.Service.Filters.SqueezeAroundPoint(BitmapImageSource,
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius);
+            }
+            else // transform in one direction
+            {
+            }
 
             BitmapImageSource.Invalidate();
         }
 
         public bool CanShare { get { return (BitmapImageSource != null); } }
+
+        private double Mashtab { get; set; }
 
         public Size GetImageRecalculatedSize()
         {
@@ -303,11 +281,13 @@ namespace PhotoQwrekster.ViewModel
             {
                 double mashtb = s.Height / 640;
                 s = new Size(s.Width / mashtb, s.Height / mashtb);
+                Mashtab = mashtb;
             }
             else
             {
                 double mashtb = s.Width / 480;
                 s = new Size(s.Width / mashtb, s.Height / mashtb);
+                Mashtab = mashtb;
             }
             return s;
         }

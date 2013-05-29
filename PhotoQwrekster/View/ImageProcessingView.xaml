@@ -200,7 +200,9 @@
               Margin="0,0,0,0">
             <Image Name="imgSelectedPhoto" 
                    Width="480" Height="640"
-               Stretch="Fill"  
+                   Stretch="Fill" 
+                   Tap="imgSelectedPhoto_Tap"
+                   
                Visibility="Visible" d:LayoutOverrides="VerticalMargin" >
 
                 <toolkit:GestureService.GestureListener>

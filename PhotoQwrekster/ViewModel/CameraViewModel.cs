@@ -560,7 +560,7 @@ namespace PhotoQwrekster.ViewModel
             }
 
             cam.Resolution = res;
-            ResButtonContent = string.Format("{0}x{1}", res.Width, res.Height);
+            ResButtonContent = string.Format("R{0}x{1}", res.Width, res.Height);
 
         }
 
@@ -648,7 +648,7 @@ namespace PhotoQwrekster.ViewModel
         // Informs when full resolution picture has been taken, saves to local media library and isolated storage.
         void cam_CaptureImageAvailable(object sender, Microsoft.Devices.ContentReadyEventArgs e)
         {
-            string fileName = "PT-"+DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".jpg";
+            string fileName = "PQ-"+DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".jpg";
 
             try
             {
@@ -859,7 +859,7 @@ namespace PhotoQwrekster.ViewModel
 
             // Update the UI.
             TextDebug = String.Format("Setting capture resolution: {0}x{1}", res.Width, res.Height);
-            ResButtonContent = res.Width + "x" + res.Height;
+            ResButtonContent = "R" + res.Width + "x" + res.Height;
             _dataService.SaveResolutionSettings(res);
         }
 

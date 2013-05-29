@@ -196,6 +196,14 @@ namespace PhotoQwrekster.View
 
         }
 
+        private void imgSelectedPhoto_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            Point p = e.GetPosition(imgSelectedPhoto);
+            centerData.Text = string.Format("Tap: {0},{1}", p.X, p.Y);
+        }
+
+        
+
         
 
     }

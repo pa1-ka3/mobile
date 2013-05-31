@@ -35,6 +35,9 @@ namespace PhotoQwrekster.View
                     imageProcessingViewModel.ProcessCallback();
                 }
             }
+            TransformMode.IsChecked = false;
+            Radius = 120;
+            SetLinesBoundaries(new Point(220, 220), new Point(30, 120));
         }
 
         private void SetSelectedPhotoSource()
@@ -76,44 +79,114 @@ namespace PhotoQwrekster.View
 
             //   initialAngle = transform.Rotation;
             initialScale = transform.ScaleX = transform.ScaleY = 1;
-            GestureElipse.Height = GestureElipse.Width = 100;
+            
             Point p1 = e.GetPosition(imgSelectedPhoto, 0);
             Point p2 = e.GetPosition(imgSelectedPhoto, 1);
 
-            GestureElipse.Margin = GetMargin(p1, p2);
+            GestureElipse.Height = GestureElipse.Width = 100;
+            Radius = GetRadius(p1, p2); 
+            GestureElipse.Margin = GetEllipseMargin(p1, p2);
             GestureElipse.Visibility = System.Windows.Visibility.Visible;
+
+            SetLinesBoundaries(p1, p2);
             flickData.Text = string.Format("Pinch: Touch1 {0},{1} Touch2 {2},{3}  Margin [{4},{5},{6},{7}]",
 
                p1.X, p1.Y,
                p2.X, p2.Y,
                GestureElipse.Margin.Left, GestureElipse.Margin.Top, GestureElipse.Margin.Right, GestureElipse.Margin.Bottom
                );
+        }
 
+        private void SetLinesBoundaries(Point p1, Point p2)
+        {
+            if (imageProcessingViewModel.TransformMode) // transform in two directions
+            {
+                Line1.Visibility = Visibility.Visible;
+                Line2.Visibility = Visibility.Visible;
+
+                Line1.X1 = Line2.X1 = GestureCenter.X - 70;
+                Line1.X2 = Line2.X2 = GestureCenter.X + 70;
+
+                Line1.Y1 = Line2.Y2 = GestureCenter.Y - 70;
+                Line1.Y2 = Line2.Y1 = GestureCenter.Y + 70;
+
+            }
+            else
+            {
+                Line1.Visibility = Visibility.Visible;
+                Line2.Visibility = Visibility.Visible;
+
+                Line1.X1 = p1.X;
+                Line1.Y1 = p1.Y;
+                Line1.X2 = p2.X;
+                Line1.Y2 = p2.Y;
+
+                double angle = Math.Atan((p2.Y - p1.Y)/(p2.X - p1.X));
+      
+                double centrX = (p2.X + p1.X) / 2;
+                double centrY = (p2.Y + p1.Y) / 2;
+
+                double dxL2 = 30 * Math.Sin(angle);
+                double dyL2 = 30 * Math.Cos(angle);
+ 
+                Line2.X1 = centrX - dxL2;
+                Line2.Y1 = centrY + dyL2;
+
+                Line2.X2 = centrX + dxL2;
+                Line2.Y2 = centrY - dyL2;
+
+
+                transform.Rotation = (angle * 180) / Math.PI + 90;
+
+                double ellipseRadius = 210;
+                double ellipseSemiHeight = 50;
+
+                GestureElipse.Margin = new Thickness(centrX - ellipseRadius,
+                    centrY - ellipseSemiHeight,
+                    -ellipseRadius,
+                    -ellipseRadius);
+
+                GestureElipse.Height = 2 * ellipseSemiHeight;
+                GestureElipse.Width = 2 * ellipseRadius;
+
+                centerData.Text = string.Format("Center: {0},{1}  Line2 {2},{3} - {4},{5}",
+                    centrX, centrY,
+                    Line2.X1, Line2.Y1, Line2.X2, Line2.Y2);
+                
+            }
         }
 
         public Point GestureCenter { get; set; }
 
-        private Thickness GetMargin(Point point1, Point point2)
+        private Thickness GetEllipseMargin(Point point1, Point point2)
         {
             Thickness t = new Thickness();
             Point center = new Point((point1.X + point2.X) / 2, (point1.Y + point2.Y) / 2);
-            double radius = (Math.Sqrt(Math.Pow((point1.X - point2.X), 2) + Math.Pow((point1.Y - point2.Y), 2))) / 2;
+            double radius = GetRadius(point1, point2);
             t.Top = (int)(center.Y - radius);
             t.Left = (int)(center.X - radius);
             t.Right = imgSelectedPhoto.ActualWidth - (int)(center.X + radius);
             t.Bottom = imgSelectedPhoto.ActualHeight - (int)(center.Y + radius);
 
+            GestureElipse.Margin = t;
             GestureElipse.Height = GestureElipse.Width = 2 * (int)radius;
-            centerData.Text = string.Format("Center: {0},{1}  radius {2}  ImgActual [w {3}, h {4}]",
+         /*   centerData.Text = string.Format("Center: {0},{1}  radius {2}  ImgActual [w {3}, h {4}]",
 
                center.X, center.Y,
                (int)radius,
                imgSelectedPhoto.Width.ToString(), imgSelectedPhoto.Height.ToString()
-               );
+               );*/
 
             GestureCenter = center;
-            Radius = (int)radius;
+            
             return t;
+        }
+
+        private static double GetRadius(Point point1, Point point2)
+        {
+            double radius = (Math.Sqrt(Math.Pow((point1.X - point2.X), 2) + Math.Pow((point1.Y - point2.Y), 2))) / 2;
+
+            return radius;
         }
 
         private void OnPinchDelta(object sender, Input.PinchGestureEventArgs e)
@@ -129,14 +202,14 @@ namespace PhotoQwrekster.View
 
         }
 
-        private int Radius { get; set; }
+        private double Radius { get; set; }
 
         private void OnPinchCompleted(object sender, Input.PinchGestureEventArgs e)
         {
             //     border.Fill = normalBrush;
             GestureElipse.Visibility = System.Windows.Visibility.Collapsed;
 
-            imageProcessingViewModel.UpdateImageAfterPinchComplete((int)GestureCenter.X, (int)GestureCenter.Y, transform.ScaleX, Radius);
+            imageProcessingViewModel.UpdateImageAfterPinchComplete((int)GestureCenter.X, (int)GestureCenter.Y, transform.ScaleX, (int)Radius);
         }
 
         private void ShareWithFacebook_Click(object sender, EventArgs e)
@@ -193,6 +266,16 @@ namespace PhotoQwrekster.View
                 imageProcessingViewModel.TransformMode = TransformMode.IsChecked.Value;
             else
                 imageProcessingViewModel.TransformMode = false;
+
+        }
+
+        private void TransformMode_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (TransformMode.IsChecked.HasValue)
+                imageProcessingViewModel.TransformMode = TransformMode.IsChecked.Value;
+            else
+                imageProcessingViewModel.TransformMode = false;
+
 
         }
 

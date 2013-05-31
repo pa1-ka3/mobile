@@ -177,6 +177,7 @@
 	      		Style="{StaticResource MySwitchButton}" 
                                             x:Name="TransformMode"
                                             Checked="TransformMode_Checked"
+                                            Unchecked="TransformMode_Unchecked" 
                                            
 	      		 >
             	<primitives:ToggleSwitchButton.Background>
@@ -219,14 +220,16 @@
             <TextBlock x:Name="centerData" Text="C:" Foreground="Blue"
                        Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="74" 
                        TextWrapping="Wrap" Margin="12,0,12,13" />
-            <Ellipse Name="GestureElipse" Height="50"
-                     Margin="116,130,0,0" 
+            <Ellipse Name="GestureElipse" 
+                     Margin="0,130,-200,-200" 
                      Visibility="Visible" 
                     
                      VerticalAlignment="Top" 
                      HorizontalAlignment="Left" 
-                     
-                     Width="500"
+                     RenderTransformOrigin="0.5, 0.5"
+                      
+                     Width="480"
+                     Height="50"
                       
                      
                      >
@@ -244,8 +247,9 @@
                     </RadialGradientBrush>
 
                 </Ellipse.Fill>
+                
                 <Ellipse.RenderTransform>
-                    <CompositeTransform x:Name="transform" CenterX="1" CenterY="1" TranslateX="2" Rotation="20" />
+                    <CompositeTransform x:Name="transform" Rotation="0" />
                 </Ellipse.RenderTransform>
 
 
@@ -254,7 +258,8 @@
 
             </Ellipse>
 
-
+            <Line x:Name="Line1" X1="10" Y1="10" X2="120" Y2="210" Stroke="#FFF51313"></Line>
+            <Line x:Name="Line2" X1="10" Y1="120" X2="120" Y2="20" Stroke="#FFF51313"></Line>
 
         </Grid>
     </Grid>

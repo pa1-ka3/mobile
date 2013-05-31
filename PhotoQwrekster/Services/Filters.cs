@@ -164,7 +164,7 @@ namespace PhotoQwrekster.Service
         }
 
 
-        internal static bool SqueezeInOneDimansion(WriteableBitmap b, int cx, int cy, bool bSmoothing)
+        internal static bool SqueezeInOneDimension(WriteableBitmap b, int cx, int cy, bool bSmoothing, double transformScale, int transformationRadius)
         {
 
             int nWidth = b.PixelWidth;
@@ -181,6 +181,8 @@ namespace PhotoQwrekster.Service
             double newX, newY;
             double deg = 30 * Math.PI / 180;
 
+            int transfornationSqwere = transformationRadius * transformationRadius;
+
             for (int x = 1; x < nWidth; ++x)
                 for (int y = 1; y < nHeight; ++y)
                 {
@@ -190,21 +192,10 @@ namespace PhotoQwrekster.Service
 
                     radius = Math.Sqrt(trueX * trueX + trueY * trueY);
 
-                    double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / 90000));
+                    double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
 
                     double newRadius = radius + 3 * deltaRadius;
-                    double transformKoef = newRadius / radius;
-                    if (radius == 0) transformKoef = 0;
-                    double a = 1 + (trueX / x) * (transformKoef - 1);
-                    double d = 1 + (trueY / y) * (transformKoef - 1);
 
-                    double nx = (x - mid.X) * transformKoef;
-                    double ny = (y - mid.Y) * 1;
-
-                    //  newX = mid.X + (newRadius * Math.Cos(theta + deg));// *Math.Cos(deg);
-                    // newX = mid.X + trueX * transformKoef ;
-                    // newX = a * x * Math.Cos(deg) - a* y * Math.Sin(deg);
-                    // newX = mid.X + Math.Cos(deg) * nx - Math.Sin(deg) * ny;
                     newX = x + 5 * deltaRadius * Math.Cos(theta) * Math.Cos(deg);
 
                     if (newX > 0 && newX < nWidth)
@@ -217,11 +208,6 @@ namespace PhotoQwrekster.Service
                         fp[x, y].X = fp[x, y].Y = 0.0;
                         pt[x, y].X = pt[x, y].Y = 0;
                     }
-
-                    //newY = mid.Y + (radius * Math.Sin(theta ));// *Math.Cos(deg);
-                    //newY = mid.Y + trueY ; 
-                    //newY = d * x * Math.Sin(deg) + d* y * Math.Cos(deg);
-                    //newY = mid.Y +  Math.Sin(deg) * nx + Math.Cos(deg) * ny;
 
                     newY = y + 5 * deltaRadius * Math.Cos(theta) * Math.Sin(deg);
 

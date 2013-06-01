@@ -85,6 +85,7 @@ namespace PhotoQwrekster.Model
             var settings = ((App)App.Current).SettingsData.Settings;
             _cameraResolution = settings.Contains("CameraResolution") ? (Size)(settings["CameraResolution"]) : new Size(0, 0);
             _cameraFlashMode = settings.Contains("CameraFlashMode") ? (FlashMode)(settings["CameraFlashMode"]) : FlashMode.Auto;
+            _transformationMode = settings.Contains("TransformationMode") ? (bool)(settings["TransformationMode"]) : false; 
         }
 
 
@@ -111,6 +112,32 @@ namespace PhotoQwrekster.Model
         public FlashMode GetFlashModeSettings()
         {
             return CameraFlashMode;
+        }
+
+
+        private bool _transformationMode;
+
+        public bool TransformationMode
+        {
+            get { return _transformationMode; }
+            set
+            {
+                _transformationMode = value;
+                var settings = ((App)App.Current).SettingsData.Settings;
+                settings["TransformationMode"] = value;
+            }
+        }
+        
+
+
+        public bool GetTransformModeSettings()
+        {
+            return TransformationMode;
+        }
+
+        public void SaveTransformModeSettings(bool transformMode)
+        {
+            TransformationMode = transformMode;
         }
     }
 }

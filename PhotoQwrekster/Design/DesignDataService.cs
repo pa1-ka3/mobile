@@ -66,5 +66,16 @@ namespace PhotoQwrekster.Design
        {
            return Microsoft.Devices.FlashMode.Auto;
        }
+
+
+       public bool GetTransformModeSettings()
+       {
+           return true;
+       }
+
+       public void SaveTransformModeSettings(bool transformMode)
+       {
+           throw new NotImplementedException();
+       }
     }
 }

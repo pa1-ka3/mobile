@@ -50,6 +50,8 @@ namespace PhotoQwrekster.ViewModel
 
             photoChooser = new PhotoChooserTask();
             photoChooser.Completed += new EventHandler<PhotoResult>(photoChooser_Completed);
+            
+            _transformMode = _dataService.GetTransformModeSettings();
         }
 
         void photoChooser_Completed(object sender, PhotoResult e)
@@ -292,6 +294,21 @@ namespace PhotoQwrekster.ViewModel
             return s;
         }
 
-        public bool TransformMode { get; set; }
+
+        private bool _transformMode;
+        public bool TransformMode
+        {
+            get
+            {
+                return _transformMode;                
+            }
+            set {
+                if (value != _transformMode)
+                {
+                    _transformMode = value;
+                    _dataService.SaveTransformModeSettings(value);
+                }
+            }
+        }
     }
 }

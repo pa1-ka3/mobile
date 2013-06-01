@@ -35,7 +35,7 @@ namespace PhotoQwrekster.View
                     imageProcessingViewModel.ProcessCallback();
                 }
             }
-            TransformMode.IsChecked = false;
+            TransformMode.IsChecked = imageProcessingViewModel.TransformMode;
             Radius = 120;
             SetLinesBoundaries(new Point(220, 220), new Point(30, 120));
         }
@@ -75,9 +75,6 @@ namespace PhotoQwrekster.View
         double initialScale;
         private void OnPinchStarted(object sender, Input.PinchStartedGestureEventArgs e)
         {
-            //  flickData.Text = "started";
-
-            //   initialAngle = transform.Rotation;
             initialScale = transform.ScaleX = transform.ScaleY = 1;
             
             Point p1 = e.GetPosition(imgSelectedPhoto, 0);
@@ -104,11 +101,14 @@ namespace PhotoQwrekster.View
                 Line1.Visibility = Visibility.Visible;
                 Line2.Visibility = Visibility.Visible;
 
-                Line1.X1 = Line2.X1 = GestureCenter.X - 70;
-                Line1.X2 = Line2.X2 = GestureCenter.X + 70;
+                double centrX = (p2.X + p1.X) / 2;
+                double centrY = (p2.Y + p1.Y) / 2;
 
-                Line1.Y1 = Line2.Y2 = GestureCenter.Y - 70;
-                Line1.Y2 = Line2.Y1 = GestureCenter.Y + 70;
+                Line1.X1 = Line2.X1 = centrX - 70;
+                Line1.X2 = Line2.X2 = centrX + 70;
+
+                Line1.Y1 = Line2.Y2 = centrY - 70;
+                Line1.Y2 = Line2.Y1 = centrY + 70;
 
             }
             else

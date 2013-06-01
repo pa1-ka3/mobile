@@ -26,5 +26,9 @@ namespace PhotoQwrekster.Model
         void SaveFlashModeSettings(Microsoft.Devices.FlashMode flashMode);
 
         Microsoft.Devices.FlashMode GetFlashModeSettings();
+
+        bool GetTransformModeSettings();
+
+        void SaveTransformModeSettings(bool transformMode);
     }
 }

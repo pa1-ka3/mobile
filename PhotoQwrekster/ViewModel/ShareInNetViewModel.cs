@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
 using PhotoQwrekster.Model;
+using System.Windows.Media.Imaging;
+using System;
 
 namespace PhotoQwrekster.ViewModel
 {
@@ -24,12 +26,25 @@ namespace PhotoQwrekster.ViewModel
         {
             ActionsList = new ObservableCollection<ActionDescriptionModel>()
             { 
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Facebook, Description="facebuchek"},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Flikr, Description="flickr", UserName="aaaa"},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Picassa, Description="google+"},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter, Description="twpid", UserName="bhh"},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler"}
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Facebook, 
+                    Description="facebuchek",
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Flikr,
+                    Description="flickr",
+                    UserName="aaaa",
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Picasa,
+                    Description="google+",
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/picasa.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter,
+                    Description="twpid", 
+                    UserName="bhh",
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/twitter.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler",
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))}
             };
+
+            //"/PhotoQwrekster;component/Resources/Photo.png"
 
         }
 

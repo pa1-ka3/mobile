@@ -170,6 +170,7 @@
     <Content Include="Resources\AppBarSave.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\facebook.png" />
     <Content Include="Resources\Flash.png" />
     <Content Include="Resources\FlashA.png" />
     <Resource Include="Resources\NoFlash.png">
@@ -182,9 +183,11 @@
     <Content Include="Resources\OpenFile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\picasa.png" />
     <Content Include="Resources\Share.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\twitter.png" />
     <Content Include="Resources\Undo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

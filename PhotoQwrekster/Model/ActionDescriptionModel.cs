@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Windows.Media.Imaging;
 
 namespace PhotoQwrekster.Model
 {
@@ -16,7 +17,7 @@ namespace PhotoQwrekster.Model
     {
         Facebook,
         Flikr,
-        Picassa,
+        Picasa,
         Tumblr,
         Twitter
     }
@@ -32,6 +33,17 @@ namespace PhotoQwrekster.Model
             {
                 _ActionId = value;
                 RaisePropertyChanged("ActionId");
+            }
+        }
+
+        private BitmapImage _image;
+        public BitmapImage IconImage
+        {
+            get { return _image; }
+            set
+            {
+                _image = value;
+                RaisePropertyChanged("IconImage");
             }
         }
 

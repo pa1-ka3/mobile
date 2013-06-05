@@ -14,5 +14,10 @@ namespace PhotoQwrekster.View
         {
             InitializeComponent();
         }
+
+        private void ShareImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
     }
 }

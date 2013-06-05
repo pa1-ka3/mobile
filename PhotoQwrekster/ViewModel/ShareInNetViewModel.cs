@@ -25,7 +25,7 @@ namespace PhotoQwrekster.ViewModel
             ActionsList = new ObservableCollection<ActionDescriptionModel>()
             { 
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Facebook, Description="facebuchek"},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Flikr, Description="flikr", UserName="aaaa"},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Flikr, Description="flickr", UserName="aaaa"},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Picassa, Description="google+"},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter, Description="twpid", UserName="bhh"},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler"}

@@ -139,6 +139,9 @@ namespace PhotoQwrekster.ViewModel
         #endregion
 
         public WriteableBitmap BitmapImageSource { get; set; }
+        private WriteableBitmap BitmapBackup { get; set; }
+        private WriteableBitmap BitmapCalculated { get; set; }
+        private WriteableBitmap BitmapProcessed { get; set; }
 
         internal System.Windows.Media.ImageSource GetCurrentImage()
         {
@@ -250,24 +253,49 @@ namespace PhotoQwrekster.ViewModel
         }
 
 
+        internal void GetBitmapCopyForCalculation()
+        {
+            BitmapBackup = new WriteableBitmap(BitmapImageSource.PixelWidth, BitmapImageSource.PixelHeight);
+            BitmapImageSource.Pixels.CopyTo(BitmapBackup.Pixels, 0);
+
+            BitmapCalculated = new WriteableBitmap(BitmapImageSource.PixelWidth, BitmapImageSource.PixelHeight);
+            BitmapImageSource.Pixels.CopyTo(BitmapCalculated.Pixels, 0);
+
+        }
+
+        internal void GetBitmapAfterCalculation()
+        {
+          //  BitmapImageSource = new WriteableBitmap(BitmapCalculated.PixelWidth, BitmapCalculated.PixelHeight);
+            BitmapCalculated.Pixels.CopyTo(BitmapImageSource.Pixels, 0);
+
+            BitmapImageSource.Invalidate();
+        }
+
+        internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int Radius, double deg, Action callback)
+        {
         
 
-        internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int Radius)
-        {
             if (TransformMode) // transform in two directions
             {
                 if (transformScale > 1)
-                    PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapImageSource,
+                    PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapCalculated, BitmapBackup,
                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius);
                 else
-                    PhotoQwrekster.Service.Filters.SqueezeAroundPoint(BitmapImageSource,
+                    PhotoQwrekster.Service.Filters.SqueezeAroundPoint(BitmapCalculated, BitmapBackup,
                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius);
             }
             else // transform in one direction
             {
+                if (transformScale > 1)
+                    PhotoQwrekster.Service.Filters.StretchInOneDimension(BitmapCalculated, BitmapBackup,
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius, deg);
+                else
+                    PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapCalculated, BitmapBackup,
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius, deg);
             }
 
-            BitmapImageSource.Invalidate();
+            if (callback != null)
+                callback.Invoke();
         }
 
         public bool CanShare { get { return (BitmapImageSource != null); } }
@@ -309,6 +337,24 @@ namespace PhotoQwrekster.ViewModel
                     _dataService.SaveTransformModeSettings(value);
                 }
             }
+        }
+
+
+        public bool CanUndoClick
+        {
+            get
+            {
+                return (BitmapBackup!= null);                
+            }
+        }
+
+
+
+
+        internal void UndoClicked()
+        {
+            BitmapBackup.Pixels.CopyTo(BitmapImageSource.Pixels, 0);
+            BitmapBackup = null;
         }
     }
 }

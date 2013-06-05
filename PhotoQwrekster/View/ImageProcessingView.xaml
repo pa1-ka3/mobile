@@ -6,6 +6,7 @@
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:toolkit="clr-namespace:PhotoQwrekster.Input"
+                            xmlns:toolkitMain="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
                             xmlns:primitives="clr-namespace:PhotoQwrekster.Primitives"
                             mc:Ignorable="d"
                             d:DesignWidth="480"
@@ -162,6 +163,8 @@
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
                     Margin="0,0,0,0">
+            <toolkitMain:PerformanceProgressBar x:Name="performanceProgressBar" IsIndeterminate="True" Height="11" Width="470" Visibility="Visible" >
+            </toolkitMain:PerformanceProgressBar>
         	<Grid><Grid.ColumnDefinitions>
         		<ColumnDefinition Width="185"></ColumnDefinition>     	
 			    	<ColumnDefinition Width="110"></ColumnDefinition>     	
@@ -203,7 +206,7 @@
                    Width="480" Height="640"
                    Stretch="Fill" 
                    Tap="imgSelectedPhoto_Tap"
-                   
+                   MouseLeftButtonDown="imgSelectedPhoto_MouseLeftButtonDown"
                Visibility="Visible" d:LayoutOverrides="VerticalMargin" >
 
                 <toolkit:GestureService.GestureListener>
@@ -214,6 +217,10 @@
                 </toolkit:GestureService.GestureListener>
 
             </Image>
+            <Line x:Name="Line1" X1="10" Y1="10" X2="120" Y2="210" Stroke="#FFF51313" Visibility="Collapsed"></Line>
+            <Line x:Name="Line2" X1="10" Y1="120" X2="120" Y2="20" Stroke="#FFF51313" Visibility="Collapsed"></Line>
+
+            
             <TextBlock x:Name="flickData" Text="Flick:" Foreground="Blue"
                        Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="74" 
                        TextWrapping="Wrap" Margin="12,0,12,113" />
@@ -258,8 +265,6 @@
 
             </Ellipse>
 
-            <Line x:Name="Line1" X1="10" Y1="10" X2="120" Y2="210" Stroke="#FFF51313"></Line>
-            <Line x:Name="Line2" X1="10" Y1="120" X2="120" Y2="20" Stroke="#FFF51313"></Line>
 
         </Grid>
     </Grid>

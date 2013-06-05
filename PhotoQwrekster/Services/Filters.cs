@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Media.Imaging;
+using PhotoQwrekster.ViewModel;
 
 namespace PhotoQwrekster.Service
 {
@@ -20,11 +21,11 @@ namespace PhotoQwrekster.Service
 
     public class Filters
     {
-        internal static bool StretchAroundPoint(WriteableBitmap b, int cx, int cy, double transformScale, int transformationRadius)
+        internal static bool StretchAroundPoint(WriteableBitmap bitmap, WriteableBitmap source, int cx, int cy, double transformScale, int transformationRadius)
         {
 
-            int nWidth = b.PixelWidth;
-            int nHeight = b.PixelHeight;
+            int nWidth = bitmap.PixelWidth;
+            int nHeight = bitmap.PixelHeight;
 
             FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
     //        Point[,] pt = new Point[nWidth, nHeight];
@@ -85,18 +86,18 @@ namespace PhotoQwrekster.Service
                     }
                 }
 
-              OffsetFilterAntiAlias(b, fp);
+            OffsetFilterAntiAlias(bitmap, source, fp);
       
             return true;
 
 
         }
 
-        internal static bool SqueezeAroundPoint(WriteableBitmap b, int cx, int cy, double transformScale, int transformationRadius)
+        internal static bool SqueezeAroundPoint(WriteableBitmap bitmap, WriteableBitmap source, int cx, int cy, double transformScale, int transformationRadius)
         {
 
-            int nWidth = b.PixelWidth;
-            int nHeight = b.PixelHeight;
+            int nWidth = bitmap.PixelWidth;
+            int nHeight = bitmap.PixelHeight;
 
             FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
        
@@ -156,30 +157,29 @@ namespace PhotoQwrekster.Service
                     }
                 }
 
-            OffsetFilterAntiAlias(b, fp);
+            OffsetFilterAntiAlias(bitmap, source, fp);
 
             return true;
 
 
         }
 
-
-        internal static bool SqueezeInOneDimension(WriteableBitmap b, int cx, int cy, bool bSmoothing, double transformScale, int transformationRadius)
+        internal static bool StretchInOneDimension(WriteableBitmap bitmap, WriteableBitmap source, int cx, int cy, double transformScale, int transformationRadius, double deg)
         {
 
-            int nWidth = b.PixelWidth;
-            int nHeight = b.PixelHeight;
+            int nWidth = bitmap.PixelWidth;
+            int nHeight = bitmap.PixelHeight;
 
             FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
             Point[,] pt = new Point[nWidth, nHeight];
 
             Point mid = new Point();
-            mid.X = cx;// nWidth / 2;
-            mid.Y = cy;// nHeight / 2;
+            mid.X = cx;
+            mid.Y = cy;
 
             double theta, radius;
             double newX, newY;
-            double deg = 30 * Math.PI / 180;
+            //double deg = 30 * Math.PI / 180;
 
             int transfornationSqwere = transformationRadius * transformationRadius;
 
@@ -194,9 +194,7 @@ namespace PhotoQwrekster.Service
 
                     double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
 
-                    double newRadius = radius + 3 * deltaRadius;
-
-                    newX = x + 5 * deltaRadius * Math.Cos(theta) * Math.Cos(deg);
+                    newX = x - transformScale * deltaRadius * Math.Cos(theta) * Math.Cos(deg);
 
                     if (newX > 0 && newX < nWidth)
                     {
@@ -209,7 +207,7 @@ namespace PhotoQwrekster.Service
                         pt[x, y].X = pt[x, y].Y = 0;
                     }
 
-                    newY = y + 5 * deltaRadius * Math.Cos(theta) * Math.Sin(deg);
+                    newY = y - transformScale * deltaRadius * Math.Cos(theta) * Math.Sin(deg);
 
                     if (newY > 0 && newY < nHeight && newX > 0 && newX < nWidth)
                     {
@@ -223,20 +221,80 @@ namespace PhotoQwrekster.Service
                     }
                 }
 
-            if (bSmoothing)
-                OffsetFilterAbs(b, pt);
-            else
-                OffsetFilterAntiAlias(b, fp);
+
+            OffsetFilterAntiAlias(bitmap, source, fp);
 
             return true;
 
         }
 
-
-        public static bool OffsetFilterAntiAlias(WriteableBitmap processed, FloatPoint[,] fp)
+        internal static bool SqueezeInOneDimension(WriteableBitmap bitmap, WriteableBitmap source, int cx, int cy, double transformScale, int transformationRadius, double deg)
         {
-            WriteableBitmap source = new  WriteableBitmap (processed);
 
+            int nWidth = bitmap.PixelWidth;
+            int nHeight = bitmap.PixelHeight;
+
+            FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
+            Point[,] pt = new Point[nWidth, nHeight];
+
+            Point mid = new Point();
+            mid.X = cx;// nWidth / 2;
+            mid.Y = cy;// nHeight / 2;
+
+            double theta, radius;
+            double newX, newY;
+           // double deg = 30 * Math.PI / 180;
+
+            int transfornationSqwere = transformationRadius * transformationRadius;
+            transformScale = 1 / transformScale;
+
+            for (int x = 1; x < nWidth; ++x)
+                for (int y = 1; y < nHeight; ++y)
+                {
+                    int trueX = (int)(x - mid.X);
+                    int trueY = (int)(y - mid.Y);
+                    theta = Math.Atan2((trueY), (trueX));
+
+                    radius = Math.Sqrt(trueX * trueX + trueY * trueY);
+
+                    double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
+
+                    newX = x + transformScale * deltaRadius * Math.Cos(theta) * Math.Cos(deg);
+
+                    if (newX > 0 && newX < nWidth)
+                    {
+                        fp[x, y].X = newX;
+                        pt[x, y].X = (int)newX;
+                    }
+                    else
+                    {
+                        fp[x, y].X = fp[x, y].Y = 0.0;
+                        pt[x, y].X = pt[x, y].Y = 0;
+                    }
+
+                    newY = y + transformScale * deltaRadius * Math.Cos(theta) * Math.Sin(deg);
+
+                    if (newY > 0 && newY < nHeight && newX > 0 && newX < nWidth)
+                    {
+                        fp[x, y].Y = newY;
+                        pt[x, y].Y = (int)newY;
+                    }
+                    else
+                    {
+                        fp[x, y].X = fp[x, y].Y = 0.0;
+                        pt[x, y].X = pt[x, y].Y = 0;
+                    }
+                }
+
+
+            OffsetFilterAntiAlias(bitmap, source, fp);
+
+            return true;
+
+        }
+
+        public static bool OffsetFilterAntiAlias(WriteableBitmap processed, WriteableBitmap source, FloatPoint[,] fp)
+        {  
             int scanline = 1; 
 
             {

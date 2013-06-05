@@ -38,6 +38,7 @@ namespace PhotoQwrekster.View
             TransformMode.IsChecked = imageProcessingViewModel.TransformMode;
             Radius = 120;
             SetLinesBoundaries(new Point(220, 220), new Point(30, 120));
+            performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void SetSelectedPhotoSource()
@@ -195,6 +196,12 @@ namespace PhotoQwrekster.View
             //    transform.Rotation = initialAngle + e.TotalAngleDelta;
             transform.ScaleX = transform.ScaleY = initialScale * e.DistanceRatio;
 
+            Point p1 = e.GetPosition(imgSelectedPhoto, 0);
+            Point p2 = e.GetPosition(imgSelectedPhoto, 1);
+
+            GestureElipse.Margin = GetEllipseMargin(p1, p2);
+            SetLinesBoundaries(p1, p2);
+
             flickData.Text = string.Format("transform.ScaleX: {0}",
               transform.ScaleX
                );
@@ -209,7 +216,19 @@ namespace PhotoQwrekster.View
             //     border.Fill = normalBrush;
             GestureElipse.Visibility = System.Windows.Visibility.Collapsed;
 
-            imageProcessingViewModel.UpdateImageAfterPinchComplete((int)GestureCenter.X, (int)GestureCenter.Y, transform.ScaleX, (int)Radius);
+            Point p1 = e.GetPosition(imgSelectedPhoto, 0);
+            Point p2 = e.GetPosition(imgSelectedPhoto, 1);
+            double angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
+
+            double centrX = (p2.X + p1.X) / 2;
+            double centrY = (p2.Y + p1.Y) / 2;
+
+            performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
+
+
+            imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle, OnUpdateFinished);
+            ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
+            performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void ShareWithFacebook_Click(object sender, EventArgs e)
@@ -257,7 +276,8 @@ namespace PhotoQwrekster.View
 
         private void Undo_Click(object sender, EventArgs e)
         {
-
+            imageProcessingViewModel.UndoClicked();
+            ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
         }
 
         private void TransformMode_Checked(object sender, RoutedEventArgs e)
@@ -283,6 +303,37 @@ namespace PhotoQwrekster.View
         {
             Point p = e.GetPosition(imgSelectedPhoto);
             centerData.Text = string.Format("Tap: {0},{1}", p.X, p.Y);
+        }
+
+        private void imgSelectedPhoto_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Point p1 = e.GetPosition(imgSelectedPhoto);
+            Point p2 = new Point(p1.X + 1, p1.Y + 1);
+            double angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
+
+            double centrX = (p2.X + p1.X) / 2;
+            double centrY = (p2.Y + p1.Y) / 2;
+
+            
+            Runner.Invoke(() =>
+            {
+                performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
+                imageProcessingViewModel.GetBitmapCopyForCalculation();
+                System.Threading.ThreadPool.QueueUserWorkItem((method) => 
+                    imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, 0.3, 150, angle, OnUpdateFinished));
+            });
+
+        
+        }
+
+        private void OnUpdateFinished()
+        {
+            Runner.Invoke(() =>
+            {
+                imageProcessingViewModel.GetBitmapAfterCalculation();
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
+                performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+            });
         }
 
         

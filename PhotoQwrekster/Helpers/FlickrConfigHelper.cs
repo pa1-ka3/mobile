@@ -20,7 +20,6 @@ namespace PhotoQwrekster.Helpers
         public const string OAuthTokenUrl = "http://www.flickr.com/services/oauth/access_token";
         public const string Scope = "write";
         public const string RedirectUri = "http://localhost";
-     //   public const string ClientId = "***";
         public const string ClientSecret = "***";
         public const string ApiKey = "***";
         public const int RequestTimeout = 10 * 1000;
@@ -109,8 +108,7 @@ namespace PhotoQwrekster.Helpers
         {
             get
             {
-                return !string.IsNullOrEmpty(RefreshToken) &&
-                    !string.IsNullOrEmpty(AccessToken);
+                return  !string.IsNullOrEmpty(AccessToken);
             }
         }
 

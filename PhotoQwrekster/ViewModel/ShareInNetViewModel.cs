@@ -155,12 +155,10 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInFlickr()
         {
             App.Container.ReplaceRegistration<IOAuthHelper>(c => new FlickrOAuthHelper());
-            //App.Container.Register<IOAuthHelper>(c => new FacebookOAuthHelper());
-
+            
             if (!FlickrConfigHelper.IsLoggedIn)
             {
-                // callbackAction = UploadToFacebook;
-                PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = UploadToFlickr;
+                PhotoQwrekster.View.OAuthFlickrLogin.InspectTokenCallback = UploadToFlickr;
                 INavigationService navigation = App.Container.Resolve<INavigationService>();
 
                 navigation.NavigateTo(new Uri(ViewModelLocator.OAuthFlickrLogin, UriKind.RelativeOrAbsolute));

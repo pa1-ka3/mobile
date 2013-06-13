@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace PhotoQwrekster.Model
 {
@@ -30,5 +31,9 @@ namespace PhotoQwrekster.Model
         bool GetTransformModeSettings();
 
         void SaveTransformModeSettings(bool transformMode);
+
+        WriteableBitmap GetBitmapImageSource();
+
+        void SetBitmapImageSource(WriteableBitmap bitmap);
     }
 }

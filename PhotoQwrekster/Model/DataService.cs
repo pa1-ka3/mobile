@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using Microsoft.Devices;
+using System.Windows.Media.Imaging;
 
 namespace PhotoQwrekster.Model
 {
@@ -138,6 +139,19 @@ namespace PhotoQwrekster.Model
         public void SaveTransformModeSettings(bool transformMode)
         {
             TransformationMode = transformMode;
+        }
+
+        public WriteableBitmap BitmapImageSource { get; set; }
+
+
+        public WriteableBitmap GetBitmapImageSource()
+        {
+            return BitmapImageSource;
+        }
+
+        public void SetBitmapImageSource(WriteableBitmap bitmap)
+        {
+            BitmapImageSource = bitmap;
         }
     }
 }

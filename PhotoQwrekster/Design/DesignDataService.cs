@@ -77,5 +77,16 @@ namespace PhotoQwrekster.Design
        {
            throw new NotImplementedException();
        }
+
+
+       public System.Windows.Media.Imaging.WriteableBitmap GetBitmapImageSource()
+       {
+           throw new NotImplementedException();
+       }
+
+       public void SetBitmapImageSource(System.Windows.Media.Imaging.WriteableBitmap bitmap)
+       {
+           throw new NotImplementedException();
+       }
     }
 }

@@ -223,12 +223,14 @@ namespace PhotoQwrekster.View
             double centrX = (p2.X + p1.X) / 2;
             double centrY = (p2.Y + p1.Y) / 2;
 
-            performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
-
-
-            imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle, OnUpdateFinished);
-            ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
-            performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+            Runner.Invoke(() =>
+            {
+                performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
+                imageProcessingViewModel.GetBitmapCopyForCalculation();
+                System.Threading.ThreadPool.QueueUserWorkItem((method) =>
+                    imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle, OnUpdateFinished));
+            });
+            
         }
 
         private void ShareWithFacebook_Click(object sender, EventArgs e)

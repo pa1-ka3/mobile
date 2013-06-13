@@ -138,7 +138,17 @@ namespace PhotoQwrekster.ViewModel
 
         #endregion
 
-        public WriteableBitmap BitmapImageSource { get; set; }
+        public WriteableBitmap BitmapImageSource
+        {
+            get 
+            {
+                return _dataService.GetBitmapImageSource();
+            }
+            set
+            {
+                _dataService.SetBitmapImageSource(value);
+            }
+        }
         private WriteableBitmap BitmapBackup { get; set; }
         private WriteableBitmap BitmapCalculated { get; set; }
         private WriteableBitmap BitmapProcessed { get; set; }

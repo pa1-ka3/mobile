@@ -16,7 +16,7 @@ namespace PhotoQwrekster.Model
     public enum ActionDestination
     {
         Facebook,
-        Flikr,
+        Flickr,
         Picasa,
         Tumblr,
         Twitter

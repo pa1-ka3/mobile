@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Collections.Generic;
 
 namespace PhotoQwrekster.Helpers
 {
@@ -38,5 +39,35 @@ namespace PhotoQwrekster.Helpers
 
             
         }
+
+        /// <summary>
+        /// Converts a URL parameter encoded string into a dictionary.
+        /// </summary>
+        /// <remarks>
+        /// e.g. ab=cd&amp;ef=gh will return a dictionary of { "ab" => "cd", "ef" => "gh" }.</remarks>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> StringToDictionary(string response)
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+
+            string[] parts = response.Split('&');
+
+            foreach (string part in parts)
+            {
+#if WindowsCE || SILVERLIGHT
+                string[] bits = part.Split('=');
+#else
+                string[] bits = part.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries);
+#endif
+                if (bits.Length == 1)
+                    dic.Add(bits[0], "");
+                else
+                    dic.Add(bits[0], Uri.UnescapeDataString(bits[1]));
+            }
+
+            return dic;
+        }
+
     }
 }

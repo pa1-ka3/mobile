@@ -94,6 +94,8 @@
     <Compile Include="Helpers\GoogleConfigHelper.cs" />
     <Compile Include="Helpers\HelperUtility.cs" />
     <Compile Include="Helpers\IOAuthHelper.cs" />
+    <Compile Include="Helpers\OAuthFlickrAccessToken.cs" />
+    <Compile Include="Helpers\OAuthFlickrRequestToken.cs" />
     <Compile Include="Input\GestureHelperEventArgs.cs" />
     <Compile Include="Input\GestureListener.cs" />
     <Compile Include="Input\GestureListenerStatic.cs" />
@@ -221,6 +223,7 @@
       <Name>Funq</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

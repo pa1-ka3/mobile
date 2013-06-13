@@ -16,6 +16,7 @@ namespace PhotoQwrekster.Helpers
           #region Public Properties
 
         public const string OAuthRequestTokenUrl = "http://www.flickr.com/services/oauth/request_token";
+        public const string OAuthUrl = "http://m.flickr.com/services/oauth/authorize";
         public const string OAuthTokenUrl = "http://www.flickr.com/services/oauth/access_token";
         public const string Scope = "write";
         public const string RedirectUri = "http://localhost";
@@ -102,7 +103,7 @@ namespace PhotoQwrekster.Helpers
             }
         }
 
-        public static string AccountKey { get; set; }
+        public static string AccountKey = "Flickr";
 
         public static bool IsLoggedIn
         {

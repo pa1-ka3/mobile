@@ -35,8 +35,9 @@ namespace PhotoQwrekster.Helpers
 
         public Uri GetLoginUrl()
         {
-            return new Uri(string.Format("{0}?",
-                FlickrConfigHelper.ApiEndpoint));
+            return new Uri(string.Format("{0}?oauth_token={1}",
+                FlickrConfigHelper.OAuthUrl, 
+                oauth_token));
         }
 
         public static Uri GetRequestTokenUrl(string method)
@@ -74,17 +75,6 @@ namespace PhotoQwrekster.Helpers
             parameters.Add("oauth_signature_method", "HMAC-SHA1");
         }
 
-        public static string GetRequestTokenPostData()
-        {
-            Dictionary<string, string> parameters;
-            string oauthnonce;
-            string oauthtimestamp;
-            RequestTokenParameters(out parameters, out oauthnonce, out oauthtimestamp);
-            string sig = OAuthCalculateSignature("POST", FlickrConfigHelper.OAuthRequestTokenUrl, parameters, null);
-            parameters.Add("oauth_signature", sig);
-            return OAuthCalculatePostData(parameters);
-            
-        }
 
         public static string OAuthCalculatePostData(Dictionary<string, string> parameters)
         {
@@ -147,7 +137,6 @@ namespace PhotoQwrekster.Helpers
             return hash;
         }
 
-
         public void SetTokenCode(string value)
         {
             string key = DateTime.Now.GetHashCode().ToString();
@@ -168,37 +157,49 @@ namespace PhotoQwrekster.Helpers
             return "Flickr";
         }
 
-        private static string GetRequestAccessTokenPostBody(bool isRefresh)
-        {
-            var body = String.Format("client_id={0}&client_secret={1}&", FlickrConfigHelper.ApiKey,
-                                     FlickrConfigHelper.ClientSecret);
-            return String.Format(body + "code={0}&redirect_uri={1}", FlickrConfigHelper.TokenCode, FlickrConfigHelper.RedirectUri);
-        }
-
         public static void GetRequestTokenQuery(bool isRefresh, Action<List<object>> callback)
         {
-            var postBody = GetRequestAccessTokenPostBody(isRefresh);
             var client = new RestClient { Timeout = FlickrConfigHelper.RequestTimeout };
-            var request = new RestRequest(Method.POST)
+            var request = new RestRequest(Method.GET)
             {
                 Resource = FlickrConfigHelper.OAuthTokenUrl
             };
-            request.AddParameter("application/x-www-form-urlencoded", postBody, ParameterType.RequestBody);
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+            string oauthnonce = Guid.NewGuid().ToString("N");
+            parameters.Add("oauth_nonce", oauthnonce);
+            string oauthtimestamp = HelperUtility.GetUnixTimestamp();
+            parameters.Add("oauth_timestamp", oauthtimestamp);
+            parameters.Add("oauth_signature_method", "HMAC-SHA1");
+            parameters.Add("oauth_consumer_key", FlickrConfigHelper.ApiKey);
+            parameters.Add("oauth_verifier", oauth_verifier);
+            parameters.Add("oauth_token", oauth_token);
+
+            string sig = OAuthCalculateSignature("GET", FlickrConfigHelper.OAuthTokenUrl, parameters, oauth_token_secret);
+
+            request.AddParameter("oauth_nonce", oauthnonce);
+            request.AddParameter("oauth_timestamp", oauthtimestamp);
+            request.AddParameter("oauth_signature_method", "HMAC-SHA1");
+            request.AddParameter("oauth_consumer_key", FlickrConfigHelper.ApiKey);
+            request.AddParameter("oauth_verifier", oauth_verifier);
+            request.AddParameter("oauth_token", oauth_token);
+            request.AddParameter("oauth_signature", sig);
+
+
             client.ExecuteAsync(request, response =>
             {
                 try
                 {
-                    int accessTokenStart = "access_token=".Length;
-                    int accessTokenEnd = response.Content.IndexOf("&expires=");
-                    int expiresStart = accessTokenEnd + "&expires=".Length;
-                    FlickrConfigHelper.AccessToken = response.Content.Substring(accessTokenStart, accessTokenEnd - accessTokenStart);
-                    string expires = response.Content.Substring(expiresStart);
-                    int expiresValue;
-                    int.TryParse(expires, out expiresValue);
-                    FlickrConfigHelper.TokenExpiry = expiresValue;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        OAuthFlickrAccessToken accessTokenResult = OAuthFlickrAccessToken.ParseResponse(response.Content);
+                        FlickrConfigHelper.AccessToken = accessTokenResult.Token;
 
-                    if (callback != null)
-                        callback(new List<object> { FlickrConfigHelper.AccessToken });
+
+                        if (callback != null)
+                            callback(new List<object> { FlickrConfigHelper.AccessToken });
+                    }
                 }
                 catch (Exception e)
                 {
@@ -244,5 +245,11 @@ namespace PhotoQwrekster.Helpers
             }
 
         }
+
+        public static string oauth_token { get; set; }
+
+        public static string oauth_token_secret { get; set; }
+
+        public static string oauth_verifier { get; set; }
     }
 }

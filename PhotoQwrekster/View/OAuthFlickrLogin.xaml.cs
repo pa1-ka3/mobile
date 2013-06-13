@@ -29,6 +29,7 @@ namespace PhotoQwrekster.View
         public OAuthFlickrLogin()
         {
             InitializeComponent();
+            oauthHelper = App.Container.Resolve<IOAuthHelper>();
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -42,9 +43,11 @@ namespace PhotoQwrekster.View
             else
             {
                 MessageBox.Show("no internet, please, try to sign in later.");
-                NavigateToImageProcessingPage();
+                NavigateToShareInNetPage();
             }
         }
+
+        private int retryDownloadRequestTokenCount = 0;
 
         private void PrepareRequestToken()
         {
@@ -53,40 +56,35 @@ namespace PhotoQwrekster.View
             {
                 
                 if (e.Error != null)
-                {                    
-                //    return;
+                {
+                    retryDownloadRequestTokenCount++;
+                    if (retryDownloadRequestTokenCount < 5)
+                        client.DownloadStringAsync(FlickrOAuthHelper.GetRequestTokenUrl("GET"));
+                    else
+                    {
+                        MessageBox.Show("Unable to connect with Flickr");
+                        NavigateToShareInNetPage();
+                    }
+                    return;
                 }
                 string res = e.Result;
-               // Dispatcher.BeginInvoke(() => this.Browser.Navigate(oauthHelper.GetLoginUrl()));
-               // return;
-            };
-
-          
-            client.UploadStringCompleted += delegate(object sender, UploadStringCompletedEventArgs e)
-            {
-
-                if (e.Error != null)
+                OAuthFlickrRequestToken requestToken = OAuthFlickrRequestToken.ParseResponse(res);
+                if (string.Compare(requestToken.TokenConfirmed.ToLower(), "true") == 0)
                 {
-                    //    return;
+                    FlickrOAuthHelper.oauth_token = requestToken.Token;
+                    FlickrOAuthHelper.oauth_token_secret = requestToken.TokenSecret;
+                    Dispatcher.BeginInvoke(() => this.Browser.Navigate(oauthHelper.GetLoginUrl()));
                 }
-               // string res = e.Result;
-                // Dispatcher.BeginInvoke(() => this.Browser.Navigate(oauthHelper.GetLoginUrl()));
-                // return;
-                
-
+                return;
             };
 
             client.DownloadStringAsync(FlickrOAuthHelper.GetRequestTokenUrl("GET"));
-
-            //client.UploadStringAsync(new Uri(FlickrConfigHelper.OAuthRequestTokenUrl), FlickrOAuthHelper.GetRequestTokenPostData());
         }
 
         private void Browser_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             connectTitle.Visibility = System.Windows.Visibility.Collapsed;
             Browser.Visibility = System.Windows.Visibility.Collapsed;
-            ClearCookies();
-
         }
 
         private void ClearCookies()
@@ -111,20 +109,21 @@ namespace PhotoQwrekster.View
             {
                 //just to skip
             }
-            else if (e.Uri.ToString().Contains("code="))
+            else if (e.Uri.ToString().Contains("oauth_verifier="))
             {
                 e.Cancel = true;
-                var val = e.Uri.Query.Substring(6, e.Uri.Query.Length - 6);
+                Dictionary<string, string> parameters = HelperUtility.StringToDictionary(e.Uri.Query.Substring(1, e.Uri.Query.Length - 1));
+                FlickrOAuthHelper.oauth_verifier = parameters["oauth_verifier"];
                 Browser.Visibility = Visibility.Collapsed;
-                oauthHelper.SetTokenCode(val);
+                
                 oauthHelper.GetRequestTokenQueryNonStatic(false, InspectTokenCallback);
             }
         }
 
         
-        private void NavigateToImageProcessingPage()
+        private void NavigateToShareInNetPage()
         {
-            NavigationService.Navigate(new Uri("/View/ImageProcessingView.xaml", UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/View/ShareInNetView.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private static Action<List<object>> _inspectTokenCallback;
@@ -138,7 +137,7 @@ namespace PhotoQwrekster.View
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            NavigateToImageProcessingPage();
+            NavigateToShareInNetPage();
         }
 
         private void Browser_Navigated(object sender, NavigationEventArgs e)

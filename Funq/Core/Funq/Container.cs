@@ -97,6 +97,11 @@ namespace Funq
 			return Register(null, factory);
 		}
 
+        public IRegistration<TService> ReplaceRegistration<TService>(Func<Container, TService> factory)
+        { 
+            return ReplaceRegisterImpl<TService, Func<Container, TService>>(null, factory);
+        }
+
 		/// <include file='Funq.xdoc' path='docs/doc[@for="Container.Register{TService}(name, factory)"]/*'/>
 		public IRegistration<TService> Register<TService>(string name, Func<Container, TService> factory)
 		{
@@ -231,6 +236,31 @@ namespace Funq
 
 			return entry;
 		}
+
+        private ServiceEntry<TService, TFunc> ReplaceRegisterImpl<TService, TFunc>(string name, TFunc factory)
+        {
+            if (typeof(TService) == typeof(Container))
+                throw new ArgumentException(Properties.Resources.Registration_CantRegisterContainer);
+
+            var entry = new ServiceEntry<TService, TFunc>(factory)
+            {
+                Container = this,
+                Reuse = DefaultReuse,
+                Owner = DefaultOwner
+            };
+            var key = new ServiceKey(typeof(TFunc), name);
+
+            if (services.ContainsKey(key))
+            {
+                services.Remove(key);
+            }
+
+            services[key] = entry;
+
+            return entry;
+
+            
+        }
 
 		private TService ResolveImpl<TService>(string name, bool throwIfMissing)
 		{

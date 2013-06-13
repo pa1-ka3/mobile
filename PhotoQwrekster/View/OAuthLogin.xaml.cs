@@ -37,7 +37,7 @@ namespace PhotoQwrekster.View
             else
             {
                 MessageBox.Show("no internet, please, try to sign in later.");
-                NavigateToStorageSelectorPage();
+                NavigateToImageProcessingPage();
             }
         }
 
@@ -83,10 +83,10 @@ namespace PhotoQwrekster.View
 
         private void OnNavigatedFromAnimation()
         {
-            MetroInMotionUtils.MetroInMotion.SlideDownOutAnimation(new FrameworkElement[] { Browser }.ToList<FrameworkElement>(), NavigateToStorageSelectorPage);
+            MetroInMotionUtils.MetroInMotion.SlideDownOutAnimation(new FrameworkElement[] { Browser }.ToList<FrameworkElement>(), NavigateToImageProcessingPage);
         }
 
-        private void NavigateToStorageSelectorPage()
+        private void NavigateToImageProcessingPage()
         {
             NavigationService.Navigate(new Uri("/View/ImageProcessingView.xaml", UriKind.RelativeOrAbsolute));
         }
@@ -111,7 +111,7 @@ namespace PhotoQwrekster.View
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            NavigateToStorageSelectorPage();
+            NavigateToImageProcessingPage();
         }
 
         private void Browser_Navigated(object sender, NavigationEventArgs e)

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExifLib", "ExifLib\ExifLib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfApplication1\WpfApplication1.csproj", "{71F203DD-AEE2-41AC-B26D-F92C9CDCF36F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestSharp.WindowsPhone", "..\RestSharp-master\RestSharp-master\RestSharp.WindowsPhone\RestSharp.WindowsPhone.csproj", "{F4D48DF6-316E-4963-B5C1-59CA39B431B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,16 @@ Global
 		{71F203DD-AEE2-41AC-B26D-F92C9CDCF36F}.Release|Mixed Platforms.Build.0 = Release|x86
 		{71F203DD-AEE2-41AC-B26D-F92C9CDCF36F}.Release|x86.ActiveCfg = Release|x86
 		{71F203DD-AEE2-41AC-B26D-F92C9CDCF36F}.Release|x86.Build.0 = Release|x86
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

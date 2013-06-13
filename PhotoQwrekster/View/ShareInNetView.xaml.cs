@@ -1,4 +1,7 @@
 ﻿using Microsoft.Phone.Controls;
+using System.Windows.Controls;
+using PhotoQwrekster.Model;
+using PhotoQwrekster.ViewModel;
 
 namespace PhotoQwrekster.View
 {
@@ -15,8 +18,13 @@ namespace PhotoQwrekster.View
             InitializeComponent();
         }
 
+        ShareInNetViewModel viewModel; 
+
         private void ShareImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            ActionDescriptionModel data = (sender as TextBlock).DataContext as ActionDescriptionModel;
+            viewModel = this.DataContext as ShareInNetViewModel;
+            viewModel.ShareImage(data);
 
         }
     }

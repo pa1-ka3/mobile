@@ -42,7 +42,6 @@ namespace PhotoQwrekster.Helpers
         public void SetTokenCode(string value)
         {
             string key = DateTime.Now.GetHashCode().ToString();
-            FacebookConfigHelper.AccountKey = key;
             FacebookConfigHelper.TokenCode = value;
         }
 
@@ -53,7 +52,6 @@ namespace PhotoQwrekster.Helpers
 
         public void SetAccountKey(string key)
         {
-            FacebookConfigHelper.AccountKey = key;
         }
 
         public string GetStorage()

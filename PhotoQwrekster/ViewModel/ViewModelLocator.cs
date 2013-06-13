@@ -48,12 +48,13 @@ namespace PhotoQwrekster.ViewModel
             App.Container.Register<CameraViewModel>((c) => new CameraViewModel(App.Container.Resolve<IDataService>()));
             App.Container.Register<ImageProcessingViewModel>((c) => new ImageProcessingViewModel(App.Container.Resolve<IDataService>()));
             App.Container.Register<INavigationService>(c => new NavigationService());
-            App.Container.Register<ShareInNetViewModel>(c => new ShareInNetViewModel());
+            App.Container.Register<ShareInNetViewModel>(c => new ShareInNetViewModel(App.Container.Resolve<IDataService>()));
             
         }
 
         public const string ImageProcessing = "/View/ImageProcessingView.xaml";
         public const string OAuthLogin = "/View/OAuthLogin.xaml";
+        public const string OAuthFlickrLogin = "/View/OAuthFlickrLogin.xaml";
         public const string Camera = "/View/CameraPage.xaml";
         public const string ShareInNet = "/View/ShareInNetView.xaml";
 

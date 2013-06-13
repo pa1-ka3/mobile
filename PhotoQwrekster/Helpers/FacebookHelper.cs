@@ -41,7 +41,7 @@ namespace PhotoQwrekster.Helpers
             client.UserAgent = "Facebook";
 
             string contentType = @"application/json";
-            InstagramFirstPhase td = new InstagramFirstPhase() { device_timestamp = GetUnixTimestamp(), lat = "53.889254", lng = "27.439363" };
+            InstagramFirstPhase td = new InstagramFirstPhase() { device_timestamp = HelperUtility.GetUnixTimestamp()};
             string serialized = JsonConvert.SerializeObject(td, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
        //     request.AddParameter(contentType, serialized, ParameterType.RequestBody);
@@ -82,12 +82,6 @@ namespace PhotoQwrekster.Helpers
                 }
             });
         }
-
-        private static string GetUnixTimestamp()
-        {
-            return (DateTime.UtcNow - new DateTime(1970, 1, 1).ToUniversalTime()).TotalSeconds.ToString();
-        }
-       
 
     }
 }

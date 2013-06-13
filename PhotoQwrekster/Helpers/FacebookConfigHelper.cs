@@ -33,6 +33,11 @@ namespace PhotoQwrekster.Helpers
         /// </summary>
         public static string[] scopes = new string[] { "user_photos,publish_stream,publish_actions" };
 
+        public FacebookConfigHelper()
+        {
+            FacebookConfigHelper.InitPropertiesFromStorage();
+        }
+
 
         public static void InitPropertiesFromStorage()
         {
@@ -104,10 +109,8 @@ namespace PhotoQwrekster.Helpers
             }
         }
 
-        public static string AccountKey { get; set; }
-
-
-
+        public const string AccountKey = "Facebook"; 
+        
         #endregion
 
         public static bool IsLoggedIn { 

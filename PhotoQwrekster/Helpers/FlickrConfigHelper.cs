@@ -26,6 +26,7 @@ namespace PhotoQwrekster.Helpers
         public const string ApplicationTitle = "PhotoQwrekster";
         public const string ApiEndpoint = "http://api.flickr.com/services";
         public const string SecureEndpoint = "https://secure.flickr.com/services";
+        public const string UploadUrl = "http://api.flickr.com/services/upload";
 
         public FlickrConfigHelper()
         {

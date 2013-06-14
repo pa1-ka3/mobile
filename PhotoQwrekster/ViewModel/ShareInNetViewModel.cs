@@ -175,7 +175,7 @@ namespace PhotoQwrekster.ViewModel
 
                 byte[] buffer = GetImageBuffer(ms);
 
-                FacebookHelper.UploadMedia(buffer, "suprematizm11");
+                FlickrHelper.UploadMedia(buffer, "suprematizm11");
 
             }
         }

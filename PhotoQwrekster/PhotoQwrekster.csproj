@@ -88,6 +88,7 @@
     <Compile Include="Helpers\FacebookHelper.cs" />
     <Compile Include="Helpers\FacebookOAuthHelper.cs" />
     <Compile Include="Helpers\FlickrConfigHelper.cs" />
+    <Compile Include="Helpers\FlickrHelper.cs" />
     <Compile Include="Helpers\FlickrOAuthHelper.cs" />
     <Compile Include="Helpers\GoogleHelper.cs" />
     <Compile Include="Helpers\GoogleOAuthHelper.cs" />

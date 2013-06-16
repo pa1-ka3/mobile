@@ -36,7 +36,7 @@ namespace PhotoQwrekster.ViewModel
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Flickr,
                     Description="flickr",
                     UserName="aaaa",
-                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))},
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/flickr.png", UriKind.Relative))},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Picasa,
                     Description="google+",
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/picasa.png", UriKind.Relative))},
@@ -99,6 +99,7 @@ namespace PhotoQwrekster.ViewModel
                     }
                 case ActionDestination.Twitter:
                     {
+                        ShareInTwitter();
                         return;
                     }
                 default:
@@ -154,7 +155,7 @@ namespace PhotoQwrekster.ViewModel
 
         private void ShareInFlickr()
         {
-            App.Container.ReplaceRegistration<IOAuthHelper>(c => new FlickrOAuthHelper());
+            App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new FlickrOAuthHelper());
             
             if (!FlickrConfigHelper.IsLoggedIn)
             {
@@ -200,9 +201,6 @@ namespace PhotoQwrekster.ViewModel
 
         }
 
-
-
-
         public void UploadToPicasa (List<object> obj)
         {
             using (MemoryStream ms = new MemoryStream())
@@ -214,6 +212,35 @@ namespace PhotoQwrekster.ViewModel
 
             }
         }
+
+        private void ShareInTwitter()
+        {
+            App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TwitterOAuthHelper());
+
+            if (!TwitterConfigHelper.IsLoggedIn)
+            {
+                PhotoQwrekster.View.OAuthFlickrLogin.InspectTokenCallback = UploadToTwitter;
+                INavigationService navigation = App.Container.Resolve<INavigationService>();
+
+                navigation.NavigateTo(new Uri(ViewModelLocator.OAuthFlickrLogin, UriKind.RelativeOrAbsolute));
+
+            }
+            else
+                UploadToTwitter(null);
+        }
+
+        public void UploadToTwitter(List<object> obj)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+
+                byte[] buffer = GetImageBuffer(ms);
+
+                TwitterHelper.UploadMedia(buffer, "suprematizm11");
+
+            }
+        }
+
     }
     
 }

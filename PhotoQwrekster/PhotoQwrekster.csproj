@@ -95,8 +95,12 @@
     <Compile Include="Helpers\GoogleConfigHelper.cs" />
     <Compile Include="Helpers\HelperUtility.cs" />
     <Compile Include="Helpers\IOAuthHelper.cs" />
+    <Compile Include="Helpers\IOAuthV1Helper.cs" />
     <Compile Include="Helpers\OAuthFlickrAccessToken.cs" />
     <Compile Include="Helpers\OAuthFlickrRequestToken.cs" />
+    <Compile Include="Helpers\TwitterConfigHelper.cs" />
+    <Compile Include="Helpers\TwitterHelper.cs" />
+    <Compile Include="Helpers\TwitterOAuthHelper.cs" />
     <Compile Include="Input\GestureHelperEventArgs.cs" />
     <Compile Include="Input\GestureListener.cs" />
     <Compile Include="Input\GestureListenerStatic.cs" />
@@ -195,6 +199,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Resolution.png" />
+    <Resource Include="Resources\flickr.png" />
     <Content Include="Resources\OpenFile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

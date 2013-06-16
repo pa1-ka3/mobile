@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace PhotoQwrekster.Helpers
 {
-    public class FlickrOAuthHelper : IOAuthHelper
+    public class FlickrOAuthHelper : IOAuthV1Helper
     {
 
         public void GetRequestTokenQueryNonStatic(bool isRefresh, Action<System.Collections.Generic.List<object>> callback)
@@ -40,7 +40,7 @@ namespace PhotoQwrekster.Helpers
                 oauth_token));
         }
 
-        public static Uri GetRequestTokenUrl(string method)
+        public Uri GetRequestTokenUrl(string method)
         {
             Dictionary<string, string> parameters;
             string oauthnonce;
@@ -73,25 +73,6 @@ namespace PhotoQwrekster.Helpers
             // parameters.Add("oauth_version", "1.0");
             parameters.Add("perms", FlickrConfigHelper.Scope);
             parameters.Add("oauth_signature_method", "HMAC-SHA1");
-        }
-
-
-        public static string OAuthCalculatePostData(Dictionary<string, string> parameters)
-        {
-            string data = String.Empty;
-            foreach (KeyValuePair<string, string> pair in parameters)
-            {
-                // Silverlight < 5 doesn't support modification of the Authorization header, so all data must be sent in post body.
-#if SILVERLIGHT
-                data += pair.Key + "=" + HelperUtility.EscapeOAuthString(pair.Value) + "&";
-#else
-                if (!pair.Key.StartsWith("oauth"))
-                {
-                    data += pair.Key + "=" + Uri.EscapeDataString(pair.Value) + "&";
-                }
-#endif
-            }
-            return data;
         }
 
         public static string OAuthCalculateSignature(string method, string url, Dictionary<string, string> parameters, string tokenSecret)
@@ -251,5 +232,17 @@ namespace PhotoQwrekster.Helpers
         public static string oauth_token_secret { get; set; }
 
         public static string oauth_verifier { get; set; }
+
+        public void SetOAuthTokenAndSecret(string token, string token_secret)
+        {
+            oauth_token = token;
+            oauth_token_secret = token_secret;
+        }
+
+
+        public void SetVerifier(string verifier)
+        {
+            oauth_verifier = verifier;
+        }
     }
 }

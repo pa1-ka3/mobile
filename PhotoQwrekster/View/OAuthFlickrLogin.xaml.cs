@@ -22,14 +22,14 @@ namespace PhotoQwrekster.View
     /// </summary>
     public partial class OAuthFlickrLogin : PhoneApplicationPage
     {
-        IOAuthHelper oauthHelper;
+        IOAuthV1Helper oauthV1Helper;
         /// <summary>
         /// Initializes a new instance of the OAuthFlickrLogin class.
         /// </summary>
         public OAuthFlickrLogin()
         {
             InitializeComponent();
-            oauthHelper = App.Container.Resolve<IOAuthHelper>();
+            oauthV1Helper = App.Container.Resolve<IOAuthV1Helper>();
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -59,7 +59,7 @@ namespace PhotoQwrekster.View
                 {
                     retryDownloadRequestTokenCount++;
                     if (retryDownloadRequestTokenCount < 5)
-                        client.DownloadStringAsync(FlickrOAuthHelper.GetRequestTokenUrl("GET"));
+                        client.DownloadStringAsync(oauthV1Helper.GetRequestTokenUrl("GET"));
                     else
                     {
                         MessageBox.Show("Unable to connect with Flickr");
@@ -71,14 +71,17 @@ namespace PhotoQwrekster.View
                 OAuthFlickrRequestToken requestToken = OAuthFlickrRequestToken.ParseResponse(res);
                 if (string.Compare(requestToken.TokenConfirmed.ToLower(), "true") == 0)
                 {
-                    FlickrOAuthHelper.oauth_token = requestToken.Token;
-                    FlickrOAuthHelper.oauth_token_secret = requestToken.TokenSecret;
-                    Dispatcher.BeginInvoke(() => this.Browser.Navigate(oauthHelper.GetLoginUrl()));
+                    oauthV1Helper.SetOAuthTokenAndSecret(requestToken.Token, requestToken.TokenSecret);
+                  //  FlickrOAuthHelper.oauth_token = requestToken.Token;
+                  //  FlickrOAuthHelper.oauth_token_secret = requestToken.TokenSecret;
+                    Dispatcher.BeginInvoke(() => this.Browser.Navigate(oauthV1Helper.GetLoginUrl()));
                 }
                 return;
             };
 
-            client.DownloadStringAsync(FlickrOAuthHelper.GetRequestTokenUrl("GET"));
+            Uri navig = oauthV1Helper.GetRequestTokenUrl("GET");
+
+            client.DownloadStringAsync(navig);
         }
 
         private void Browser_NavigationFailed(object sender, NavigationFailedEventArgs e)
@@ -113,10 +116,11 @@ namespace PhotoQwrekster.View
             {
                 e.Cancel = true;
                 Dictionary<string, string> parameters = HelperUtility.StringToDictionary(e.Uri.Query.Substring(1, e.Uri.Query.Length - 1));
-                FlickrOAuthHelper.oauth_verifier = parameters["oauth_verifier"];
+                oauthV1Helper.SetVerifier(parameters["oauth_verifier"]);
+                //FlickrOAuthHelper.oauth_verifier = parameters["oauth_verifier"];
                 Browser.Visibility = Visibility.Collapsed;
                 
-                oauthHelper.GetRequestTokenQueryNonStatic(false, InspectTokenCallback);
+                oauthV1Helper.GetRequestTokenQueryNonStatic(false, InspectTokenCallback);
             }
         }
 

@@ -19,7 +19,7 @@ namespace PhotoQwrekster.Helpers
         public const string OAuthUrl = "https://api.twitter.com/oauth/authorize";
         public const string OAuthTokenUrl = "https://api.twitter.com/oauth/access_token";
         public const string Scope = "write";
-        public const string RedirectUri = "http://www.twitter.com";
+        public const string RedirectUri = "localhost";
         public const string ClientSecret = "***";
         public const string ApiKey = "***";
         public const int RequestTimeout = 10 * 1000;

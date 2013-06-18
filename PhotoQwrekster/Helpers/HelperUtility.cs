@@ -16,7 +16,7 @@ namespace PhotoQwrekster.Helpers
     {
         public static string GetUnixTimestamp()
         {
-            return (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            return ((int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds).ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
         }
 
         public static string EscapeOAuthString(string text)

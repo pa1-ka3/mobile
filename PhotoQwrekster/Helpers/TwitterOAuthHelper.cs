@@ -176,7 +176,7 @@ namespace PhotoQwrekster.Helpers
                     {
                         OAuthFlickrAccessToken accessTokenResult = OAuthFlickrAccessToken.ParseResponse(response.Content);
                         TwitterConfigHelper.AccessToken = accessTokenResult.Token;
-
+                        TwitterOAuthHelper.oauth_token_secret = accessTokenResult.TokenSecret;
 
                         if (callback != null)
                             callback(new List<object> { TwitterConfigHelper.AccessToken });

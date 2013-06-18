@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfAppli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestSharp.WindowsPhone", "..\RestSharp-master\RestSharp-master\RestSharp.WindowsPhone\RestSharp.WindowsPhone.csproj", "{F4D48DF6-316E-4963-B5C1-59CA39B431B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hammock.WindowsPhone", "..\hammock-master\hammock-master\src\net40\Hammock.WindowsPhone\Hammock.WindowsPhone.csproj", "{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib.WindowsPhone", "..\hammock-master\hammock-master\src\net40\ICSharpCode.SharpZipLib.WindowsPhone\ICSharpCode.SharpZipLib.WindowsPhone.csproj", "{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,26 @@ Global
 		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F4D48DF6-316E-4963-B5C1-59CA39B431B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}.Release|x86.ActiveCfg = Release|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

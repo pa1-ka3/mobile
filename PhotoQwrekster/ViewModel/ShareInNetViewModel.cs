@@ -95,6 +95,7 @@ namespace PhotoQwrekster.ViewModel
                     }
                 case ActionDestination.Tumblr:
                     {
+                        ShareInTumblr();
                         return;
                     }
                 case ActionDestination.Twitter:
@@ -212,6 +213,35 @@ namespace PhotoQwrekster.ViewModel
 
             }
         }
+
+        private void ShareInTumblr()
+        {
+            App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TumblrOAuthHelper());
+
+            if (!TumblrConfigHelper.IsLoggedIn)
+            {
+                PhotoQwrekster.View.OAuthFlickrLogin.InspectTokenCallback = UploadToTumblr;
+                INavigationService navigation = App.Container.Resolve<INavigationService>();
+
+                navigation.NavigateTo(new Uri(ViewModelLocator.OAuthFlickrLogin, UriKind.RelativeOrAbsolute));
+
+            }
+            else
+                UploadToTumblr(null);
+        }
+
+        public void UploadToTumblr(List<object> obj)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+
+                byte[] buffer = GetImageBuffer(ms);
+
+                TumblrHelper.UploadMedia(buffer, "suprematizm11");
+
+            }
+        }
+
 
         private void ShareInTwitter()
         {

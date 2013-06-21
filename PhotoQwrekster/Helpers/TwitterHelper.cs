@@ -26,7 +26,7 @@ namespace PhotoQwrekster.Helpers
         public static void UploadMedia(byte[] jpegMediaBytes, string caption)
         {
             // TwitterOAuthHelper.RefreshTokenCode(p => TryUploadMedia(new List<object> { jpegMediaBytes, caption }));
-          //  TryUploadMedia(new List<object> { jpegMediaBytes, caption });
+           // TryUploadMedia(new List<object> { jpegMediaBytes, caption });
             uploadPhoto(new List<object> { jpegMediaBytes, caption });
         }
         /*    ,Authenticator = RestSharp.Authenticators.OAuth1Authenticator.ForProtectedResource(TwitterConfigHelper.ApiKey,
@@ -60,7 +60,7 @@ namespace PhotoQwrekster.Helpers
                     parameters.Add("oauth_token", TwitterConfigHelper.AccessToken);
                     //parameters.Add("oauth_token_secret", TwitterOAuthHelper.oauth_token_secret);
                     parameters.Add("oauth_verifier", TwitterOAuthHelper.oauth_verifier);
-                    parameters.Add("oauth_version", "1.0");
+                    parameters.Add("oauth_version", "1.0a");
                     parameters.Add("status", caption);
 
                     string sig = TwitterOAuthHelper.OAuthCalculateSignature("POST", TwitterConfigHelper.UploadUrl, parameters, TwitterOAuthHelper.oauth_token_secret);
@@ -77,7 +77,7 @@ namespace PhotoQwrekster.Helpers
                     request.AddParameter("oauth_token", TwitterConfigHelper.AccessToken);
                     //request.AddParameter("oauth_token_secret", TwitterOAuthHelper.oauth_token_secret);
                     request.AddParameter("oauth_verifier", TwitterOAuthHelper.oauth_verifier);
-                    request.AddParameter("oauth_version", "1.0");
+                    request.AddParameter("oauth_version", "1.0a");
        
                     request.AddParameter("status", caption, ParameterType.RequestBody);
 

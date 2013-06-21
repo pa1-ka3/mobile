@@ -98,6 +98,9 @@
     <Compile Include="Helpers\IOAuthV1Helper.cs" />
     <Compile Include="Helpers\OAuthFlickrAccessToken.cs" />
     <Compile Include="Helpers\OAuthFlickrRequestToken.cs" />
+    <Compile Include="Helpers\TumblrConfigHelper.cs" />
+    <Compile Include="Helpers\TumblrHelper.cs" />
+    <Compile Include="Helpers\TumblrOAuthHelper.cs" />
     <Compile Include="Helpers\TwitterConfigHelper.cs" />
     <Compile Include="Helpers\TwitterHelper.cs" />
     <Compile Include="Helpers\TwitterOAuthHelper.cs" />

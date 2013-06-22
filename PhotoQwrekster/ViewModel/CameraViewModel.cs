@@ -427,7 +427,6 @@ namespace PhotoQwrekster.ViewModel
            
         }
         // Variables
-        private int savedCounter = 0;
 
         MediaLibrary library = new MediaLibrary();
 
@@ -616,28 +615,6 @@ namespace PhotoQwrekster.ViewModel
 
         void cam_CaptureCompleted(object sender, CameraOperationCompletedEventArgs e)
         {
-            // Increments the savedCounter variable used for generating JPEG file names.
-            /*  string fileName = savedCounter + ".jpg";
-              try
-              {   // Write message to the UI thread.
-                  Deployment.Current.Dispatcher.BeginInvoke(delegate()
-                  {
-                      BitmapImage bmpImg = new BitmapImage();
-                      //bmpImg.SetSource(picCurrentImage.GetImage());
-                      // bmpImg.SetSource(library.Pictures[library.Pictures.Count - 1].GetImage());
-                      bmpImg.SetSource(CapturedStream);
-                      imgSelectedPhoto.Source = bmpImg;
-                      imgSelectedPhoto.Visibility = System.Windows.Visibility.Visible;
-                  });
-              }
-              catch (Exception ex)
-              { }
-              finally
-              {
-                  CapturedStream.Close();
-              }*/
-            savedCounter++;
-
             INavigationService navigation = App.Container.Resolve<INavigationService>();
              Runner.Invoke(() =>
              {

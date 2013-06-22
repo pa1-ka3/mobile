@@ -206,7 +206,7 @@
                    Width="480" Height="640"
                    Stretch="Fill" 
                    Tap="imgSelectedPhoto_Tap"
-                   MouseLeftButtonDown="imgSelectedPhoto_MouseLeftButtonDown"
+                   
                Visibility="Visible" d:LayoutOverrides="VerticalMargin" >
 
                 <toolkit:GestureService.GestureListener>
@@ -276,13 +276,7 @@
             <shell:ApplicationBarIconButton x:Name="Save" IconUri="/Resources/AppBarSave.png" Text="Save" Click="Save_Click" />
             <shell:ApplicationBarIconButton x:Name="Undo" IconUri="/Resources/Undo.png" Text="Undo" Click="Undo_Click"/>
             <shell:ApplicationBarIconButton x:Name="Share" IconUri="/Resources/Share.png" Text="Share" Click="Share_Click" />
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem x:Name="ShareWithFacebook" Click="ShareWithFacebook_Click"  Text="Share with Facebook"/>
-                <shell:ApplicationBarMenuItem x:Name="ShareWithFlickr" Click="ShareWithFlickr_Click"  Text="Share with Flickr"/>
-                <shell:ApplicationBarMenuItem x:Name="ShareWithGoogle" Click="ShareWithGoogle_Click"  Text="Share with Google+"/>
-                <shell:ApplicationBarMenuItem x:Name="ShareWithTumblr" Click="ShareWithTumblr_Click"  Text="Share with Tumblr"/>
-                <shell:ApplicationBarMenuItem x:Name="ShareWithTwitter" Click="ShareWithTwitter_Click"  Text="Share with Twitter"/>
-            </shell:ApplicationBar.MenuItems>
+            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

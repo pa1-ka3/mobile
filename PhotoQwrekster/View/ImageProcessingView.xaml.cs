@@ -3,6 +3,7 @@ using PhotoQwrekster.ViewModel;
 using System.Windows;
 using System;
 using System.Windows.Media.Imaging;
+using System.ComponentModel;
 
 namespace PhotoQwrekster.View
 {
@@ -20,6 +21,8 @@ namespace PhotoQwrekster.View
         {
             InitializeComponent();
             imageProcessingViewModel = this.DataContext as ImageProcessingViewModel;
+            imageRecalculator = new System.ComponentModel.BackgroundWorker();
+            imageRecalculator.DoWork += new System.ComponentModel.DoWorkEventHandler(imageRecalculate_DoWork);
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -210,6 +213,7 @@ namespace PhotoQwrekster.View
         }
 
         private double Radius { get; set; }
+        private BackgroundWorker imageRecalculator;
 
         private void OnPinchCompleted(object sender, Input.PinchGestureEventArgs e)
         {
@@ -218,47 +222,35 @@ namespace PhotoQwrekster.View
 
             Point p1 = e.GetPosition(imgSelectedPhoto, 0);
             Point p2 = e.GetPosition(imgSelectedPhoto, 1);
-            double angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
+            lock (this)
+            {
+                angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
 
-            double centrX = (p2.X + p1.X) / 2;
-            double centrY = (p2.Y + p1.Y) / 2;
+                centrX = (int)(p2.X + p1.X) / 2;
+                centrY = (int)(p2.Y + p1.Y) / 2;
+            }
+            performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
+            imageRecalculator.RunWorkerAsync();
+        }
 
+        private int centrX;
+        private int centrY;
+        private double angle;
+
+        void imageRecalculate_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+#if DEBUG
+            Console.WriteLine("backgroundSynchronizer_DoWork");
+#endif
+            Runner.Dispatcher = Deployment.Current.Dispatcher;
             Runner.Invoke(() =>
             {
-                performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
+                
                 imageProcessingViewModel.GetBitmapCopyForCalculation();
-                System.Threading.ThreadPool.QueueUserWorkItem((method) =>
-                    imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle, OnUpdateFinished));
+               // System.Threading.ThreadPool.QueueUserWorkItem((method) =>
+                imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle, OnUpdateFinished);
             });
-            
         }
-
-        private void ShareWithFacebook_Click(object sender, EventArgs e)
-        {
-
-        }
-        
-
-        private void ShareWithFlickr_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ShareWithGoogle_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ShareWithTumblr_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ShareWithTwitter_Click(object sender, EventArgs e)
-        {
-
-        }
-
 
         private void Load_Click(object sender, EventArgs e)
         {
@@ -309,7 +301,7 @@ namespace PhotoQwrekster.View
 
         private void imgSelectedPhoto_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Point p1 = e.GetPosition(imgSelectedPhoto);
+       /*     Point p1 = e.GetPosition(imgSelectedPhoto);
             Point p2 = new Point(p1.X + 1, p1.Y + 1);
             double angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
 
@@ -321,10 +313,11 @@ namespace PhotoQwrekster.View
             {
                 performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
                 imageProcessingViewModel.GetBitmapCopyForCalculation();
+            });
                 System.Threading.ThreadPool.QueueUserWorkItem((method) => 
                     imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, 0.3, 150, angle, OnUpdateFinished));
-            });
-
+           
+            */
         
         }
 

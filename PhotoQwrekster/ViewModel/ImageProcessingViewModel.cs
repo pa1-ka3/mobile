@@ -304,13 +304,16 @@ namespace PhotoQwrekster.ViewModel
                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius, deg);
             }
 
+            Runner.Invoke(() =>
+            {
             if (callback != null)
                 callback.Invoke();
+            });
         }
 
         public bool CanShare { get { return (BitmapImageSource != null); } }
 
-        private double Mashtab { get; set; }
+        public double Mashtab { get; set; }
 
         public Size GetImageRecalculatedSize()
         {

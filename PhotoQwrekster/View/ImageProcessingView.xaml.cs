@@ -4,6 +4,7 @@ using System.Windows;
 using System;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
+using System.Windows.Media;
 
 namespace PhotoQwrekster.View
 {
@@ -41,7 +42,9 @@ namespace PhotoQwrekster.View
             TransformMode.IsChecked = imageProcessingViewModel.TransformMode;
             Radius = 120;
             SetLinesBoundaries(new Point(220, 220), new Point(30, 120));
+            SetGesturesLinesVisibility(System.Windows.Visibility.Collapsed);
             performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+            GestureElipse.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void SetSelectedPhotoSource()
@@ -55,8 +58,9 @@ namespace PhotoQwrekster.View
                 imgSelectedPhoto.Source = img;
                 ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = true;  //"Save" 
                 ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = true;  //"Share" 
-                flickData.Visibility = System.Windows.Visibility.Collapsed;
+                flickData.Visibility = System.Windows.Visibility.Visible;
                 Size s = imageProcessingViewModel.GetImageRecalculatedSize();
+                flickData.Text = string.Format("size hight: - {0}, width: -{1}", s.Height, s.Width);
                 imgSelectedPhoto.Height = s.Height;
                 imgSelectedPhoto.Width = s.Width;
             }
@@ -80,13 +84,14 @@ namespace PhotoQwrekster.View
         private void OnPinchStarted(object sender, Input.PinchStartedGestureEventArgs e)
         {
             initialScale = transform.ScaleX = transform.ScaleY = 1;
-            
-            Point p1 = e.GetPosition(imgSelectedPhoto, 0);
-            Point p2 = e.GetPosition(imgSelectedPhoto, 1);
+
+            Point p1 = e.GetPosition(ContentPanel, 0);
+            Point p2 = e.GetPosition(ContentPanel, 1);
 
             GestureElipse.Height = GestureElipse.Width = 100;
             Radius = GetRadius(p1, p2); 
             GestureElipse.Margin = GetEllipseMargin(p1, p2);
+            SetGesturesLinesVisibility(System.Windows.Visibility.Visible);
             GestureElipse.Visibility = System.Windows.Visibility.Visible;
 
             SetLinesBoundaries(p1, p2);
@@ -96,6 +101,12 @@ namespace PhotoQwrekster.View
                p2.X, p2.Y,
                GestureElipse.Margin.Left, GestureElipse.Margin.Top, GestureElipse.Margin.Right, GestureElipse.Margin.Bottom
                );
+        }
+
+        private void SetGesturesLinesVisibility(System.Windows.Visibility visibility)
+        {
+            Line1.Visibility = visibility;
+            Line2.Visibility = visibility;
         }
 
         private void SetLinesBoundaries(Point p1, Point p2)
@@ -169,8 +180,8 @@ namespace PhotoQwrekster.View
             double radius = GetRadius(point1, point2);
             t.Top = (int)(center.Y - radius);
             t.Left = (int)(center.X - radius);
-            t.Right = imgSelectedPhoto.ActualWidth - (int)(center.X + radius);
-            t.Bottom = imgSelectedPhoto.ActualHeight - (int)(center.Y + radius);
+            t.Right = 480 - (int)(center.X + radius);
+            t.Bottom = 640 - (int)(center.Y + radius);
 
             GestureElipse.Margin = t;
             GestureElipse.Height = GestureElipse.Width = 2 * (int)radius;
@@ -199,8 +210,8 @@ namespace PhotoQwrekster.View
             //    transform.Rotation = initialAngle + e.TotalAngleDelta;
             transform.ScaleX = transform.ScaleY = initialScale * e.DistanceRatio;
 
-            Point p1 = e.GetPosition(imgSelectedPhoto, 0);
-            Point p2 = e.GetPosition(imgSelectedPhoto, 1);
+            Point p1 = e.GetPosition(ContentPanel, 0);
+            Point p2 = e.GetPosition(ContentPanel, 1);
 
             GestureElipse.Margin = GetEllipseMargin(p1, p2);
             SetLinesBoundaries(p1, p2);
@@ -328,6 +339,7 @@ namespace PhotoQwrekster.View
                 imageProcessingViewModel.GetBitmapAfterCalculation();
                 ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
                 performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+                SetGesturesLinesVisibility(System.Windows.Visibility.Collapsed);
             });
         }
 

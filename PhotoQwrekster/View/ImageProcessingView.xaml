@@ -163,9 +163,7 @@
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
                     Margin="0,0,0,0">
-            <toolkitMain:PerformanceProgressBar x:Name="performanceProgressBar" IsIndeterminate="True" Height="11" Width="470" Visibility="Visible" >
-            </toolkitMain:PerformanceProgressBar>
-        	<Grid><Grid.ColumnDefinitions>
+          <Grid><Grid.ColumnDefinitions>
         		<ColumnDefinition Width="185"></ColumnDefinition>     	
 			    	<ColumnDefinition Width="110"></ColumnDefinition>     	
 		    		<ColumnDefinition Width="185"></ColumnDefinition>     	
@@ -199,7 +197,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel"
+        <Grid x:Name="ContentPanel" 
               Grid.Row="1"
               Margin="0,0,0,0">
             <Image Name="imgSelectedPhoto" 
@@ -265,6 +263,8 @@
 
             </Ellipse>
 
+<toolkitMain:PerformanceProgressBar x:Name="performanceProgressBar" IsIndeterminate="True" Height="11" Width="470" Visibility="Visible" >
+            </toolkitMain:PerformanceProgressBar>
 
         </Grid>
     </Grid>

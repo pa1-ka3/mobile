@@ -60,7 +60,7 @@ namespace PhotoQwrekster.View
                 ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = true;  //"Share" 
                 flickData.Visibility = System.Windows.Visibility.Visible;
                 Size s = imageProcessingViewModel.GetImageRecalculatedSize();
-                flickData.Text = string.Format("size hight: - {0}, width: -{1}", s.Height, s.Width);
+                //flickData.Text = string.Format("size hight: - {0}, width: -{1}", s.Height, s.Width);
                 imgSelectedPhoto.Height = s.Height;
                 imgSelectedPhoto.Width = s.Width;
             }
@@ -95,12 +95,12 @@ namespace PhotoQwrekster.View
             GestureElipse.Visibility = System.Windows.Visibility.Visible;
 
             SetLinesBoundaries(p1, p2);
-            flickData.Text = string.Format("Pinch: Touch1 {0},{1} Touch2 {2},{3}  Margin [{4},{5},{6},{7}]",
+       /*     flickData.Text = string.Format("Pinch: Touch1 {0},{1} Touch2 {2},{3}  Margin [{4},{5},{6},{7}]",
 
                p1.X, p1.Y,
                p2.X, p2.Y,
                GestureElipse.Margin.Left, GestureElipse.Margin.Top, GestureElipse.Margin.Right, GestureElipse.Margin.Bottom
-               );
+               );*/
         }
 
         private void SetGesturesLinesVisibility(System.Windows.Visibility visibility)
@@ -164,10 +164,10 @@ namespace PhotoQwrekster.View
                 GestureElipse.Height = 2 * ellipseSemiHeight;
                 GestureElipse.Width = 2 * ellipseRadius;
 
-                centerData.Text = string.Format("Center: {0},{1}  Line2 {2},{3} - {4},{5}",
+                /*centerData.Text = string.Format("Center: {0},{1}  Line2 {2},{3} - {4},{5}",
                     centrX, centrY,
                     Line2.X1, Line2.Y1, Line2.X2, Line2.Y2);
-                
+                */
             }
         }
 
@@ -185,12 +185,6 @@ namespace PhotoQwrekster.View
 
             GestureElipse.Margin = t;
             GestureElipse.Height = GestureElipse.Width = 2 * (int)radius;
-         /*   centerData.Text = string.Format("Center: {0},{1}  radius {2}  ImgActual [w {3}, h {4}]",
-
-               center.X, center.Y,
-               (int)radius,
-               imgSelectedPhoto.Width.ToString(), imgSelectedPhoto.Height.ToString()
-               );*/
 
             GestureCenter = center;
             
@@ -216,9 +210,9 @@ namespace PhotoQwrekster.View
             GestureElipse.Margin = GetEllipseMargin(p1, p2);
             SetLinesBoundaries(p1, p2);
 
-            flickData.Text = string.Format("transform.ScaleX: {0}",
-              transform.ScaleX
-               );
+            //flickData.Text = string.Format("transform.ScaleX: {0}",
+              //transform.ScaleX
+             //  );
 
 
         }
@@ -228,19 +222,19 @@ namespace PhotoQwrekster.View
 
         private void OnPinchCompleted(object sender, Input.PinchGestureEventArgs e)
         {
-            //     border.Fill = normalBrush;
             GestureElipse.Visibility = System.Windows.Visibility.Collapsed;
 
             Point p1 = e.GetPosition(imgSelectedPhoto, 0);
             Point p2 = e.GetPosition(imgSelectedPhoto, 1);
             lock (this)
             {
-                angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
+                angle = - Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
 
                 centrX = (int)(p2.X + p1.X) / 2;
                 centrY = (int)(p2.Y + p1.Y) / 2;
             }
             performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
+         //   centerData.Text = string.Format("Andle: {0}", angle *180 / Math.PI);
             imageRecalculator.RunWorkerAsync();
         }
 
@@ -258,7 +252,6 @@ namespace PhotoQwrekster.View
             {
                 
                 imageProcessingViewModel.GetBitmapCopyForCalculation();
-               // System.Threading.ThreadPool.QueueUserWorkItem((method) =>
                 imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle, OnUpdateFinished);
             });
         }
@@ -306,28 +299,13 @@ namespace PhotoQwrekster.View
 
         private void imgSelectedPhoto_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            Point p = e.GetPosition(imgSelectedPhoto);
-            centerData.Text = string.Format("Tap: {0},{1}", p.X, p.Y);
+           // Point p = e.GetPosition(imgSelectedPhoto);
+            //centerData.Text = string.Format("Tap: {0},{1}", p.X, p.Y);
         }
 
         private void imgSelectedPhoto_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-       /*     Point p1 = e.GetPosition(imgSelectedPhoto);
-            Point p2 = new Point(p1.X + 1, p1.Y + 1);
-            double angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
-
-            double centrX = (p2.X + p1.X) / 2;
-            double centrY = (p2.Y + p1.Y) / 2;
-
-            
-            Runner.Invoke(() =>
-            {
-                performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
-                imageProcessingViewModel.GetBitmapCopyForCalculation();
-            });
-                System.Threading.ThreadPool.QueueUserWorkItem((method) => 
-                    imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, 0.3, 150, angle, OnUpdateFinished));
-           
+       /*  
             */
         
         }

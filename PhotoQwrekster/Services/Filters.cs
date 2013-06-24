@@ -171,7 +171,6 @@ namespace PhotoQwrekster.Service
             int nHeight = bitmap.PixelHeight;
 
             FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
-            Point[,] pt = new Point[nWidth, nHeight];
 
             Point mid = new Point();
             mid.X = cx;
@@ -179,7 +178,6 @@ namespace PhotoQwrekster.Service
 
             double theta, radius;
             double newX, newY;
-            //double deg = 30 * Math.PI / 180;
 
             int transfornationSqwere = transformationRadius * transformationRadius;
 
@@ -194,30 +192,26 @@ namespace PhotoQwrekster.Service
 
                     double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
 
-                    newX = x - transformScale * deltaRadius * Math.Cos(theta) * Math.Cos(deg);
+                    newX = x - transformScale * deltaRadius * Math.Cos(theta+deg) * Math.Cos(deg);
 
                     if (newX > 0 && newX < nWidth)
                     {
                         fp[x, y].X = newX;
-                        pt[x, y].X = (int)newX;
                     }
                     else
                     {
                         fp[x, y].X = fp[x, y].Y = 0.0;
-                        pt[x, y].X = pt[x, y].Y = 0;
                     }
 
-                    newY = y - transformScale * deltaRadius * Math.Cos(theta) * Math.Sin(deg);
+                    newY = y + transformScale * deltaRadius * Math.Cos(theta+deg) * Math.Sin(deg);
 
                     if (newY > 0 && newY < nHeight && newX > 0 && newX < nWidth)
                     {
                         fp[x, y].Y = newY;
-                        pt[x, y].Y = (int)newY;
                     }
                     else
                     {
                         fp[x, y].X = fp[x, y].Y = 0.0;
-                        pt[x, y].X = pt[x, y].Y = 0;
                     }
                 }
 
@@ -235,15 +229,13 @@ namespace PhotoQwrekster.Service
             int nHeight = bitmap.PixelHeight;
 
             FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
-            Point[,] pt = new Point[nWidth, nHeight];
 
             Point mid = new Point();
-            mid.X = cx;// nWidth / 2;
-            mid.Y = cy;// nHeight / 2;
+            mid.X = cx;
+            mid.Y = cy;
 
             double theta, radius;
             double newX, newY;
-           // double deg = 30 * Math.PI / 180;
 
             int transfornationSqwere = transformationRadius * transformationRadius;
             transformScale = 1 / transformScale;
@@ -259,30 +251,26 @@ namespace PhotoQwrekster.Service
 
                     double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
 
-                    newX = x + transformScale * deltaRadius * Math.Cos(theta) * Math.Cos(deg);
+                    newX = x + transformScale * deltaRadius * Math.Cos(theta+deg) * Math.Cos(deg);
 
                     if (newX > 0 && newX < nWidth)
                     {
                         fp[x, y].X = newX;
-                        pt[x, y].X = (int)newX;
                     }
                     else
                     {
                         fp[x, y].X = fp[x, y].Y = 0.0;
-                        pt[x, y].X = pt[x, y].Y = 0;
                     }
 
-                    newY = y + transformScale * deltaRadius * Math.Cos(theta) * Math.Sin(deg);
+                    newY = y - transformScale * deltaRadius * Math.Cos(theta+deg) * Math.Sin(deg);
 
                     if (newY > 0 && newY < nHeight && newX > 0 && newX < nWidth)
                     {
                         fp[x, y].Y = newY;
-                        pt[x, y].Y = (int)newY;
                     }
                     else
                     {
                         fp[x, y].X = fp[x, y].Y = 0.0;
-                        pt[x, y].X = pt[x, y].Y = 0;
                     }
                 }
 

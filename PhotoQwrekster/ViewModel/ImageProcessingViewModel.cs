@@ -281,27 +281,27 @@ namespace PhotoQwrekster.ViewModel
             BitmapImageSource.Invalidate();
         }
 
-        internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int Radius, double deg, Action callback)
+        internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int radius, double deg, Action callback)
         {
-        
+            radius = radius * 5;
 
             if (TransformMode) // transform in two directions
             {
                 if (transformScale > 1)
                     PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius);
                 else
                     PhotoQwrekster.Service.Filters.SqueezeAroundPoint(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius);
             }
             else // transform in one direction
             {
                 if (transformScale > 1)
                     PhotoQwrekster.Service.Filters.StretchInOneDimension(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius, deg);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg);
                 else
                     PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * Radius, deg);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg);
             }
 
             Runner.Invoke(() =>
@@ -368,6 +368,7 @@ namespace PhotoQwrekster.ViewModel
         {
             BitmapBackup.Pixels.CopyTo(BitmapImageSource.Pixels, 0);
             BitmapBackup = null;
+            BitmapImageSource.Invalidate();
         }
     }
 }

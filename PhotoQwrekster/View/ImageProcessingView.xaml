@@ -222,9 +222,6 @@
             <TextBlock x:Name="flickData" Text="Flick:" Foreground="Blue"
                        Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="74" 
                        TextWrapping="Wrap" Margin="12,0,12,113" />
-            <TextBlock x:Name="centerData" Text="C:" Foreground="Blue"
-                       Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="74" 
-                       TextWrapping="Wrap" Margin="12,0,12,13" />
             <Ellipse Name="GestureElipse" 
                      Margin="0,130,-200,-200" 
                      Visibility="Visible" 

@@ -263,9 +263,21 @@ namespace PhotoQwrekster.View
 
         private void Save_Click(object sender, EventArgs e)
         {
-
+            save_panel.IsOpen = true;
         }
 
+
+        private void btn_save_continue_Click(object sender, RoutedEventArgs e)
+        {
+            save_panel.IsOpen = false;
+        }
+
+        private void btn_save_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            save_panel.IsOpen = false;
+        }
+
+        
         private void Share_Click(object sender, EventArgs e)
         {
             if(imageProcessingViewModel.CanShare)
@@ -321,6 +333,7 @@ namespace PhotoQwrekster.View
             });
         }
 
+        
         
 
         

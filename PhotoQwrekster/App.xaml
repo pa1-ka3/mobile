@@ -14,11 +14,15 @@
                              d:IsDataSource="True" />
         <Color x:Key="NavyBlueColor">#FF02204E</Color>
 		<Color x:Key="ButtonTextColor">#FF00070E</Color>
+        <SolidColorBrush x:Key="ButtonTextColorBrush" Color="#FF00070E" />
         <SolidColorBrush x:Key="PhoneBackgroundColorBrush" Color="#FF090909" />               
         <SolidColorBrush x:Key="CameraButtonColorBrush" Color="#FF456965" />
-        <Color x:Key="SystemTrayColor">#FF191719</Color>
+        <Color x:Key="SystemTrayColor">#FF161316</Color>
         <Color x:Key="ApplicationBarBackgroundColor">#FF456965</Color>
         <SolidColorBrush x:Key="ApplicationBarColorBrush" Color="#FF292929" />
+        <Color x:Key="BorderColor">#FF313131</Color>
+        <SolidColorBrush x:Key="DialogButtonColorBrush" Color="#FF39605A" />
+        <SolidColorBrush x:Key="DialogButtonborderColorBrush" Color="#FF305549" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

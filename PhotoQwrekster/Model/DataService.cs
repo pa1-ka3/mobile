@@ -153,5 +153,19 @@ namespace PhotoQwrekster.Model
         {
             BitmapImageSource = bitmap;
         }
+
+        private string _imageName { get; set; }
+
+        public void SetImageName(string imageName)
+        {
+            _imageName = imageName;
+        }
+
+        public string GetImageName()
+        {
+            if(string.IsNullOrEmpty(_imageName))
+                _imageName = "PQ-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".jpg";
+            return _imageName;
+        }
     }
 }

@@ -35,5 +35,9 @@ namespace PhotoQwrekster.Model
         WriteableBitmap GetBitmapImageSource();
 
         void SetBitmapImageSource(WriteableBitmap bitmap);
+
+        void SetImageName(string imageName);
+
+        string GetImageName();
     }
 }

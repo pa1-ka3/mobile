@@ -88,5 +88,16 @@ namespace PhotoQwrekster.Design
        {
            throw new NotImplementedException();
        }
+
+
+       public void SetImageName(string imageName)
+       {
+           throw new NotImplementedException();
+       }
+
+       public string GetImageName()
+       {
+           throw new NotImplementedException();
+       }
     }
 }

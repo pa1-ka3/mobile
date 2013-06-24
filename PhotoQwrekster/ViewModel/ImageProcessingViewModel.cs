@@ -12,6 +12,8 @@ using PhotoQwrekster.Input;
 using Microsoft.Phone.Tasks;
 using System.Windows;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Media;
+using System.Linq;
 
 namespace PhotoQwrekster.ViewModel
 {
@@ -65,6 +67,7 @@ namespace PhotoQwrekster.ViewModel
                     data = br.ReadBytes((int)e.ChosenPhoto.Length);
 
                 _dataService.SetCupturedImageByte(data);
+                _dataService.SetImageName(e.OriginalFileName);
 
                 if (imageChooseComplete != null)
                     imageChooseComplete.Invoke();
@@ -80,63 +83,6 @@ namespace PhotoQwrekster.ViewModel
             photoChooser.ShowCamera = false;
             photoChooser.Show();
         }
-
-        #region Commands
-
-
-        private RelayCommand _shareInNet;
-
-        /// <summary>
-        /// Gets the ShareInNet.
-        /// </summary>
-        public RelayCommand ShareInNet
-        {
-            get
-            {
-                return _shareInNet
-                    ?? (_shareInNet = new RelayCommand(
-                                          () =>
-                                          {
-                                              OnShareInNet();
-                                          }));
-            }
-        }
-
-        private void OnShareInNet()
-        {
-            App.Container.Register<IOAuthHelper>(c => new FacebookOAuthHelper());
-
-            if (!FacebookConfigHelper.IsLoggedIn)
-            {
-               // callbackAction = UploadToFacebook;
-                PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = UploadToFacebook;
-                INavigationService navigation = App.Container.Resolve<INavigationService>();
-               
-                    navigation.NavigateTo(new Uri(ViewModelLocator.OAuthLogin, UriKind.RelativeOrAbsolute));
-                
-            }
-            else
-                UploadToFacebook(null);
-        }
-
-        private void UploadToFacebook(List<object> obj)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-
-                // write an image into the stream
-                Extensions.SaveJpeg(BitmapImageSource, ms,
-                    this.BitmapImageSource.PixelWidth, this.BitmapImageSource.PixelHeight, 0, 100);
-
-
-                byte[] buffer = ms.ToArray();
-
-                FacebookHelper.UploadMedia(buffer, "suprematizm11");
-
-            }
-        }
-
-        #endregion
 
         public WriteableBitmap BitmapImageSource
         {
@@ -369,6 +315,49 @@ namespace PhotoQwrekster.ViewModel
             BitmapBackup.Pixels.CopyTo(BitmapImageSource.Pixels, 0);
             BitmapBackup = null;
             BitmapImageSource.Invalidate();
+        }
+
+        internal string GetImageName()
+        {
+            return _dataService.GetImageName();
+        }
+
+        internal bool TrySaveImage(string fileName)
+        {
+            // Save picture to the library camera roll.
+            MediaLibrary library = new MediaLibrary();
+            using (var pics = library.Pictures)
+            {
+                using (var img = pics.LastOrDefault(pic => pic.Name == fileName))
+                {
+                    if (img == null)
+                    {
+                        // file doesn't exist
+                        DoSaveImage(fileName);
+                        return true;
+                    }
+                    else
+                    {
+                        // file does exist
+                        return false;
+                    }
+                }
+            }
+        }
+
+        internal void DoSaveImage(string fileName)
+        {
+             using (MemoryStream ms = new MemoryStream())
+            {
+                Extensions.SaveJpeg(BitmapImageSource, ms,
+                    this.BitmapImageSource.PixelWidth, this.BitmapImageSource.PixelHeight, 0, 100);
+
+                byte[] buffer = ms.ToArray();
+
+                MediaLibrary library = new MediaLibrary();
+                library.SavePictureToCameraRoll(fileName, buffer);
+                _dataService.SetImageName(fileName);
+            }
         }
     }
 }

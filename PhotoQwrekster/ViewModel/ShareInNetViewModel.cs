@@ -137,7 +137,7 @@ namespace PhotoQwrekster.ViewModel
 
                 byte[] buffer = GetImageBuffer(ms);
 
-                FacebookHelper.UploadMedia(buffer, "suprematizm11");
+                FacebookHelper.UploadMedia(buffer, _dataService.GetImageName());
 
             }
         }
@@ -177,7 +177,7 @@ namespace PhotoQwrekster.ViewModel
 
                 byte[] buffer = GetImageBuffer(ms);
 
-                FlickrHelper.UploadMedia(buffer, "suprematizm11");
+                FlickrHelper.UploadMedia(buffer, _dataService.GetImageName());
 
             }
         }
@@ -209,7 +209,7 @@ namespace PhotoQwrekster.ViewModel
 
                 byte[] buffer = GetImageBuffer(ms);
 
-                GoogleHelper.UploadMedia(buffer, "suprematizm11");
+                GoogleHelper.UploadMedia(buffer, _dataService.GetImageName());
 
             }
         }
@@ -237,7 +237,7 @@ namespace PhotoQwrekster.ViewModel
 
                 byte[] buffer = GetImageBuffer(ms);
 
-                TumblrHelper.UploadMedia(buffer, "suprematizm11");
+                TumblrHelper.UploadMedia(buffer, _dataService.GetImageName());
 
             }
         }
@@ -266,7 +266,7 @@ namespace PhotoQwrekster.ViewModel
 
                 byte[] buffer = GetImageBuffer(ms);
 
-                TwitterHelper.UploadMedia(buffer, "suprematizm11");
+                TwitterHelper.UploadMedia(buffer, _dataService.GetImageName());
 
             }
         }

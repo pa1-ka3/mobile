@@ -264,17 +264,36 @@ namespace PhotoQwrekster.View
         private void Save_Click(object sender, EventArgs e)
         {
             save_panel.IsOpen = true;
+            ImageNameEditBox.Text = imageProcessingViewModel.GetImageName();
         }
 
 
         private void btn_save_continue_Click(object sender, RoutedEventArgs e)
         {
             save_panel.IsOpen = false;
+            if (!imageProcessingViewModel.TrySaveImage(ImageNameEditBox.Text))
+            {
+                OverwritePromt.Text = string.Format("{0} already exist. overwrite?", ImageNameEditBox.Text);
+                save_overwrite_prompt.IsOpen = true;
+            }
+            
         }
 
         private void btn_save_cancel_Click(object sender, RoutedEventArgs e)
         {
             save_panel.IsOpen = false;
+        }
+
+        private void btn_save_overwrite_Click(object sender, RoutedEventArgs e)
+        {
+            save_overwrite_prompt.IsOpen = false;
+            imageProcessingViewModel.DoSaveImage(ImageNameEditBox.Text);
+        }
+
+        private void btn_overwrite_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            save_overwrite_prompt.IsOpen = false;
+            save_panel.IsOpen = true;
         }
 
         

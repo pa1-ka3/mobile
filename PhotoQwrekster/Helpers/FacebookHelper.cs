@@ -17,6 +17,7 @@ using RestSharp;
 using PhotoQwrekster.Model;
 using System.Threading;
 using System.IO;
+using PhotoQwrekster.ViewModel;
 
 namespace PhotoQwrekster.Helpers
 {
@@ -40,11 +41,9 @@ namespace PhotoQwrekster.Helpers
 
             client.UserAgent = "Facebook";
 
-            string contentType = @"application/json";
             InstagramFirstPhase td = new InstagramFirstPhase() { device_timestamp = HelperUtility.GetUnixTimestamp()};
             string serialized = JsonConvert.SerializeObject(td, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
-       //     request.AddParameter(contentType, serialized, ParameterType.RequestBody);
             string caption = (string)obj[1];
             request.AddFile("source",
                 (requestStream) =>
@@ -63,13 +62,19 @@ namespace PhotoQwrekster.Helpers
             {
                 try
                 {
+                    string result;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        //            var callback = obj[1] as Action<Task>;
-                        //          if (callback != null) callback((Task)obj[0]);
+                        result = ImagePublished;
                     }
-                    //    else
-                    //MessageBox.Show(message);
+                    else
+                        result = NoSuccess;
+
+                    Runner.Invoke(() =>
+                    {
+                        INavigationService navigation = App.Container.Resolve<INavigationService>();
+                        navigation.NavigateTo(new Uri(ViewModelLocator.ShareInNet + "?result=" + result, UriKind.RelativeOrAbsolute));
+                    });
                 }
                 catch (WebException)
                 {
@@ -82,6 +87,9 @@ namespace PhotoQwrekster.Helpers
                 }
             });
         }
+
+        private const string ImagePublished = "image published to facebook";
+        private const string NoSuccess = "no success at upload to facebook";
 
     }
 }

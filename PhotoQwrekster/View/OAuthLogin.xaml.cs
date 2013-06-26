@@ -62,7 +62,7 @@ namespace PhotoQwrekster.View
             { 
             }
         }
-                        
+
         void Browser_Navigating(object sender, NavigatingEventArgs e)
         {
             if (e.Uri.ToString().Contains("error_code="))
@@ -89,15 +89,6 @@ namespace PhotoQwrekster.View
             NavigationService.Navigate(new Uri("/View/ShareInNetView.xaml", UriKind.RelativeOrAbsolute));
         }
 
-     /*   private void InspectTokenCallback(List<object> token)
-        {           
-            INavigationService navigation = App.Container.Resolve<INavigationService>();
-            Runner.Invoke(() =>
-            {
-                navigation.NavigateTo(new Uri(ViewModelLocator.ImageProcessing+"?callback=true", UriKind.RelativeOrAbsolute));
-            });
-        }
-      * */
         private static Action<List<object>> _inspectTokenCallback;
 
         public static Action<List<object>> InspectTokenCallback

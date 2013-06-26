@@ -19,6 +19,7 @@ using System.Threading;
 using System.IO;
 using Hammock.Authentication.OAuth;
 using System.Text;
+using PhotoQwrekster.ViewModel;
 
 namespace PhotoQwrekster.Helpers
 {
@@ -260,13 +261,23 @@ namespace PhotoQwrekster.Helpers
 
         private static void PostTweetRequestCallback(Hammock.RestRequest request, Hammock.RestResponse response, object obj)
         {
+            string result;
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                //Success code
+                result = ImagePublished;
             }
-            //  MessageBox.Show(response.Content);
+            else
+                result = NoSuccess;
+
+            Runner.Invoke(() =>
+            {
+                INavigationService navigation = App.Container.Resolve<INavigationService>();
+                navigation.NavigateTo(new Uri(ViewModelLocator.ShareInNet + "?result=" + result, UriKind.RelativeOrAbsolute));
+            });
         }
 
+        private const string ImagePublished = "image published to tumblr";
+        private const string NoSuccess = "no success at upload to tumblr";
 
     }
 }

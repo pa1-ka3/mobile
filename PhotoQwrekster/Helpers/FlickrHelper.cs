@@ -17,6 +17,7 @@ using RestSharp;
 using PhotoQwrekster.Model;
 using System.Threading;
 using System.IO;
+using PhotoQwrekster.ViewModel;
 
 namespace PhotoQwrekster.Helpers
 {
@@ -89,15 +90,19 @@ namespace PhotoQwrekster.Helpers
             {
                 try
                 {
+                    string result;
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        //            var callback = obj[1] as Action<Task>;
-                        //          if (callback != null) callback((Task)obj[0]);
-                        
+                        result = ImagePublished;
                     }
-                    MessageBox.Show(response.Content);
-                    //    else
-                    //MessageBox.Show(message);
+                    else
+                        result = NoSuccess;
+
+                    Runner.Invoke(() =>
+                    {
+                        INavigationService navigation = App.Container.Resolve<INavigationService>();
+                        navigation.NavigateTo(new Uri(ViewModelLocator.ShareInNet + "?result=" + result, UriKind.RelativeOrAbsolute));
+                    });
                 }
                 catch (WebException)
                 {
@@ -111,6 +116,8 @@ namespace PhotoQwrekster.Helpers
             });
         }
 
+        private const string ImagePublished = "image published to flickr";
+        private const string NoSuccess = "no success at upload to flickr";
 
     }
 }

@@ -119,12 +119,12 @@ namespace PhotoQwrekster.View
                 oauthV1Helper.SetVerifier(parameters["oauth_verifier"]);
                 //FlickrOAuthHelper.oauth_verifier = parameters["oauth_verifier"];
                 Browser.Visibility = Visibility.Collapsed;
-                
+
                 oauthV1Helper.GetRequestTokenQueryNonStatic(false, InspectTokenCallback);
             }
         }
 
-        
+
         private void NavigateToShareInNetPage()
         {
             NavigationService.Navigate(new Uri("/View/ShareInNetView.xaml", UriKind.RelativeOrAbsolute));

@@ -29,6 +29,7 @@ namespace PhotoQwrekster.View
                // viewModel.NotificationMessage = result;
                 upload_result_notification.IsOpen = true;
                 Notification.Text = result;
+                performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
 
@@ -36,6 +37,7 @@ namespace PhotoQwrekster.View
 
         private void ShareImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
             ActionDescriptionModel data = (sender as TextBlock).DataContext as ActionDescriptionModel;
             viewModel = this.DataContext as ShareInNetViewModel;
             viewModel.ShareImage(data);

@@ -83,7 +83,6 @@ namespace PhotoQwrekster.Helpers
             string responseString = streamRead.ReadToEnd();
             string result = ParseResponse(responseString);
             
-            //Console.WriteLine(responseString);
             // Close the stream object
             streamResponse.Close();
             streamRead.Close();
@@ -91,10 +90,6 @@ namespace PhotoQwrekster.Helpers
             // Release the HttpWebResponse
             response.Close();
 
-            /*if (callback != null)
-            {
-                callback.Invoke(result);
-            }*/
             Runner.Invoke(() =>
             {
 
@@ -112,14 +107,10 @@ namespace PhotoQwrekster.Helpers
             var o = JObject.Parse(json);
             JToken t = o["entry"];
             JToken published = t.SelectToken("published");
-            JToken content = o["entry"].SelectToken("content");
             
-            if (published != null || content != null)
-            {   
-                JToken src = content.SelectToken("@src");
-                string source = (src != null) ? src.ToString() : "";
-                return ImagePublished + " " + source;
-                
+            if (published != null)
+            {
+                return ImagePublished;
             }
             else return "no success at upload";
         }

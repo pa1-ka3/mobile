@@ -5,6 +5,8 @@
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            xmlns:toolkitMain="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+                            
                             mc:Ignorable="d"
                             d:DesignWidth="480"
                             d:DesignHeight="768"
@@ -180,8 +182,21 @@
         <Grid x:Name="ContentPanel"
               Grid.Row="1"
               Margin="12,0,12,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <ListBox ItemsSource="{Binding ActionsList}" 
+            
+<toolkitMain:PerformanceProgressBar Grid.Row="0" 
+                                    x:Name="performanceProgressBar" 
+                                    IsIndeterminate="True" 
+                                    Height="11" Width="470" 
+                                    Visibility="Collapsed" >
+            </toolkitMain:PerformanceProgressBar>
+
+            <ListBox Grid.Row="1" ItemsSource="{Binding ActionsList}" 
                      ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                      
                      Height="530"
@@ -189,7 +204,7 @@
                      DataContext="{Binding}">
 
             </ListBox>
-            
+            </Grid>
         </Grid>
         <Popup x:Name="upload_result_notification" IsOpen="{Binding ShowPopupNotification}">
             <Border  BorderThickness="2" Margin="10" >

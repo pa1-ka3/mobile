@@ -18,6 +18,20 @@ namespace PhotoQwrekster.View
             InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (NavigationContext.QueryString.ContainsKey("result"))
+            {
+                string result = NavigationContext.QueryString["result"];
+              //  viewModel = this.DataContext as ShareInNetViewModel;
+                //viewModel.ShowPopupNotification = true;
+               // viewModel.NotificationMessage = result;
+                upload_result_notification.IsOpen = true;
+                Notification.Text = result;
+            }
+        }
+
         ShareInNetViewModel viewModel; 
 
         private void ShareImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -26,6 +40,16 @@ namespace PhotoQwrekster.View
             viewModel = this.DataContext as ShareInNetViewModel;
             viewModel.ShareImage(data);
 
+        }
+
+        private void btn_ok_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            upload_result_notification.IsOpen = false;
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            NavigationService.Navigate(new System.Uri("/View/ImageProcessingView.xaml", System.UriKind.RelativeOrAbsolute));
         }
     }
 }

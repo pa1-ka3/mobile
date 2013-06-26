@@ -59,8 +59,9 @@ namespace PhotoQwrekster.View
                 ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = true;  //"Save" 
                 ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = true;  //"Share" 
                 flickData.Visibility = System.Windows.Visibility.Visible;
+                flickData.Text = "try to transform image with gesture";
                 Size s = imageProcessingViewModel.GetImageRecalculatedSize();
-                //flickData.Text = string.Format("size hight: - {0}, width: -{1}", s.Height, s.Width);
+                
                 imgSelectedPhoto.Height = s.Height;
                 imgSelectedPhoto.Width = s.Width;
             }
@@ -95,6 +96,7 @@ namespace PhotoQwrekster.View
             GestureElipse.Visibility = System.Windows.Visibility.Visible;
 
             SetLinesBoundaries(p1, p2);
+            flickData.Visibility = System.Windows.Visibility.Collapsed;
        /*     flickData.Text = string.Format("Pinch: Touch1 {0},{1} Touch2 {2},{3}  Margin [{4},{5},{6},{7}]",
 
                p1.X, p1.Y,

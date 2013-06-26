@@ -77,6 +77,8 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -219,11 +221,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\hammock-master\hammock-master\src\net40\Hammock.WindowsPhone\Hammock.WindowsPhone.csproj">
+    <ProjectReference Include="..\hammock-master\src\net40\Hammock.WindowsPhone\Hammock.WindowsPhone.csproj">
       <Project>{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}</Project>
       <Name>Hammock.WindowsPhone</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\RestSharp-master\RestSharp-master\RestSharp.WindowsPhone\RestSharp.WindowsPhone.csproj">
+    <ProjectReference Include="..\RestSharp-master\RestSharp.WindowsPhone\RestSharp.WindowsPhone.csproj">
       <Project>{F4D48DF6-316E-4963-B5C1-59CA39B431B7}</Project>
       <Name>RestSharp.WindowsPhone</Name>
     </ProjectReference>

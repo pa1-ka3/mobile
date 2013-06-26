@@ -203,9 +203,7 @@ namespace PhotoQwrekster.ViewModel
         internal void NavigateBack()
         {
             INavigationService navigation = App.Container.Resolve<INavigationService>();
-
-            navigation.NavigateTo(new Uri(ViewModelLocator.Camera, UriKind.RelativeOrAbsolute));
-            
+            navigation.NavigateTo(new Uri(ViewModelLocator.Camera, UriKind.RelativeOrAbsolute));            
         }
 
 

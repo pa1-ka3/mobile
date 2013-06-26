@@ -108,14 +108,77 @@ namespace PhotoQwrekster.ViewModel
             }
         }
 
-              
 
+        /// <summary>
+        /// The <see cref="ShowPopupNotification" /> property's name.
+        /// </summary>
+        public const string ShowPopupNotificationPropertyName = "ShowPopupNotification";
+
+        private bool _showPopupNotification = false;
+
+        /// <summary>
+        /// Sets and gets the ShowPopupNotification property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// This property's value is broadcasted by the MessengerInstance when it changes.
+        /// </summary>
+        public bool ShowPopupNotification
+        {
+            get
+            {
+                return _showPopupNotification;
+            }
+
+            set
+            {
+                if (_showPopupNotification == value)
+                {
+                    return;
+                }
+
+                var oldValue = _showPopupNotification;
+                _showPopupNotification = value;
+                RaisePropertyChanged(ShowPopupNotificationPropertyName, oldValue, value, true);
+            }
+        }
+
+
+        /// <summary>
+        /// The <see cref="NotificationMessage" /> property's name.
+        /// </summary>
+        public const string NotificationMessagePropertyName = "NotificationMessage";
+
+        private string _notificationMessage = string.Empty;
+
+        /// <summary>
+        /// Sets and gets the NotificationMessage property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// This property's value is broadcasted by the MessengerInstance when it changes.
+        /// </summary>
+        public string NotificationMessage
+        {
+            get
+            {
+                return _notificationMessage;
+            }
+
+            set
+            {
+                if (_notificationMessage == value)
+                {
+                    return;
+                }
+
+                var oldValue = _notificationMessage;
+                _notificationMessage = value;
+                RaisePropertyChanged(NotificationMessagePropertyName, oldValue, value, true);
+            }
+        }
 
 
         private void ShareInFacebook()
         {
             App.Container.ReplaceRegistration<IOAuthHelper>(c => new FacebookOAuthHelper());
-            //App.Container.Register<IOAuthHelper>(c => new FacebookOAuthHelper());
+            FacebookConfigHelper.InitPropertiesFromStorage();
 
             if (!FacebookConfigHelper.IsLoggedIn)
             {
@@ -157,6 +220,7 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInFlickr()
         {
             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new FlickrOAuthHelper());
+            FlickrConfigHelper.InitPropertiesFromStorage();
             
             if (!FlickrConfigHelper.IsLoggedIn)
             {
@@ -186,11 +250,10 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInPicasa()
         {
             App.Container.ReplaceRegistration<IOAuthHelper>(c => new GoogleOAuthHelper());
-            //App.Container.Register<IOAuthHelper>(c => new FacebookOAuthHelper());
+            GoogleConfigHelper.InitPropertiesFromStorage();
 
             if (!GoogleConfigHelper.IsLoggedIn)
             {
-                // callbackAction = UploadToFacebook;
                 PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = UploadToPicasa;
                 INavigationService navigation = App.Container.Resolve<INavigationService>();
 
@@ -209,14 +272,24 @@ namespace PhotoQwrekster.ViewModel
 
                 byte[] buffer = GetImageBuffer(ms);
 
-                GoogleHelper.UploadMedia(buffer, _dataService.GetImageName());
+                GoogleHelper.UploadMedia(buffer, _dataService.GetImageName(), ShowUploadResult);
 
             }
+        }
+
+        private void ShowUploadResult(string uploadResult)
+        {
+            Runner.Invoke(() =>
+            {
+                ShowPopupNotification = true;
+                NotificationMessage = uploadResult;
+            });
         }
 
         private void ShareInTumblr()
         {
             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TumblrOAuthHelper());
+            TumblrConfigHelper.InitPropertiesFromStorage();
 
             if (!TumblrConfigHelper.IsLoggedIn)
             {
@@ -246,6 +319,7 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInTwitter()
         {
             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TwitterOAuthHelper());
+            TwitterConfigHelper.InitPropertiesFromStorage();
 
             if (!TwitterConfigHelper.IsLoggedIn)
             {

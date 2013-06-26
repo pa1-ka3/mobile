@@ -169,7 +169,7 @@
 		    		<ColumnDefinition Width="185"></ColumnDefinition>     	
 		    		<ColumnDefinition></ColumnDefinition>     	
 		    	</Grid.ColumnDefinitions> 
-          <TextBlock Text="transform in one dimension" Grid.Column="0" TextWrapping="Wrap" 
+          <TextBlock Text="transform along one axe" Grid.Column="0" TextWrapping="Wrap" 
 	        		Margin="0,1,5,1"
 	        		Foreground="Gray"
 	        		TextAlignment="Right"	>
@@ -190,7 +190,7 @@
 				 </primitives:ToggleSwitchButton>
 				 
 				 
-			<TextBlock Text="transform in two dimensions" Grid.Column="2" TextWrapping="Wrap"
+			<TextBlock Text="transform along both axes" Grid.Column="2" TextWrapping="Wrap"
 			Foreground="Gray"
 			Margin="10,1,0,1"></TextBlock>
             </Grid>
@@ -219,7 +219,7 @@
             <Line x:Name="Line2" X1="10" Y1="120" X2="120" Y2="20" Stroke="#FFF51313" Visibility="Collapsed"></Line>
 
 
-            <TextBlock x:Name="flickData" Text="Flick:" Foreground="{StaticResource CameraButtonColorBrush}"
+            <TextBlock x:Name="flickData" Text="try to transform image with gesture" Foreground="{StaticResource CameraButtonColorBrush}"
                        Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="40" 
                        TextWrapping="Wrap" FontSize="24" FontWeight="ExtraBold" Margin="12,0,12,40" />
             <Ellipse Name="GestureElipse" 

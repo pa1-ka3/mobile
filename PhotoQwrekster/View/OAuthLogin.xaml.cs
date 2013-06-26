@@ -37,7 +37,7 @@ namespace PhotoQwrekster.View
             else
             {
                 MessageBox.Show("no internet, please, try to sign in later.");
-                NavigateToImageProcessingPage();
+                NavigateToShareInNetPage();
             }
         }
 
@@ -45,8 +45,6 @@ namespace PhotoQwrekster.View
         {
             connectTitle.Visibility = System.Windows.Visibility.Collapsed;
             Browser.Visibility = System.Windows.Visibility.Collapsed;
-            ClearCookies();
-
         }
 
         private void ClearCookies()
@@ -83,12 +81,12 @@ namespace PhotoQwrekster.View
 
         private void OnNavigatedFromAnimation()
         {
-            MetroInMotionUtils.MetroInMotion.SlideDownOutAnimation(new FrameworkElement[] { Browser }.ToList<FrameworkElement>(), NavigateToImageProcessingPage);
+            MetroInMotionUtils.MetroInMotion.SlideDownOutAnimation(new FrameworkElement[] { Browser }.ToList<FrameworkElement>(), NavigateToShareInNetPage);
         }
 
-        private void NavigateToImageProcessingPage()
+        private void NavigateToShareInNetPage()
         {
-            NavigationService.Navigate(new Uri("/View/ImageProcessingView.xaml", UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/View/ShareInNetView.xaml", UriKind.RelativeOrAbsolute));
         }
 
      /*   private void InspectTokenCallback(List<object> token)
@@ -111,7 +109,7 @@ namespace PhotoQwrekster.View
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            NavigateToImageProcessingPage();
+            NavigateToShareInNetPage();
         }
 
         private void Browser_Navigated(object sender, NavigationEventArgs e)

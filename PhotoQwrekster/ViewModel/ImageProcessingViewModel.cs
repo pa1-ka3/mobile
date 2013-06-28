@@ -67,7 +67,6 @@ namespace PhotoQwrekster.ViewModel
                     data = br.ReadBytes((int)e.ChosenPhoto.Length);
 
                 _dataService.SetCupturedImageByte(data);
-                _dataService.SetImageName(e.OriginalFileName);
 
                 if (imageChooseComplete != null)
                     imageChooseComplete.Invoke();
@@ -103,13 +102,10 @@ namespace PhotoQwrekster.ViewModel
         {
             BitmapImage bmpImg = new BitmapImage();
             
-            //bmpImg.SetSource(picCurrentImage.GetImage());
-            // bmpImg.SetSource(library.Pictures[library.Pictures.Count - 1].GetImage());
             byte[] imageData = _dataService.GetCapturedImageByte();
             if (imageData == null) return null;
             MemoryStream capturedStream = new MemoryStream(imageData); 
            
-            //RotateTransform transform = new RotateTransform(){ CenterX = 0.5, CenterY = 0.5 };
             int angle = GetAngleFromExif(capturedStream);
             bmpImg.SetSource(capturedStream);
             if (angle == 0 && bmpImg.PixelWidth > bmpImg.PixelHeight) angle = 90;
@@ -137,8 +133,6 @@ namespace PhotoQwrekster.ViewModel
                         return BitmapImageSource;
                     }
             }
-
-            //return RotateBitmap(wbitmp, bmpImg.PixelWidth, bmpImg.PixelHeight, angle);
         }
 
         int GetAngleFromExif(Stream imageStream)
@@ -221,7 +215,6 @@ namespace PhotoQwrekster.ViewModel
 
         internal void GetBitmapAfterCalculation()
         {
-          //  BitmapImageSource = new WriteableBitmap(BitmapCalculated.PixelWidth, BitmapCalculated.PixelHeight);
             BitmapCalculated.Pixels.CopyTo(BitmapImageSource.Pixels, 0);
 
             BitmapImageSource.Invalidate();

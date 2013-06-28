@@ -59,7 +59,7 @@ namespace PhotoQwrekster.ViewModel
                                         
                 });
 
-            SelectFacebookCommand = new RelayCommand(() => OnSelectFacebookClick());
+            
         }            
 
         #region ButtonsCommands

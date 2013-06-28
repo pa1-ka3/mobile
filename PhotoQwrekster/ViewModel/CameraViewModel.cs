@@ -399,35 +399,7 @@ namespace PhotoQwrekster.ViewModel
         }
         #endregion
 
-       
-
-
-        public RelayCommand SelectFacebookCommand
-        {
-            get;
-            private set;
-        }
-
-       
-        private object OnSelectFacebookClick()
-        {
-            //  App.Container.Register<ITaskHelper>(c => new BasecampTaskHelper());
-            //  App.Container.Register<ITaskListHelper>(c => new BasecampTaskListHelper());
-           // App.Container.Register<IOAuthHelper>(c => new FacebookOAuthHelper());
-
-            NavigateToLogin();
-            return null;
-        }
-
-        private static void NavigateToLogin()
-        {
-           
-                var rootFrame = (App.Current as App).RootFrame;
-              //  rootFrame.Navigate(new Uri("/View/OAuthLogin.xaml", UriKind.Relative));
-           
-        }
-        // Variables
-
+     
         MediaLibrary library = new MediaLibrary();
 
         // Holds the current resolution index.
@@ -559,7 +531,7 @@ namespace PhotoQwrekster.ViewModel
             }
 
             cam.Resolution = res;
-            ResButtonContent = string.Format("R{0}x{1}", res.Width, res.Height);
+            ResButtonContent = string.Format("{0}x{1}", res.Width, res.Height);
 
         }
 

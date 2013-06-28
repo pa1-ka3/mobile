@@ -20,7 +20,6 @@ namespace PhotoQwrekster.Helpers
 {
     public class FacebookOAuthHelper : IOAuthHelper
     {
-
         public void GetRequestTokenQueryNonStatic(bool isRefresh, Action<System.Collections.Generic.List<object>> callback)
         {
             FacebookOAuthHelper.GetRequestTokenQuery(isRefresh, callback);
@@ -102,22 +101,14 @@ namespace PhotoQwrekster.Helpers
         {
             try
             {
-
-                //Console.WriteLine("RefreshTokenCode start");
-
                 var a = ((App)App.Current).SettingsData;
                 var settings = a.Settings;
-
-                // Console.WriteLine("setings resieved");
-
-
 
                 if (settings.Contains("Timestamp" + FacebookConfigHelper.AccountKey))
                 {
                     var secondsElapsed = TimeSpan.FromTicks(DateTime.Now.Ticks).TotalSeconds - (double)settings["Timestamp" + FacebookConfigHelper.AccountKey];
                     if (secondsElapsed > FacebookConfigHelper.TokenExpiry)
                     {
-                        //GetRequestTokenQuery(true, callback);
                         OAuthLogin.InspectTokenCallback = callback;
                         INavigationService navigation = App.Container.Resolve<INavigationService>();
 

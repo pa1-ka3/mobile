@@ -112,6 +112,8 @@ namespace PhotoQwrekster.ViewModel
             //RotateTransform transform = new RotateTransform(){ CenterX = 0.5, CenterY = 0.5 };
             int angle = GetAngleFromExif(capturedStream);
             bmpImg.SetSource(capturedStream);
+            if (angle == 0 && bmpImg.PixelWidth > bmpImg.PixelHeight) angle = 90;
+
             WriteableBitmap wbitmp = new WriteableBitmap(bmpImg);
             
             switch (angle)
@@ -225,10 +227,12 @@ namespace PhotoQwrekster.ViewModel
             BitmapImageSource.Invalidate();
         }
 
+        public bool isCalculating = false;
+
         internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int radius, double deg, Action callback)
         {
             radius = radius * 5;
-
+            isCalculating = true;
             if (TransformMode) // transform in two directions
             {
                 if (transformScale > 1)
@@ -247,7 +251,7 @@ namespace PhotoQwrekster.ViewModel
                     PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapCalculated, BitmapBackup,
                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg);
             }
-
+            isCalculating = false;
             Runner.Invoke(() =>
             {
             if (callback != null)
@@ -356,6 +360,13 @@ namespace PhotoQwrekster.ViewModel
                 library.SavePictureToCameraRoll(fileName, buffer);
                 _dataService.SetImageName(fileName);
             }
+        }
+
+        internal bool IsImageLarge()
+        {
+            if (BitmapImageSource.PixelHeight > 1000 || BitmapImageSource.PixelWidth > 1000)
+                return true;
+            else return false;
         }
     }
 }

@@ -222,6 +222,7 @@
             <TextBlock x:Name="flickData" Text="try to transform image with gesture" Foreground="{StaticResource CameraButtonColorBrush}"
                        Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="40" 
                        TextWrapping="Wrap" FontSize="24" FontWeight="ExtraBold" Margin="12,0,12,40" />
+            <!-- First ellipse, non transformable -->
             <Ellipse Name="GestureElipse" 
                      Margin="0,130,-200,-200" 
                      Visibility="Visible" 
@@ -231,9 +232,7 @@
                      RenderTransformOrigin="0.5, 0.5"
                       
                      Width="480"
-                     Height="50"
-                      
-                     
+                     Height="240"
                      >
                 <Ellipse.Fill>
                     <RadialGradientBrush   
@@ -247,20 +246,29 @@
                                           Offset="1" />
                         </RadialGradientBrush.GradientStops>
                     </RadialGradientBrush>
-
                 </Ellipse.Fill>
+            </Ellipse>
+            
+            <!--Transformable ellipse -->
+            <Ellipse Name="TransformElipse" 
+                     Margin="0,130,-200,-200" 
+                     Visibility="Visible" 
+                    
+                     VerticalAlignment="Top" 
+                     HorizontalAlignment="Left" 
+                     RenderTransformOrigin="0.5, 0.5"
+                     Stroke="Red" 
+                     StrokeThickness="2"
+                     Width="480"
+                     Height="240"
+                     >
                 
                 <Ellipse.RenderTransform>
                     <CompositeTransform x:Name="transform" Rotation="0" />
                 </Ellipse.RenderTransform>
-
-
-
-
-
             </Ellipse>
 
-<toolkitMain:PerformanceProgressBar x:Name="performanceProgressBar" IsIndeterminate="True" Height="11" Width="470" Visibility="Visible" >
+            <toolkitMain:PerformanceProgressBar x:Name="performanceProgressBar" IsIndeterminate="True" Height="11" Width="470" Visibility="Visible" >
             </toolkitMain:PerformanceProgressBar>
 
         </Grid>

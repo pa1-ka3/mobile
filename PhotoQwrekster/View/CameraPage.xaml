@@ -19,7 +19,7 @@
     
 	<phone:PhoneApplicationPage.Resources>
 		<Style x:Key="RoundCornerButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource CameraButtonColorBrush}"/>
+            <Setter Property="Background" Value="{StaticResource CameraButtonColorBrushDark}"/>
 			<Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
 			<Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
 			<Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
@@ -27,7 +27,7 @@
 			<Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
 			<Setter Property="Padding" Value="1,1,1,1"/>
             <Setter Property="Height" Value="64"/>
-            <Setter Property="Width" Value="140" />
+            <Setter Property="Width" Value="120" />
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="Button">
@@ -92,23 +92,20 @@
 		</Grid.RowDefinitions>
 
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Background="{StaticResource CameraTrayBackgroundColor}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />                    
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-            <Grid.Background>
-                <SolidColorBrush Color="{StaticResource SystemTrayColor}"/>
-            </Grid.Background>
-				
+            	
 				<Button Name="FlashButton"
                         Grid.Column="0"
                         Command="{Binding Path=ChangeFlashClick}"
                          
                         
                         Style="{StaticResource RoundCornerButton}" 
-                        BorderThickness="3" HorizontalAlignment="Left" >
+                        BorderThickness="3" HorizontalAlignment="Center" >
                     <Grid>
                         <Image  Source="{Binding Path=FlashButtonContent, Converter={StaticResource ImageConverter}}"  
                             Margin="0" Height="48" >                            
@@ -122,7 +119,7 @@
                     Command="{Binding Path=ChangeResClick}" 
                     FontSize="20" 
 					Style="{StaticResource RoundCornerButton}"
-					HorizontalAlignment="Right"
+					HorizontalAlignment="Center"
                     >
                     
                         
@@ -166,7 +163,7 @@
 
         <!--Button StackPanel to the right of viewfinder>-->
         
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" Background="{StaticResource CameraTrayBackgroundColor}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />                    
                     <ColumnDefinition Width="160" />

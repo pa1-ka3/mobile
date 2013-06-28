@@ -29,9 +29,8 @@ namespace PhotoQwrekster.Helpers
         }
 
 
-        public static void TryUploadMedia(IList<object> obj)//byte[] jpegMediaBytes, string caption)
+        public static void TryUploadMedia(IList<object> obj)
         {
-            //          const string message = "Some error while trying to delete the task.";
             var client = new RestClient { Authenticator = new OAuth2UriQueryParameterAuthenticator(FacebookConfigHelper.AccessToken), Timeout = FacebookConfigHelper.RequestTimeout };
             var request = new RestRequest(Method.POST)
             {

@@ -45,6 +45,7 @@ namespace PhotoQwrekster.View
             SetGesturesLinesVisibility(System.Windows.Visibility.Collapsed);
             performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
             GestureElipse.Visibility = System.Windows.Visibility.Collapsed;
+            TransformElipse.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void SetSelectedPhotoSource()
@@ -84,16 +85,17 @@ namespace PhotoQwrekster.View
         double initialScale;
         private void OnPinchStarted(object sender, Input.PinchStartedGestureEventArgs e)
         {
+            if (imageProcessingViewModel.isCalculating) return;
             initialScale = transform.ScaleX = transform.ScaleY = 1;
 
             Point p1 = e.GetPosition(ContentPanel, 0);
             Point p2 = e.GetPosition(ContentPanel, 1);
 
-            GestureElipse.Height = GestureElipse.Width = 100;
+            GestureElipse.Height = GestureElipse.Width = TransformElipse.Height = TransformElipse.Width = 100;
             Radius = GetRadius(p1, p2); 
-            GestureElipse.Margin = GetEllipseMargin(p1, p2);
+            GestureElipse.Margin = TransformElipse.Margin = GetEllipseMargin(p1, p2);
             SetGesturesLinesVisibility(System.Windows.Visibility.Visible);
-            GestureElipse.Visibility = System.Windows.Visibility.Visible;
+            GestureElipse.Visibility = TransformElipse.Visibility = System.Windows.Visibility.Visible;
 
             SetLinesBoundaries(p1, p2);
             flickData.Visibility = System.Windows.Visibility.Collapsed;
@@ -202,14 +204,14 @@ namespace PhotoQwrekster.View
 
         private void OnPinchDelta(object sender, Input.PinchGestureEventArgs e)
         {
-
+            if (imageProcessingViewModel.isCalculating) return;
             //    transform.Rotation = initialAngle + e.TotalAngleDelta;
             transform.ScaleX = transform.ScaleY = initialScale * e.DistanceRatio;
 
             Point p1 = e.GetPosition(ContentPanel, 0);
             Point p2 = e.GetPosition(ContentPanel, 1);
 
-            GestureElipse.Margin = GetEllipseMargin(p1, p2);
+            TransformElipse.Margin = GetEllipseMargin(p1, p2);
             SetLinesBoundaries(p1, p2);
 
             //flickData.Text = string.Format("transform.ScaleX: {0}",
@@ -224,7 +226,8 @@ namespace PhotoQwrekster.View
 
         private void OnPinchCompleted(object sender, Input.PinchGestureEventArgs e)
         {
-            GestureElipse.Visibility = System.Windows.Visibility.Collapsed;
+            if (imageProcessingViewModel.isCalculating) return;
+            GestureElipse.Visibility = TransformElipse.Visibility = System.Windows.Visibility.Collapsed;
 
             Point p1 = e.GetPosition(imgSelectedPhoto, 0);
             Point p2 = e.GetPosition(imgSelectedPhoto, 1);
@@ -236,7 +239,11 @@ namespace PhotoQwrekster.View
                 centrY = (int)(p2.Y + p1.Y) / 2;
             }
             performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
-         //   centerData.Text = string.Format("Andle: {0}", angle *180 / Math.PI);
+            if (imageProcessingViewModel.IsImageLarge())
+            {
+                flickData.Visibility = System.Windows.Visibility.Visible;
+                flickData.Text = "image is very large. there would be performance difficulties";
+            }
             imageRecalculator.RunWorkerAsync();
         }
 
@@ -350,6 +357,7 @@ namespace PhotoQwrekster.View
                 imageProcessingViewModel.GetBitmapAfterCalculation();
                 ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
                 performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+                flickData.Visibility = System.Windows.Visibility.Collapsed;
                 SetGesturesLinesVisibility(System.Windows.Visibility.Collapsed);
             });
         }

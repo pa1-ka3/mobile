@@ -808,7 +808,7 @@ namespace PhotoQwrekster.ViewModel
 
             // Update the UI.
             TextDebug = String.Format("Setting capture resolution: {0}x{1}", res.Width, res.Height);
-            ResButtonContent = "R" + res.Width + "x" + res.Height;
+            ResButtonContent = res.Width + "x" + res.Height;
             _dataService.SaveResolutionSettings(res);
         }
 

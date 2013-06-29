@@ -14,6 +14,7 @@ using RestSharp;
 using Newtonsoft.Json.Linq;
 using PhotoQwrekster.View;
 using PhotoQwrekster.ViewModel;
+using System.Linq;
 
 
 namespace PhotoQwrekster.Helpers
@@ -89,10 +90,43 @@ namespace PhotoQwrekster.Helpers
                                         
                     if (callback != null)
                         callback(new List<object> { FacebookConfigHelper.AccessToken });
+                    GetUserName();
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show("Some error while trying to retrieve OAuth token code.\n\n" + e.Message);
+                }
+            });
+        }
+
+        private static void GetUserName()
+        {
+            var client = new RestClient { Timeout = FacebookConfigHelper.RequestTimeout };
+            var request = new RestRequest(Method.GET)
+            {
+                Resource = "https://graph.facebook.com/me?fields=name&access_token=" + FacebookConfigHelper.AccessToken
+            };
+
+            client.ExecuteAsync(request, response =>
+            {
+                try
+                {
+                    var o = JObject.Parse(response.Content);
+                    string nameToken = (o["name"] == null) ? "" : o["name"].ToString();
+                    if (!string.IsNullOrEmpty(nameToken))
+                    {
+                        ShareInNetViewModel shareViewModel = App.Container.Resolve<ShareInNetViewModel>();
+                        var q = from item in shareViewModel.ActionsList
+                                where item.ActionId == Model.ActionDestination.Facebook
+                                select item;
+                        Model.ActionDescriptionModel ad = q.FirstOrDefault();
+                        ad.UserName = nameToken;
+                        FacebookConfigHelper.UserName = nameToken;
+                    }
+                }
+                catch (Exception e)
+                {
+                    //MessageBox.Show("Some error while trying to retrieve OAuth token code.\n\n" + e.Message);
                 }
             });
         }

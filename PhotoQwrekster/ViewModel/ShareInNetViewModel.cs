@@ -31,20 +31,20 @@ namespace PhotoQwrekster.ViewModel
             ActionsList = new ObservableCollection<ActionDescriptionModel>()
             { 
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Facebook, 
-                    Description="facebuchek",
+                    UserName = FacebookConfigHelper.UserName,
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Flickr,
                     Description="flickr",
-                    UserName="aaaa",
+                    UserName = FlickrConfigHelper.UserName,
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/flickr.png", UriKind.Relative))},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Picasa,
-                    Description="google+",
+                    UserName = GoogleConfigHelper.UserName,
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/picasa.png", UriKind.Relative))},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter,
-                    Description="twpid", 
-                    UserName="bhh",
+                    UserName = TwitterConfigHelper.UserName,
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/twitter.png", UriKind.Relative))},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler",
+                    UserName = TumblrConfigHelper.UserName,
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))}
             };
 

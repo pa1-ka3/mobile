@@ -40,6 +40,7 @@ namespace PhotoQwrekster.Helpers
             _tokenCode = !settings.Contains("TokenCode" + AccountKey) ? string.Empty : settings["TokenCode" + AccountKey].ToString();
             _accessToken = !settings.Contains("AccessToken" + AccountKey) ? string.Empty : settings["AccessToken" + AccountKey].ToString();
             _refreshToken = !settings.Contains("RefreshToken" + AccountKey) ? string.Empty : settings["RefreshToken" + AccountKey].ToString();
+            _userName = !settings.Contains("UserName" + AccountKey) ? string.Empty : settings["UserName" + AccountKey].ToString();
         }
 
         private static int _tokenExpiry;
@@ -110,6 +111,21 @@ namespace PhotoQwrekster.Helpers
             get
             {
                 return  !string.IsNullOrEmpty(AccessToken);
+            }
+        }
+
+        private static string _userName;
+        public static string UserName
+        {
+            get
+            {
+                return _userName;
+            }
+            set
+            {
+                var settings = ((App)App.Current).SettingsData.Settings;
+                settings["UserName" + AccountKey] = value;
+                _userName = value;
             }
         }
 

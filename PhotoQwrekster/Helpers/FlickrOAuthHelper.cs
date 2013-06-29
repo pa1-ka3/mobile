@@ -176,7 +176,16 @@ namespace PhotoQwrekster.Helpers
                     {
                         OAuthFlickrAccessToken accessTokenResult = OAuthFlickrAccessToken.ParseResponse(response.Content);
                         FlickrConfigHelper.AccessToken = accessTokenResult.Token;
-
+                        if (!string.IsNullOrEmpty(accessTokenResult.Username))
+                        {
+                            ShareInNetViewModel shareViewModel = App.Container.Resolve<ShareInNetViewModel>();
+                            var q = from item in shareViewModel.ActionsList
+                                    where item.ActionId == Model.ActionDestination.Flickr
+                                    select item;
+                            Model.ActionDescriptionModel ad = q.FirstOrDefault();
+                            ad.UserName = accessTokenResult.Username;
+                            FlickrConfigHelper.UserName = accessTokenResult.Username;
+                        }                        
 
                         if (callback != null)
                             callback(new List<object> { FlickrConfigHelper.AccessToken });

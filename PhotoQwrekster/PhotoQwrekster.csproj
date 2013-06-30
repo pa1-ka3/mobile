@@ -119,6 +119,7 @@
     <Compile Include="NetworkChecker.cs" />
     <Compile Include="Services\Filters.cs" />
     <Compile Include="SettingsData.cs" />
+    <Compile Include="ViewModel\Converters.cs" />
     <Compile Include="ViewModel\ImageProcessingViewModel.cs" />
     <Compile Include="ViewModel\INavigationService.cs" />
     <Compile Include="ViewModel\NavigationService.cs" />

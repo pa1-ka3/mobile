@@ -6,7 +6,7 @@
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:toolkitMain="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
-                            
+                            xmlns:srcViewModel="clr-namespace:PhotoQwrekster.ViewModel"
                             mc:Ignorable="d"
                             d:DesignWidth="480"
                             d:DesignHeight="768"
@@ -19,7 +19,7 @@
                             DataContext="{Binding ShareViewModel, Source={StaticResource Locator}}">
 
     <phone:PhoneApplicationPage.Resources>
-      
+        <srcViewModel:LoginLogoutConverter x:Key="LoginLogout"/>
         <Style x:Key="ListBoxItemStyle1" TargetType="ListBoxItem">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -84,10 +84,10 @@
                                     <StackPanel Width="450" Margin="1,2,1,1" Background="{StaticResource CameraButtonColorBrush}" >
                                         <Border BorderBrush="#FF313131" BorderThickness="{StaticResource PhoneBorderThickness}" CornerRadius="3" >
                                        
-                                        <Grid>
+                                        <Grid Margin="2,2,2,2">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="43" />
+                                                <RowDefinition Height="30" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
@@ -98,7 +98,7 @@
 
                                                 <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
                                                        Tap="ShareImage_Tap"
-                                                       Source="{Binding IconImage}" Margin="0" Height="48" ></Image>
+                                                       Source="{Binding IconImage}" Margin="0" Height="60" ></Image>
                                                 <TextBlock Grid.Row="0" Grid.Column="1"
                                                        Text="{Binding Path=ActionId, Mode=TwoWay}"
                                                        Tag="{Binding Path=ActionId}"
@@ -114,16 +114,6 @@
                                             </TextBlock>
 
                                                 <TextBlock  Grid.Row="1" Grid.Column="1"
-                                                        Text="{Binding Path=Description, Mode=OneWay }"
-                                                        VerticalAlignment="Center"                                                       
-                                                        HorizontalAlignment="Left"
-                                                        Tap="ShareImage_Tap"
-                                                        FontSize="20"
-                                                        TextWrapping="NoWrap"
-                                                        Margin="10, 0"
-                                                        Width="300" 
-                                                 />
-                                                <TextBlock  Grid.Row="1" Grid.Column="1"
                                                         Text="{Binding Path=UserName, Mode=OneWay }"
                                                         VerticalAlignment="Center"                                                       
                                                         HorizontalAlignment="Left"
@@ -131,14 +121,24 @@
                                                            
                                                         FontSize="20"
                                                         TextWrapping="NoWrap"
-                                                        Margin="120, 0"
+                                                        Margin="10, 0"
                                                         Width="300" 
                                                  />
 
-                                                <TextBlock x:Name="LoginLogout" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                                           VerticalAlignment="Center"
-                                                       Text="LogIn"
+                                                <Border BorderThickness="1" BorderBrush="{StaticResource DialogButtonborderColorBrush}"
+                                                        Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                                        Margin="0,7,7,5">
+                                                    
+                                                       
+                                                    <TextBlock x:Name="LoginLogout"
+                                                               VerticalAlignment="Center"
+                                                               Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                                               Text="{Binding Path=ActionId, Converter={StaticResource LoginLogout}}"
+                                                               Foreground="Black"
+                                                               Margin="5,0,0,5"
+                                                               Tap="LoginLogout_Tap"
                                                        />
+                                                </Border>
 
                                                 <TextBlock x:Name="dummyTextBlock" Text="     " />
                                         </Grid>
@@ -170,7 +170,7 @@
                     Grid.Row="0"
                     Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle"
-                       Text="MY APPLICATION"
+                       Text="PHOTO QWREKSTER"
                        Style="{StaticResource PhoneTextNormalStyle}" />
             <TextBlock x:Name="PageTitle"
                        Text="share image"

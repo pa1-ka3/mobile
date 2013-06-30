@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
+using System.Collections.ObjectModel;
 
 namespace PhotoQwrekster.Model
 {
@@ -39,5 +40,7 @@ namespace PhotoQwrekster.Model
         void SetImageName(string imageName);
 
         string GetImageName();
+
+        ObservableCollection<ActionDescriptionModel> GetActionsList();
     }
 }

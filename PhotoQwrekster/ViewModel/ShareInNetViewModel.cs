@@ -6,6 +6,7 @@ using System;
 using PhotoQwrekster.Helpers;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace PhotoQwrekster.ViewModel
 {
@@ -28,28 +29,7 @@ namespace PhotoQwrekster.ViewModel
         public ShareInNetViewModel(IDataService dataService)
         {
             _dataService = dataService;
-            ActionsList = new ObservableCollection<ActionDescriptionModel>()
-            { 
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Facebook, 
-                    UserName = FacebookConfigHelper.UserName,
-                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Flickr,
-                    Description="flickr",
-                    UserName = FlickrConfigHelper.UserName,
-                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/flickr.png", UriKind.Relative))},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Picasa,
-                    UserName = GoogleConfigHelper.UserName,
-                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/picasa.png", UriKind.Relative))},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter,
-                    UserName = TwitterConfigHelper.UserName,
-                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/twitter.png", UriKind.Relative))},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler",
-                    UserName = TumblrConfigHelper.UserName,
-                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))}
-            };
-
-            //"/PhotoQwrekster;component/Resources/Photo.png"
-
+            ActionsList = _dataService.GetActionsList();
         }
 
         private ObservableCollection<ActionDescriptionModel> _listWithActions = default(ObservableCollection<ActionDescriptionModel>);
@@ -345,6 +325,125 @@ namespace PhotoQwrekster.ViewModel
             }
         }
 
+
+        internal void LoginLogout(ActionDescriptionModel data)
+        {
+            switch (data.ActionId)
+            {
+                case ActionDestination.Facebook:
+                    {
+                        if (!FacebookConfigHelper.IsLoggedIn)
+                        {
+                            App.Container.ReplaceRegistration<IOAuthHelper>(c => new FacebookOAuthHelper());
+                            FacebookConfigHelper.InitPropertiesFromStorage();
+
+                            PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = null; // navigate back?
+                            INavigationService navigation = App.Container.Resolve<INavigationService>();
+
+                            navigation.NavigateTo(new Uri(ViewModelLocator.OAuthLogin, UriKind.RelativeOrAbsolute));
+                        }
+                        else
+                        {
+                            FacebookConfigHelper.AccessToken = string.Empty;
+                            FacebookConfigHelper.UserName = string.Empty;
+                            ClearUserName(Model.ActionDestination.Facebook);
+                        }
+                        return;
+                    }
+                case ActionDestination.Flickr:
+                    {
+                        if (!FlickrConfigHelper.IsLoggedIn)
+                        {
+                            App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new FlickrOAuthHelper());
+                            FlickrConfigHelper.InitPropertiesFromStorage();
+
+                            PhotoQwrekster.View.OAuthFlickrLogin.InspectTokenCallback = null; // navigate back?
+                            INavigationService navigation = App.Container.Resolve<INavigationService>();
+
+                            navigation.NavigateTo(new Uri(ViewModelLocator.OAuthFlickrLogin, UriKind.RelativeOrAbsolute));
+                        }
+                        else
+                        {
+                            FlickrConfigHelper.AccessToken = string.Empty;
+                            FlickrConfigHelper.UserName = string.Empty;
+                            ClearUserName(Model.ActionDestination.Flickr);
+                        }
+                        return;
+                    }
+                case ActionDestination.Picasa:
+                    {
+                        if (!GoogleConfigHelper.IsLoggedIn)
+                        {
+                            App.Container.ReplaceRegistration<IOAuthHelper>(c => new GoogleOAuthHelper());
+                            GoogleConfigHelper.InitPropertiesFromStorage();
+
+                            PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = null; // navigate back?
+                            INavigationService navigation = App.Container.Resolve<INavigationService>();
+
+                            navigation.NavigateTo(new Uri(ViewModelLocator.OAuthLogin, UriKind.RelativeOrAbsolute));
+                        }
+                        else
+                        {
+                            GoogleConfigHelper.AccessToken = string.Empty;
+                            GoogleConfigHelper.UserName = string.Empty;
+                            ClearUserName(Model.ActionDestination.Picasa);
+                        }
+                        return;
+                    }
+                case ActionDestination.Tumblr:
+                    {
+                        if (!TumblrConfigHelper.IsLoggedIn)
+                        {
+                            App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TumblrOAuthHelper());
+                            TumblrConfigHelper.InitPropertiesFromStorage();
+
+                            PhotoQwrekster.View.OAuthFlickrLogin.InspectTokenCallback = null; // navigate back?
+                            INavigationService navigation = App.Container.Resolve<INavigationService>();
+
+                            navigation.NavigateTo(new Uri(ViewModelLocator.OAuthFlickrLogin, UriKind.RelativeOrAbsolute));
+                        }
+                        else
+                        {
+                            TumblrConfigHelper.AccessToken = string.Empty;
+                            TumblrConfigHelper.UserName = string.Empty;
+                            ClearUserName(Model.ActionDestination.Tumblr);
+                        }
+                        return;
+                    }
+                case ActionDestination.Twitter:
+                    {
+                        if (!TwitterConfigHelper.IsLoggedIn)
+                        {
+                            App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TwitterOAuthHelper());
+                            TwitterConfigHelper.InitPropertiesFromStorage();
+
+                            PhotoQwrekster.View.OAuthFlickrLogin.InspectTokenCallback = null; // navigate back?
+                            INavigationService navigation = App.Container.Resolve<INavigationService>();
+
+                            navigation.NavigateTo(new Uri(ViewModelLocator.OAuthFlickrLogin, UriKind.RelativeOrAbsolute));
+                        }
+                        else
+                        {
+                            TwitterConfigHelper.AccessToken = string.Empty;
+                            TwitterConfigHelper.UserName = string.Empty;
+                            ClearUserName(Model.ActionDestination.Twitter);
+                        }
+                        return;
+                    }
+                default:
+                    return;
+            }
+        }
+
+        private static void ClearUserName(Model.ActionDestination destination)
+        {
+            ShareInNetViewModel shareViewModel = App.Container.Resolve<ShareInNetViewModel>();
+            var q = from item in shareViewModel.ActionsList
+                    where item.ActionId == destination
+                    select item;
+            Model.ActionDescriptionModel ad = q.FirstOrDefault();
+            ad.UserName = "";
+        }
     }
     
 }

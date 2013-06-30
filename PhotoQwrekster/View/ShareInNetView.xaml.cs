@@ -53,5 +53,13 @@ namespace PhotoQwrekster.View
         {
             NavigationService.Navigate(new System.Uri("/View/ImageProcessingView.xaml", System.UriKind.RelativeOrAbsolute));
         }
+
+        private void LoginLogout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ActionDescriptionModel data = (sender as TextBlock).DataContext as ActionDescriptionModel;
+            viewModel = this.DataContext as ShareInNetViewModel;
+            viewModel.LoginLogout(data);
+
+        }
     }
 }

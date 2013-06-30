@@ -3,6 +3,8 @@ using System.IO;
 using System.Windows;
 using Microsoft.Devices;
 using System.Windows.Media.Imaging;
+using System.Collections.ObjectModel;
+using PhotoQwrekster.Helpers;
 
 namespace PhotoQwrekster.Model
 {
@@ -166,6 +168,30 @@ namespace PhotoQwrekster.Model
             if(string.IsNullOrEmpty(_imageName))
                 _imageName = "PQ-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".jpg";
             return _imageName;
+        }
+
+
+        public System.Collections.ObjectModel.ObservableCollection<ActionDescriptionModel> GetActionsList()
+        {
+            return new ObservableCollection<ActionDescriptionModel>()
+            { 
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Facebook, 
+                    UserName = FacebookConfigHelper.UserName,
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Flickr,
+                    Description="flickr",
+                    UserName = FlickrConfigHelper.UserName,
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/flickr.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Picasa,
+                    UserName = GoogleConfigHelper.UserName,
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/picasa.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter,
+                    UserName = TwitterConfigHelper.UserName,
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/twitter.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler",
+                    UserName = TumblrConfigHelper.UserName,
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))}
+            };
         }
     }
 }

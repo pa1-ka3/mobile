@@ -1,5 +1,8 @@
 ﻿using System;
 using PhotoQwrekster.Model;
+using System.Collections.ObjectModel;
+using PhotoQwrekster.Helpers;
+using System.Windows.Media.Imaging;
 
 namespace PhotoQwrekster.Design
 {
@@ -34,8 +37,6 @@ namespace PhotoQwrekster.Design
         {
             throw new NotImplementedException();
         }
-
-        
 
 
        System.Windows.Size IDataService.GetResolutionSetting()
@@ -98,6 +99,30 @@ namespace PhotoQwrekster.Design
        public string GetImageName()
        {
            throw new NotImplementedException();
+       }
+
+
+       public System.Collections.ObjectModel.ObservableCollection<ActionDescriptionModel> GetActionsList()
+       {
+           return new ObservableCollection<ActionDescriptionModel>()
+            { 
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Facebook, 
+                    UserName = "Facebook.UserName",
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Flickr,
+                    
+                    UserName = "FlickrConfigHelper.UserName",
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/flickr.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Picasa,
+                    UserName = GoogleConfigHelper.UserName,
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/picasa.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter,
+                    UserName = TwitterConfigHelper.UserName,
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/twitter.png", UriKind.Relative))},
+                new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler",
+                    UserName = "Tumblr.UserName",
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))}
+            };
        }
     }
 }

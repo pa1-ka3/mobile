@@ -14,6 +14,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using PhotoQwrekster.ViewModel;
 using Funq;
+using BugSense;
 
 namespace PhotoQwrekster
 {
@@ -49,9 +50,11 @@ namespace PhotoQwrekster
         // Constructor
         public App()
         {
+            BugSenseHandler.Instance.Init(this, "1a8e130a");
             // Global handler for uncaught exceptions. 
-            UnhandledException += Application_UnhandledException;
-
+            // Note that exceptions thrown by ApplicationBarItem.Click will not get caught here.
+            BugSenseHandler.Instance.UnhandledException += Application_UnhandledException;
+            
             // Standard Silverlight initialization
             InitializeComponent();
 
@@ -120,11 +123,18 @@ namespace PhotoQwrekster
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            if (e.ExceptionObject is ExitException)
+            {
+                e.Handled = true;
+                return;
+            }
+
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger
                 System.Diagnostics.Debugger.Break();
             }
+            BugSenseHandler.Instance.LogError(e.ExceptionObject, "Exception in PhotoQwrekster ver 0.0.3.2", null);
         }
 
         #region Phone application initialization
@@ -162,5 +172,14 @@ namespace PhotoQwrekster
         }
 
         #endregion
+
+        public static void Quit()
+        {
+            // quit the application by throwing an exception. Yuck!            
+            throw new ExitException();
+        }
+
+        class ExitException : BugSenseUnhandledException
+        { }
     }
 }

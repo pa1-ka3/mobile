@@ -226,6 +226,8 @@ namespace PhotoQwrekster.Helpers
             }
 
         }
+        // http://api.twitter.com/1/account/verify_credentials.format
+
 
         public static string oauth_token { get; set; }
 

@@ -14,6 +14,7 @@ using System.Windows;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Media;
 using System.Linq;
+using System.ComponentModel;
 
 namespace PhotoQwrekster.ViewModel
 {
@@ -222,7 +223,8 @@ namespace PhotoQwrekster.ViewModel
 
         public bool isCalculating = false;
 
-        internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int radius, double deg, Action callback)
+        internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int radius, double deg,
+            Action callback, out DateTime dt, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
         {
             radius = radius * 5;
             isCalculating = true;
@@ -230,20 +232,21 @@ namespace PhotoQwrekster.ViewModel
             {
                 if (transformScale > 1)
                     PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, uiDispatcher, showProgressCallback);
                 else
                     PhotoQwrekster.Service.Filters.SqueezeAroundPoint(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, uiDispatcher, showProgressCallback);
             }
             else // transform in one direction
             {
                 if (transformScale > 1)
                     PhotoQwrekster.Service.Filters.StretchInOneDimension(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback);
                 else
                     PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback);
             }
+            dt = DateTime.Now;
             isCalculating = false;
             Runner.Invoke(() =>
             {
@@ -360,6 +363,17 @@ namespace PhotoQwrekster.ViewModel
             if (BitmapImageSource.PixelHeight > 1000 || BitmapImageSource.PixelWidth > 1000)
                 return true;
             else return false;
+        }
+
+        
+
+        internal void RunMillion(BackgroundWorker worker)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                System.Threading.Thread.Sleep(200);
+                worker.ReportProgress(i);
+            }
         }
     }
 }

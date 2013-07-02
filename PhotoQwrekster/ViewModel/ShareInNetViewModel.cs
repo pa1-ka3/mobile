@@ -28,6 +28,11 @@ namespace PhotoQwrekster.ViewModel
         /// </summary>
         public ShareInNetViewModel(IDataService dataService)
         {
+            FacebookConfigHelper.InitPropertiesFromStorage();
+            FlickrConfigHelper.InitPropertiesFromStorage();
+            GoogleConfigHelper.InitPropertiesFromStorage();
+            TumblrConfigHelper.InitPropertiesFromStorage();
+            TwitterConfigHelper.InitPropertiesFromStorage();
             _dataService = dataService;
             ActionsList = _dataService.GetActionsList();
         }
@@ -158,7 +163,6 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInFacebook()
         {
             App.Container.ReplaceRegistration<IOAuthHelper>(c => new FacebookOAuthHelper());
-            FacebookConfigHelper.InitPropertiesFromStorage();
 
             if (!FacebookConfigHelper.IsLoggedIn)
             {
@@ -200,7 +204,6 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInFlickr()
         {
             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new FlickrOAuthHelper());
-            FlickrConfigHelper.InitPropertiesFromStorage();
             
             if (!FlickrConfigHelper.IsLoggedIn)
             {
@@ -230,7 +233,6 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInPicasa()
         {
             App.Container.ReplaceRegistration<IOAuthHelper>(c => new GoogleOAuthHelper());
-            GoogleConfigHelper.InitPropertiesFromStorage();
 
             if (!GoogleConfigHelper.IsLoggedIn)
             {
@@ -269,7 +271,6 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInTumblr()
         {
             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TumblrOAuthHelper());
-            TumblrConfigHelper.InitPropertiesFromStorage();
 
             if (!TumblrConfigHelper.IsLoggedIn)
             {
@@ -299,7 +300,6 @@ namespace PhotoQwrekster.ViewModel
         private void ShareInTwitter()
         {
             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TwitterOAuthHelper());
-            TwitterConfigHelper.InitPropertiesFromStorage();
 
             if (!TwitterConfigHelper.IsLoggedIn)
             {
@@ -332,7 +332,7 @@ namespace PhotoQwrekster.ViewModel
             {
                 case ActionDestination.Facebook:
                     {
-                        if (!FacebookConfigHelper.IsLoggedIn)
+                        if (string.IsNullOrEmpty(FacebookConfigHelper.AccessToken))
                         {
                             App.Container.ReplaceRegistration<IOAuthHelper>(c => new FacebookOAuthHelper());
                             FacebookConfigHelper.InitPropertiesFromStorage();
@@ -345,6 +345,7 @@ namespace PhotoQwrekster.ViewModel
                         else
                         {
                             FacebookConfigHelper.AccessToken = string.Empty;
+                            FacebookConfigHelper.TokenCode = string.Empty;
                             FacebookConfigHelper.UserName = string.Empty;
                             ClearUserName(Model.ActionDestination.Facebook);
                         }
@@ -352,7 +353,7 @@ namespace PhotoQwrekster.ViewModel
                     }
                 case ActionDestination.Flickr:
                     {
-                        if (!FlickrConfigHelper.IsLoggedIn)
+                        if (string.IsNullOrEmpty(FlickrConfigHelper.AccessToken))
                         {
                             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new FlickrOAuthHelper());
                             FlickrConfigHelper.InitPropertiesFromStorage();
@@ -372,7 +373,7 @@ namespace PhotoQwrekster.ViewModel
                     }
                 case ActionDestination.Picasa:
                     {
-                        if (!GoogleConfigHelper.IsLoggedIn)
+                        if (string.IsNullOrEmpty(GoogleConfigHelper.AccessToken))
                         {
                             App.Container.ReplaceRegistration<IOAuthHelper>(c => new GoogleOAuthHelper());
                             GoogleConfigHelper.InitPropertiesFromStorage();
@@ -392,7 +393,7 @@ namespace PhotoQwrekster.ViewModel
                     }
                 case ActionDestination.Tumblr:
                     {
-                        if (!TumblrConfigHelper.IsLoggedIn)
+                        if (string.IsNullOrEmpty(TumblrConfigHelper.AccessToken))
                         {
                             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TumblrOAuthHelper());
                             TumblrConfigHelper.InitPropertiesFromStorage();
@@ -412,7 +413,7 @@ namespace PhotoQwrekster.ViewModel
                     }
                 case ActionDestination.Twitter:
                     {
-                        if (!TwitterConfigHelper.IsLoggedIn)
+                        if (string.IsNullOrEmpty(TwitterConfigHelper.AccessToken))
                         {
                             App.Container.ReplaceRegistration<IOAuthV1Helper>(c => new TwitterOAuthHelper());
                             TwitterConfigHelper.InitPropertiesFromStorage();
@@ -435,14 +436,16 @@ namespace PhotoQwrekster.ViewModel
             }
         }
 
-        private static void ClearUserName(Model.ActionDestination destination)
+        private void ClearUserName(Model.ActionDestination destination)
         {
             ShareInNetViewModel shareViewModel = App.Container.Resolve<ShareInNetViewModel>();
             var q = from item in shareViewModel.ActionsList
                     where item.ActionId == destination
                     select item;
             Model.ActionDescriptionModel ad = q.FirstOrDefault();
+            ad.ActionId = ActionDestination.Nothing;
             ad.UserName = "";
+            ad.ActionId = destination;            
         }
     }
     

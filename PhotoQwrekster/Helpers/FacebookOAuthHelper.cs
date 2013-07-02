@@ -122,6 +122,12 @@ namespace PhotoQwrekster.Helpers
                         Model.ActionDescriptionModel ad = q.FirstOrDefault();
                         ad.UserName = nameToken;
                         FacebookConfigHelper.UserName = nameToken;
+
+                        Runner.Invoke(() =>
+                        {
+                            INavigationService navigation = App.Container.Resolve<INavigationService>();
+                            navigation.NavigateTo(new Uri(ViewModelLocator.ShareInNet, UriKind.RelativeOrAbsolute));
+                        });
                     }
                 }
                 catch (Exception e)

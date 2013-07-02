@@ -5,6 +5,7 @@ using System;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using System.Windows.Media;
+using MetroInMotionUtils;
 
 namespace PhotoQwrekster.View
 {
@@ -43,7 +44,7 @@ namespace PhotoQwrekster.View
             Radius = 120;
             SetLinesBoundaries(new Point(220, 220), new Point(30, 120));
             SetGesturesLinesVisibility(System.Windows.Visibility.Collapsed);
-            performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+            //performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
             GestureElipse.Visibility = System.Windows.Visibility.Collapsed;
             TransformElipse.Visibility = System.Windows.Visibility.Collapsed;
         }
@@ -78,7 +79,14 @@ namespace PhotoQwrekster.View
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            imageProcessingViewModel.NavigateBack();
+            
+            // create the list of items to peel
+            var peelList = new FrameworkElement[] { TitlePanel, imgSelectedPhoto };
+
+            peelList.Peel(() =>
+            {
+                imageProcessingViewModel.NavigateBack();
+            });
                
         }
 
@@ -238,7 +246,7 @@ namespace PhotoQwrekster.View
                 centrX = (int)(p2.X + p1.X) / 2;
                 centrY = (int)(p2.Y + p1.Y) / 2;
             }
-            performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
+            //performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
             if (imageProcessingViewModel.IsImageLarge())
             {
                 flickData.Visibility = System.Windows.Visibility.Visible;
@@ -250,19 +258,49 @@ namespace PhotoQwrekster.View
         private int centrX;
         private int centrY;
         private double angle;
+        System.Windows.Threading.Dispatcher uiDispatcher;
 
         void imageRecalculate_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
 #if DEBUG
-            Console.WriteLine("backgroundSynchronizer_DoWork");
+       //     Console.WriteLine("backgroundSynchronizer_DoWork");
 #endif
+            uiDispatcher = Deployment.Current.Dispatcher;
             Runner.Dispatcher = Deployment.Current.Dispatcher;
             Runner.Invoke(() =>
             {
-                
+
                 imageProcessingViewModel.GetBitmapCopyForCalculation();
-                imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle, OnUpdateFinished);
+                
+               
+                System.Threading.ThreadPool.QueueUserWorkItem(DoCalculation);
+                
+                
+
             });
+        }
+
+        private void DoCalculation(object o)
+        {
+            DateTime dtStart = DateTime.Now;
+            DateTime dtFinish;
+            Runner.Invoke(() =>
+            {
+                imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle,
+                        OnUpdateFinished, out dtFinish, uiDispatcher, ShowProgressString);
+            
+            TimeSpan ts = dtFinish - dtStart;
+
+            //MessageBox.Show(ts.ToString());
+#if DEBUG
+            Console.WriteLine(ts.ToString());
+#endif
+            });
+        }
+
+        private void ShowProgressString(string progressText)
+        {
+            flickData.Text = progressText;
         }
 
         private void Load_Click(object sender, EventArgs e)
@@ -345,9 +383,24 @@ namespace PhotoQwrekster.View
 
         private void imgSelectedPhoto_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-       /*  
-            */
-        
+            lock (this)
+            {
+                angle = 30;
+                Point p = e.GetPosition(imgSelectedPhoto);
+                centrX = (int)p.X;
+                centrY = (int)p.Y;
+                transform.ScaleX = 0.2;
+                Radius = 50;
+            }
+            //performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
+        //    CalculatingPanel.Visibility = System.Windows.Visibility.Visible;
+            flickData.Visibility = System.Windows.Visibility.Visible;
+            if (imageProcessingViewModel.IsImageLarge())
+            {   
+                flickData.Text = "image is very large. there would be performance difficulties";
+            }
+            if(!imageRecalculator.IsBusy)
+                imageRecalculator.RunWorkerAsync(); 
         }
 
         private void OnUpdateFinished()
@@ -356,16 +409,19 @@ namespace PhotoQwrekster.View
             {
                 imageProcessingViewModel.GetBitmapAfterCalculation();
                 ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
-                performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+                //performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
                 flickData.Visibility = System.Windows.Visibility.Collapsed;
+         //       CalculatingPanel.Visibility = System.Windows.Visibility.Collapsed;
                 SetGesturesLinesVisibility(System.Windows.Visibility.Collapsed);
             });
         }
 
-        
-        
+
+
+
+
+
 
         
-
     }
 }

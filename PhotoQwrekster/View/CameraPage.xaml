@@ -92,7 +92,7 @@
 		</Grid.RowDefinitions>
 
 
-        <Grid Grid.Row="0" Background="{StaticResource CameraTrayBackgroundColor}">
+        <Grid Grid.Row="0" Background="{StaticResource CameraTrayBackgroundColor}" x:Name="UpperGridRow">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />                    
                     <ColumnDefinition Width="160" />
@@ -163,7 +163,7 @@
 
         <!--Button StackPanel to the right of viewfinder>-->
         
-            <Grid Grid.Row="2" Background="{StaticResource CameraTrayBackgroundColor}">
+            <Grid Grid.Row="2" Background="{StaticResource CameraTrayBackgroundColor}" x:Name="BottomGridRow">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />                    
                     <ColumnDefinition Width="160" />

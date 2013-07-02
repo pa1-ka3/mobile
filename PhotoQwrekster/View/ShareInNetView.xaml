@@ -6,7 +6,7 @@
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:toolkitMain="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
-                            xmlns:srcViewModel="clr-namespace:PhotoQwrekster.ViewModel"
+                            xmlns:srcConverter="clr-namespace:PhotoQwrekster.Converters"
                             mc:Ignorable="d"
                             d:DesignWidth="480"
                             d:DesignHeight="768"
@@ -19,7 +19,7 @@
                             DataContext="{Binding ShareViewModel, Source={StaticResource Locator}}">
 
     <phone:PhoneApplicationPage.Resources>
-        <srcViewModel:LoginLogoutConverter x:Key="LoginLogout"/>
+        <srcConverter:LoginLogoutConverter x:Key="LoginLogout"/>
         <Style x:Key="ListBoxItemStyle1" TargetType="ListBoxItem">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -196,7 +196,7 @@
                                     Visibility="Collapsed" >
             </toolkitMain:PerformanceProgressBar>
 
-            <ListBox Grid.Row="1" ItemsSource="{Binding ActionsList}" 
+            <ListBox x:Name="ActionsListBox" Grid.Row="1" ItemsSource="{Binding ActionsList}" 
                      ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                      
                      Height="530"

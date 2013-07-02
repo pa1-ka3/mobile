@@ -18,6 +18,7 @@ using System.IO.IsolatedStorage;
 using Microsoft.Xna.Framework.Media;
 using System.Windows.Media.Imaging;
 using PhotoQwrekster.ViewModel;
+using MetroInMotionUtils;
 
 
 namespace PhotoQwrekster
@@ -111,6 +112,24 @@ namespace PhotoQwrekster
             cameraViewModel.focusTapped(tapLocation, viewfinderCanvas.Width, viewfinderCanvas.Height);       
      
              
+        }
+
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            // this means App goes to exit
+            while (NavigationService.CanGoBack)
+                NavigationService.RemoveBackEntry();
+            e.Cancel = true;
+
+            // create the list of items to peel
+            var peelList = new FrameworkElement[] { UpperGridRow, viewfinderCanvas, BottomGridRow };
+
+            peelList.Peel(() =>
+            {
+                App.Quit();
+            });
+            base.OnBackKeyPress(e);  
         }
     }
 }

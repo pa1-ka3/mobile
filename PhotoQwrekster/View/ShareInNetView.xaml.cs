@@ -2,6 +2,9 @@
 using System.Windows.Controls;
 using PhotoQwrekster.Model;
 using PhotoQwrekster.ViewModel;
+using MetroInMotionUtils;
+using System.Windows;
+using System.Linq;
 
 namespace PhotoQwrekster.View
 {
@@ -51,7 +54,14 @@ namespace PhotoQwrekster.View
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            NavigationService.Navigate(new System.Uri("/View/ImageProcessingView.xaml", System.UriKind.RelativeOrAbsolute));
+            var listItems = ActionsListBox.GetItemsInView().ToList();
+            // create the list of items to peel
+            var peelList = new FrameworkElement[] { TitlePanel }.Union(listItems);
+
+            peelList.Peel(() =>
+            {
+                NavigationService.Navigate(new System.Uri("/View/ImageProcessingView.xaml", System.UriKind.RelativeOrAbsolute));
+            });
         }
 
         private void LoginLogout_Tap(object sender, System.Windows.Input.GestureEventArgs e)

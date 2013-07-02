@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Media.Imaging;
 using PhotoQwrekster.ViewModel;
+using System.ComponentModel;
 
 namespace PhotoQwrekster.Service
 {
@@ -21,7 +22,8 @@ namespace PhotoQwrekster.Service
 
     public class Filters
     {
-        internal static bool StretchAroundPoint(WriteableBitmap bitmap, WriteableBitmap source, int cx, int cy, double transformScale, int transformationRadius)
+        internal static bool StretchAroundPoint(WriteableBitmap bitmap, WriteableBitmap source,
+            int cx, int cy, double transformScale, int transformationRadius, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
         {
 
             int nWidth = bitmap.PixelWidth;
@@ -93,7 +95,8 @@ namespace PhotoQwrekster.Service
 
         }
 
-        internal static bool SqueezeAroundPoint(WriteableBitmap bitmap, WriteableBitmap source, int cx, int cy, double transformScale, int transformationRadius)
+        internal static bool SqueezeAroundPoint(WriteableBitmap bitmap, WriteableBitmap source,
+            int cx, int cy, double transformScale, int transformationRadius, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
         {
 
             int nWidth = bitmap.PixelWidth;
@@ -164,7 +167,8 @@ namespace PhotoQwrekster.Service
 
         }
 
-        internal static bool StretchInOneDimension(WriteableBitmap bitmap, WriteableBitmap source, int cx, int cy, double transformScale, int transformationRadius, double deg)
+        internal static bool StretchInOneDimension(WriteableBitmap bitmap, WriteableBitmap source,
+            int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
         {
 
             int nWidth = bitmap.PixelWidth;
@@ -222,7 +226,8 @@ namespace PhotoQwrekster.Service
 
         }
 
-        internal static bool SqueezeInOneDimension(WriteableBitmap bitmap, WriteableBitmap source, int cx, int cy, double transformScale, int transformationRadius, double deg)
+        internal static bool SqueezeInOneDimension(WriteableBitmap bitmap, WriteableBitmap source,
+            int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
         {
 
             int nWidth = bitmap.PixelWidth;
@@ -240,7 +245,12 @@ namespace PhotoQwrekster.Service
             int transfornationSqwere = transformationRadius * transformationRadius;
             transformScale = 1 / transformScale;
 
+            int f5Percent = nWidth / 18;
+            int nextPercentage = 0; 
+            int nextPercentageStep = 0;
+
             for (int x = 1; x < nWidth; ++x)
+            {
                 for (int y = 1; y < nHeight; ++y)
                 {
                     int trueX = (int)(x - mid.X);
@@ -251,7 +261,7 @@ namespace PhotoQwrekster.Service
 
                     double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
 
-                    newX = x + transformScale * deltaRadius * Math.Cos(theta+deg) * Math.Cos(deg);
+                    newX = x + transformScale * deltaRadius * Math.Cos(theta + deg) * Math.Cos(deg);
 
                     if (newX > 0 && newX < nWidth)
                     {
@@ -262,7 +272,7 @@ namespace PhotoQwrekster.Service
                         fp[x, y].X = fp[x, y].Y = 0.0;
                     }
 
-                    newY = y - transformScale * deltaRadius * Math.Cos(theta+deg) * Math.Sin(deg);
+                    newY = y - transformScale * deltaRadius * Math.Cos(theta + deg) * Math.Sin(deg);
 
                     if (newY > 0 && newY < nHeight && newX > 0 && newX < nWidth)
                     {
@@ -273,6 +283,19 @@ namespace PhotoQwrekster.Service
                         fp[x, y].X = fp[x, y].Y = 0.0;
                     }
                 }
+                if (x > nextPercentage)
+                {
+                    Console.WriteLine(nextPercentageStep.ToString() + "%");
+                    if (uiDispatcher.CheckAccess())
+                        showProgressCallback.Invoke(nextPercentageStep.ToString() + "%");
+                    else
+                        uiDispatcher.BeginInvoke(showProgressCallback, nextPercentageStep.ToString() + "%");
+
+                    nextPercentage += f5Percent;
+                    nextPercentageStep += 5; // increment 5 procent of progress
+                }
+
+            }
 
 
             OffsetFilterAntiAlias(bitmap, source, fp);

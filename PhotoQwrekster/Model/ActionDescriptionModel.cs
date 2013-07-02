@@ -19,7 +19,8 @@ namespace PhotoQwrekster.Model
         Flickr,
         Picasa,
         Tumblr,
-        Twitter
+        Twitter,
+        Nothing
     }
 
     public class ActionDescriptionModel : INotifyPropertyChanged

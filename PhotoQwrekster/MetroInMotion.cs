@@ -141,7 +141,7 @@ namespace MetroInMotionUtils
         }
 
         sb.Begin();
-        delay += 50;
+        delay += 100;
       }
     }
 

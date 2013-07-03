@@ -16,7 +16,7 @@ namespace PhotoQwrekster.Helpers
           #region Public Properties
 
         public const string OAuthRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
-        public const string OAuthUrl = "https://api.twitter.com/oauth/authorize";
+        public const string OAuthUrl = "https://api.twitter.com/oauth/authenticate";
         public const string OAuthTokenUrl = "https://api.twitter.com/oauth/access_token";
         public const string Scope = "write";
         public const string RedirectUri = "localhost";
@@ -27,6 +27,7 @@ namespace PhotoQwrekster.Helpers
         public const string UploadUrl = "https://api.twitter.com/1.1/statuses/update_with_media.json";
         public const string MyAccessToken = "***";
         public const string MyAccesTokenSecret = "***";
+        public const string GetUserNameUrl = "https://api.twitter.com/1.1/account/verify_credentials.json";
 
         public TwitterConfigHelper()
         {

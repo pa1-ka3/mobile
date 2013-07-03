@@ -35,7 +35,7 @@ namespace PhotoQwrekster.Helpers
 
         public Uri GetLoginUrl()
         {
-            return new Uri(string.Format("{0}?oauth_token={1}",
+            return new Uri(string.Format("{0}?oauth_token={1}&force_login=true",
                 TwitterConfigHelper.OAuthUrl,
                 oauth_token));
         }
@@ -180,6 +180,7 @@ namespace PhotoQwrekster.Helpers
 
                         if (callback != null)
                             callback(new List<object> { TwitterConfigHelper.AccessToken });
+                        GetUserName();
                     }
                 }
                 catch (Exception e)
@@ -187,6 +188,69 @@ namespace PhotoQwrekster.Helpers
                     MessageBox.Show("Some error while trying to retrieve OAuth token code.\n\n" + e.Message);
                 }
             });
+        }
+
+        private static void GetUserName()
+        {
+            var client = new RestClient { Timeout = TwitterConfigHelper.RequestTimeout };
+            var request = new RestRequest(Method.GET)
+            {
+                Resource = TwitterConfigHelper.GetUserNameUrl
+            };
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+            string oauthnonce = Guid.NewGuid().ToString("N");
+            parameters.Add("oauth_nonce", oauthnonce);
+            string oauthtimestamp = HelperUtility.GetUnixTimestamp();
+            parameters.Add("oauth_timestamp", oauthtimestamp);
+            parameters.Add("oauth_signature_method", "HMAC-SHA1");
+            parameters.Add("oauth_consumer_key", TwitterConfigHelper.ApiKey);
+            parameters.Add("oauth_version", "1.0");
+            parameters.Add("oauth_token", TwitterConfigHelper.AccessToken);
+
+            string sig = OAuthCalculateSignature("GET", TwitterConfigHelper.GetUserNameUrl, parameters, TwitterOAuthHelper.oauth_token_secret);
+
+            request.AddParameter("oauth_nonce", oauthnonce);
+            request.AddParameter("oauth_timestamp", oauthtimestamp);
+            request.AddParameter("oauth_signature_method", "HMAC-SHA1");
+            request.AddParameter("oauth_consumer_key", TwitterConfigHelper.ApiKey);
+            request.AddParameter("oauth_version", "1.0");
+            request.AddParameter("oauth_token", TwitterConfigHelper.AccessToken);
+            request.AddParameter("oauth_signature", sig);
+
+            client.ExecuteAsync(request, response =>
+            {
+                try
+                {
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var o = JObject.Parse(response.Content);
+                        string nameToken = (o["name"] == null) ? "" : o["name"].ToString();
+                        if (!string.IsNullOrEmpty(nameToken))
+                        {
+                            ShareInNetViewModel shareViewModel = App.Container.Resolve<ShareInNetViewModel>();
+                            var q = from item in shareViewModel.ActionsList
+                                    where item.ActionId == Model.ActionDestination.Twitter
+                                    select item;
+                            Model.ActionDescriptionModel ad = q.FirstOrDefault();
+                            ad.UserName = nameToken;
+                            TwitterConfigHelper.UserName = nameToken;
+                        }
+                    }
+                }
+                finally
+                {
+                    Runner.Invoke(() =>
+                    {
+                        INavigationService navigation = App.Container.Resolve<INavigationService>();
+                        navigation.NavigateTo(new Uri(ViewModelLocator.ShareInNet, UriKind.RelativeOrAbsolute));
+                    });
+                }
+            });
+
+
+            
         }
 
         public static void RefreshTokenCode(Action<List<object>> callback)
@@ -226,8 +290,6 @@ namespace PhotoQwrekster.Helpers
             }
 
         }
-        // http://api.twitter.com/1/account/verify_credentials.format
-
 
         public static string oauth_token { get; set; }
 
@@ -244,6 +306,24 @@ namespace PhotoQwrekster.Helpers
         public void SetVerifier(string verifier)
         {
             oauth_verifier = verifier;
+        }
+
+
+        public Uri GetLogoutUrl()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void ClearAccessToken()
+        {
+            TwitterConfigHelper.AccessToken = string.Empty;
+        }
+
+
+        public string GetLogoutHomeRedirectUrl()
+        {
+            throw new NotImplementedException();
         }
     }
 }

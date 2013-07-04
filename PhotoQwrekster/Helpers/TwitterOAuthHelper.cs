@@ -321,7 +321,13 @@ namespace PhotoQwrekster.Helpers
         }
 
 
-        public string GetLogoutHomeRedirectUrl()
+        public string IsCancelOrLogoutUrl()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool IsCancelOrLogoutRedirectUrl(string url)
         {
             throw new NotImplementedException();
         }

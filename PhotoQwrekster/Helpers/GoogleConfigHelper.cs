@@ -10,7 +10,7 @@ namespace PhotoQwrekster.Helpers
 
         public const string OAuthUrl = "https://accounts.google.com/o/oauth2/auth";
         public const string OAuthTokenUrl = "https://accounts.google.com/o/oauth2/token";
-        public const string Scope = "https://picasaweb.google.com/data/";
+        public const string Scope = "https://picasaweb.google.com/data/ https://www.googleapis.com/auth/userinfo.profile";
         public const string RedirectUri = "http://localhost";
         public const string ClientId = "***";
         public const string ClientSecret = "***";

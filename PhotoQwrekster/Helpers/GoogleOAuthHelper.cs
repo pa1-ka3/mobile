@@ -12,6 +12,8 @@ using System.IO.IsolatedStorage;
 using System.Collections.Generic;
 using RestSharp;
 using Newtonsoft.Json.Linq;
+using PhotoQwrekster.ViewModel;
+using System.Linq;
 
 namespace PhotoQwrekster.Helpers
 {
@@ -22,6 +24,12 @@ namespace PhotoQwrekster.Helpers
             return new Uri(string.Format("{0}?client_id={1}&redirect_uri={2}&scope={3}&response_type=code",
                                          GoogleConfigHelper.OAuthUrl,
                                          GoogleConfigHelper.ClientId, GoogleConfigHelper.RedirectUri, GoogleConfigHelper.Scope));
+        }
+
+        public Uri GetLogoutUrl()
+        {
+            return new Uri(string.Format("https://accounts.google.com/Logout?service=profiles&continue=https://plus.google.com&access_token={0}",
+                                        GoogleConfigHelper.AccessToken));
         }
 
         private static string GetRequestAccessTokenPostBody(bool isRefresh)
@@ -52,10 +60,47 @@ namespace PhotoQwrekster.Helpers
                         GoogleConfigHelper.RefreshToken = j.Value<string>();
                     if (callback != null)
                         callback(new List<object> { GoogleConfigHelper.AccessToken });
+                    GetUserInfo();
                 }
                 catch (Exception)
                 {
           //          MessageBox.Show("Some error while trying to retrieve OAuth token code.\n\n" + e.Message);
+                }
+            });
+        }
+
+        private static void GetUserInfo()
+        {
+            var client = new RestClient { Timeout = GoogleConfigHelper.RequestTimeout };
+            var request = new RestRequest(Method.GET)
+            {
+                Resource = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + GoogleConfigHelper.AccessToken
+            };
+
+            client.ExecuteAsync(request, response =>
+            {
+                try
+                {
+                    var o = JObject.Parse(response.Content);
+                    string nameToken = (o["name"] == null) ? "" : o["name"].ToString();
+                    if (!string.IsNullOrEmpty(nameToken))
+                    {
+                        ShareInNetViewModel shareViewModel = App.Container.Resolve<ShareInNetViewModel>();
+                        var q = from item in shareViewModel.ActionsList
+                                where item.ActionId == Model.ActionDestination.Picasa
+                                select item;
+                        Model.ActionDescriptionModel ad = q.FirstOrDefault();
+                        ad.UserName = nameToken;
+                        GoogleConfigHelper.UserName = nameToken;
+                    }
+                }
+                finally
+                {
+                    Runner.Invoke(() =>
+                    {
+                        INavigationService navigation = App.Container.Resolve<INavigationService>();
+                        navigation.NavigateTo(new Uri(ViewModelLocator.ShareInNet, UriKind.RelativeOrAbsolute));
+                    });
                 }
             });
         }
@@ -125,6 +170,22 @@ namespace PhotoQwrekster.Helpers
         public void SetAccountKey(string key)
         {
             GoogleConfigHelper.AccountKey = key;
+        }
+
+
+        
+
+        public void ClearAccessToken()
+        {
+            GoogleConfigHelper.AccessToken = string.Empty;
+        }
+
+        public bool IsCancelOrLogoutRedirectUrl(string url)
+        {
+            if (url.StartsWith("http://localhost/?error=access_denied") ||
+                url.StartsWith("https://plus.google.com"))
+                return true;
+            else return false;
         }
     }
 }

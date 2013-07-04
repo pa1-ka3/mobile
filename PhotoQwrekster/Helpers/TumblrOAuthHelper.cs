@@ -244,5 +244,29 @@ namespace PhotoQwrekster.Helpers
         {
             oauth_verifier = verifier;
         }
+
+
+        public Uri GetLogoutUrl()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void ClearAccessToken()
+        {
+            TumblrConfigHelper.AccessToken = string.Empty;
+        }
+
+
+        public string IsCancelOrLogoutUrl()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool IsCancelOrLogoutRedirectUrl(string url)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

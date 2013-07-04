@@ -32,7 +32,14 @@ namespace PhotoQwrekster.View
                 NavigationService.RemoveBackEntry();
             if (NetworkChecker.CheckInternetConnection())
             {
-                Dispatcher.BeginInvoke(() => this.Browser.Navigate(oauthHelper.GetLoginUrl()));
+                if (NavigationContext.QueryString.ContainsKey("logout"))
+                    Dispatcher.BeginInvoke(() =>
+                    {
+                        this.Browser.Navigate(oauthHelper.GetLogoutUrl());
+                        oauthHelper.ClearAccessToken();
+                    });
+                else
+                    Dispatcher.BeginInvoke(() => this.Browser.Navigate(oauthHelper.GetLoginUrl()));
             }
             else
             {
@@ -76,6 +83,10 @@ namespace PhotoQwrekster.View
                 Browser.Visibility = Visibility.Collapsed;
                 oauthHelper.SetTokenCode(val);
                 oauthHelper.GetRequestTokenQueryNonStatic(false, InspectTokenCallback);
+            }
+            else if (oauthHelper.IsCancelOrLogoutRedirectUrl( e.Uri.ToString()))
+            {
+                NavigateToShareInNetPage();
             }
         }
 

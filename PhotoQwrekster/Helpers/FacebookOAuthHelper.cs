@@ -39,6 +39,13 @@ namespace PhotoQwrekster.Helpers
                                         HttpUtility.UrlEncode(String.Join(" ", FacebookConfigHelper.scopes))));
         }
 
+        public Uri GetLogoutUrl()
+        {
+            return new Uri(string.Format("{0}&access_token={1}",
+                                        FacebookConfigHelper.LogoutUrl,
+                                        FacebookConfigHelper.AccessToken ));
+        }
+
         public void SetTokenCode(string value)
         {
             string key = DateTime.Now.GetHashCode().ToString();
@@ -122,17 +129,15 @@ namespace PhotoQwrekster.Helpers
                         Model.ActionDescriptionModel ad = q.FirstOrDefault();
                         ad.UserName = nameToken;
                         FacebookConfigHelper.UserName = nameToken;
-
-                        Runner.Invoke(() =>
-                        {
-                            INavigationService navigation = App.Container.Resolve<INavigationService>();
-                            navigation.NavigateTo(new Uri(ViewModelLocator.ShareInNet, UriKind.RelativeOrAbsolute));
-                        });
                     }
                 }
-                catch (Exception e)
+                finally
                 {
-                    //MessageBox.Show("Some error while trying to retrieve OAuth token code.\n\n" + e.Message);
+                    Runner.Invoke(() =>
+                    {
+                        INavigationService navigation = App.Container.Resolve<INavigationService>();
+                        navigation.NavigateTo(new Uri(ViewModelLocator.ShareInNet, UriKind.RelativeOrAbsolute));
+                    });
                 }
             });
         }
@@ -165,6 +170,20 @@ namespace PhotoQwrekster.Helpers
                 //Console.WriteLine("RefreshTokenCode exception" + ex.Message + " inner ex " + ex.InnerException + "stack trace " + ex.StackTrace);
             }
 
+        }
+
+        public void ClearAccessToken()
+        {
+            FacebookConfigHelper.AccessToken = string.Empty;
+        }
+
+
+        public bool IsCancelOrLogoutRedirectUrl(string url)
+        {
+            if(url.StartsWith(FacebookConfigHelper.LogoutHomeRedirectUrl) ||
+                url.StartsWith("http://localhost.com") )
+                return true;
+            else return false;
         }
     }
 }

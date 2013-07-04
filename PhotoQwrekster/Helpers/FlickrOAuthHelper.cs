@@ -253,5 +253,20 @@ namespace PhotoQwrekster.Helpers
         {
             oauth_verifier = verifier;
         }
+
+        public Uri GetLogoutUrl()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearAccessToken()
+        {
+            FlickrConfigHelper.AccessToken = string.Empty;
+        }
+
+        public bool IsCancelOrLogoutRedirectUrl(string url)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -26,7 +26,8 @@ namespace PhotoQwrekster.Helpers
         //  public const string ClientId = "***";
         // public const string ClientSecret = "***";
         public const int RequestTimeout = 10 * 1000;
-        public const string ApplicationTitle = "PhotoStitchRasp";
+        public const string LogoutUrl = "http://m.facebook.com/logout.php?confirm=1&next=http://localhost.com/";
+        public const string LogoutHomeRedirectUrl = "http://m.facebook.com/home.php";
 
         /// <summary>
         /// The list of scopes.

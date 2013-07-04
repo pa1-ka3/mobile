@@ -335,7 +335,7 @@ namespace PhotoQwrekster.ViewModel
                         if (string.IsNullOrEmpty(FacebookConfigHelper.AccessToken))
                         {
                             App.Container.ReplaceRegistration<IOAuthHelper>(c => new FacebookOAuthHelper());
-                            FacebookConfigHelper.InitPropertiesFromStorage();
+                            
 
                             PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = null; // navigate back?
                             INavigationService navigation = App.Container.Resolve<INavigationService>();
@@ -344,7 +344,11 @@ namespace PhotoQwrekster.ViewModel
                         }
                         else
                         {
-                            FacebookConfigHelper.AccessToken = string.Empty;
+                            App.Container.ReplaceRegistration<IOAuthHelper>(c => new FacebookOAuthHelper());
+                            PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = null; // navigate back?
+                            INavigationService navigation = App.Container.Resolve<INavigationService>();
+                            navigation.NavigateTo(new Uri(ViewModelLocator.OAuthLogin + "?logout=true", UriKind.RelativeOrAbsolute));
+
                             FacebookConfigHelper.TokenCode = string.Empty;
                             FacebookConfigHelper.UserName = string.Empty;
                             ClearUserName(Model.ActionDestination.Facebook);
@@ -385,7 +389,13 @@ namespace PhotoQwrekster.ViewModel
                         }
                         else
                         {
-                            GoogleConfigHelper.AccessToken = string.Empty;
+                            App.Container.ReplaceRegistration<IOAuthHelper>(c => new GoogleOAuthHelper());
+                            PhotoQwrekster.View.OAuthLogin.InspectTokenCallback = null; // navigate back?
+                            INavigationService navigation = App.Container.Resolve<INavigationService>();
+                            navigation.NavigateTo(new Uri(ViewModelLocator.OAuthLogin + "?logout=true", UriKind.RelativeOrAbsolute));
+
+                            //GoogleConfigHelper.AccessToken = string.Empty;
+                            GoogleConfigHelper.TokenCode = string.Empty;
                             GoogleConfigHelper.UserName = string.Empty;
                             ClearUserName(Model.ActionDestination.Picasa);
                         }

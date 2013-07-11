@@ -64,23 +64,6 @@ namespace PhotoQwrekster.ViewModel
 
         #region ButtonsCommands
 
-        private RelayCommand _shutterButonClick;
-
-        /// <summary>
-        /// Gets the ShutterButtonClick.
-        /// </summary>
-        public RelayCommand ShutterButtonClick
-        {
-            get
-            {
-                return _shutterButonClick
-                    ?? (_shutterButonClick = new RelayCommand(
-                                          () =>
-                                          {
-                                              ShutterButton_Click();
-                                          }));
-            }
-        }
 
         private RelayCommand _changeFlashClicked;
 
@@ -100,23 +83,6 @@ namespace PhotoQwrekster.ViewModel
             }
         }
 
-        private RelayCommand _focusClicked;
-
-        /// <summary>
-        /// Gets the FocusClick.
-        /// </summary>
-        public RelayCommand FocusClick
-        {
-            get
-            {
-                return _focusClicked
-                    ?? (_focusClicked = new RelayCommand(
-                                          () =>
-                                          {
-                                              focus_Clicked();
-                                          }));
-            }
-        }
 
         private RelayCommand _changeResClicked;
 
@@ -136,26 +102,8 @@ namespace PhotoQwrekster.ViewModel
             }
         }
 
-        private RelayCommand _skipCommand;
 
-        /// <summary>
-        /// Gets the SkipClick.
-        /// </summary>
-        public RelayCommand SkipClick
-        {
-            get
-            {
-                return _skipCommand
-                    ?? (_skipCommand = new RelayCommand(
-                                          () =>
-                                          {
-                                              skip_clicked();
-
-                                          }));
-            }
-        }
-
-        private void skip_clicked()
+        public void skip_clicked()
         {
             INavigationService navigation = App.Container.Resolve<INavigationService>();
             Runner.Invoke(() =>
@@ -568,7 +516,7 @@ namespace PhotoQwrekster.ViewModel
 
       
 
-        private void ShutterButton_Click()
+        public void ShutterButton_Click()
         {
             if (cam != null)
             {
@@ -751,7 +699,7 @@ namespace PhotoQwrekster.ViewModel
         }
 
         // Provide auto-focus in the viewfinder.
-        private void focus_Clicked()
+        public void focus_Clicked()
         {
             if (cam.IsFocusSupported == true)
             {

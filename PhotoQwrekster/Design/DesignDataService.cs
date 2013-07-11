@@ -65,7 +65,7 @@ namespace PhotoQwrekster.Design
 
        public Microsoft.Devices.FlashMode GetFlashModeSettings()
        {
-           return Microsoft.Devices.FlashMode.Auto;
+           return Microsoft.Devices.FlashMode.On;
        }
 
 

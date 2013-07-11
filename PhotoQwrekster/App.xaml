@@ -18,13 +18,13 @@
         <SolidColorBrush x:Key="PhoneBackgroundColorBrush" Color="#FF090909" />               
         <SolidColorBrush x:Key="CameraButtonColorBrush" Color="#FF456965" />
         <Color x:Key="SystemTrayColor">#FF161316</Color>
-        <Color x:Key="ApplicationBarBackgroundColor">#FF456965</Color>
+        <Color x:Key="ApplicationBarBackgroundColor">#FF45656d</Color>
         <SolidColorBrush x:Key="ApplicationBarColorBrush" Color="#FF292929" />
         <Color x:Key="BorderColor">#FF313131</Color>
         <SolidColorBrush x:Key="DialogButtonColorBrush" Color="#FF39605A" />
         <SolidColorBrush x:Key="DialogButtonborderColorBrush" Color="#FF305549" />
-		<SolidColorBrush x:Key="CameraButtonColorBrushDark" Color="#FF375552" />
-		<SolidColorBrush x:Key="CameraTrayBackgroundColor" Color="#FF405f59" />
+		<SolidColorBrush x:Key="CameraButtonColorBrushDark" Color="#FF375255" />
+		<SolidColorBrush x:Key="CameraTrayBackgroundColor" Color="#FF40595f" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

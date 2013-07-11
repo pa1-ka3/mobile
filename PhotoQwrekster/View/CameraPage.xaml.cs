@@ -123,13 +123,28 @@ namespace PhotoQwrekster
             e.Cancel = true;
 
             // create the list of items to peel
-            var peelList = new FrameworkElement[] { UpperGridRow, viewfinderCanvas, BottomGridRow };
+            var peelList = new FrameworkElement[] { UpperGridRow, viewfinderCanvas };
 
             peelList.Peel(() =>
             {
                 App.Quit();
             });
             base.OnBackKeyPress(e);  
+        }
+
+        private void ShutterButton_Click(object sender, EventArgs e)
+        {
+            cameraViewModel.ShutterButton_Click();
+        }
+
+        private void AFButton_Click(object sender, EventArgs e)
+        {
+            cameraViewModel.focus_Clicked();
+        }
+
+        private void SkipButton_Click(object sender, EventArgs e)
+        {
+            cameraViewModel.skip_clicked();
         }
     }
 }

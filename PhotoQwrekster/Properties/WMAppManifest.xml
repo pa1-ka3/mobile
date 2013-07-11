@@ -20,7 +20,7 @@
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="View\CameraPage.xaml" />
-    <!--  <DefaultTask Name="_default" NavigationPage="View\ShareInNetView.xaml" />-->
+      <!--  <DefaultTask Name="_default" NavigationPage="View\ShareInNetView.xaml" />-->
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="PhotoQwreksterToken" TaskName="_default">

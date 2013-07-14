@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Media;
 using System.Linq;
 using System.ComponentModel;
+using PhotoQwrekster.Service;
 
 namespace PhotoQwrekster.ViewModel
 {
@@ -243,8 +244,15 @@ namespace PhotoQwrekster.ViewModel
                     PhotoQwrekster.Service.Filters.StretchInOneDimension(BitmapCalculated, BitmapBackup,
                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback);
                 else
-                    PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback);
+                {
+                    // PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapCalculated, BitmapBackup,
+                    //   (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback);
+                    FloatPoint[,] fp = PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapImageSource.PixelWidth, BitmapImageSource.PixelHeight,
+                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback);
+                    GetBitmapCopyForCalculation();
+                    Filters.OffsetFilterAntiAlias(BitmapCalculated, BitmapBackup, fp);
+                    
+                }
             }
             dt = DateTime.Now;
             isCalculating = false;

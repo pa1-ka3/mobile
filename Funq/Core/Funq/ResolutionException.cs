@@ -38,9 +38,7 @@ using System.Globalization;
 namespace Funq
 {
 	/// <include file='Funq.xdoc' path='docs/doc[@for="ResolutionException"]/*'/>
-#if !SILVERLIGHT
-	[Serializable]
-#endif
+
 	public class ResolutionException : Exception
 	{
 		/// <include file='Funq.xdoc' path='docs/doc[@for="ResolutionException.ctor(Type)"]/*'/>

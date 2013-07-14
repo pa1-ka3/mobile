@@ -11,6 +11,9 @@ using System.Windows.Shapes;
 using System.Windows.Media.Imaging;
 using PhotoQwrekster.ViewModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace PhotoQwrekster.Service
 {
@@ -226,30 +229,81 @@ namespace PhotoQwrekster.Service
 
         }
 
-        internal static bool SqueezeInOneDimension(WriteableBitmap bitmap, WriteableBitmap source,
+        static FloatPoint[,] fp;
+
+        internal static FloatPoint[,] SqueezeInOneDimension(int pixelWidth, int pixelHeight,  //WriteableBitmap bitmap, WriteableBitmap source,
             int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
         {
 
-            int nWidth = bitmap.PixelWidth;
-            int nHeight = bitmap.PixelHeight;
+            int nWidth = pixelWidth;
+            int nHeight = pixelHeight;
 
-            FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
+            fp = new FloatPoint[nWidth, nHeight];
 
             Point mid = new Point();
             mid.X = cx;
             mid.Y = cy;
 
-            double theta, radius;
-            double newX, newY;
 
             int transfornationSqwere = transformationRadius * transformationRadius;
             transformScale = 1 / transformScale;
 
+            Action<object> act = new Action<object>(RunParametrized);
+            Task[] tsk = new Task[2];
+            int halfWidth = (int)nWidth / 2;
+            tsk[0] = Task.Factory.StartNew(act, (object)(new List<object>() {
+                transformScale, deg, uiDispatcher, showProgressCallback, 
+                nWidth, nHeight, mid, transfornationSqwere, 0, halfWidth }));
+
+            tsk[1] = Task.Factory.StartNew(act, (object)(new List<object>() { 
+                transformScale, deg, uiDispatcher, showProgressCallback, 
+                nWidth, nHeight, mid, transfornationSqwere, halfWidth, nWidth }));
+
+            
+            try
+            {
+                Task.WaitAll(tsk);
+            }
+            catch (Exception ex)
+            {
+                string str = ex.StackTrace.ToString();
+            }
+
+
+            //OffsetFilterAntiAlias(bitmap, source, fp);
+
+            return fp;
+
+        }
+
+        static void RunParametrized(object par)
+        {
+            List<object> parametr = (List<object>)par;
+            MatrixRacalculate((double)parametr[0],
+                (double)parametr[1], 
+                (System.Windows.Threading.Dispatcher)parametr[2],
+                (Action<string>)parametr[3],
+                (int)parametr[4],  // nWidth
+                (int)parametr[5],  // nHeight
+                (Point)parametr[6],
+                (int)parametr[7],  // transfornationSqwere,
+                (int)parametr[8],  // from
+                (int)parametr[9]); // to
+        }
+
+        private static void MatrixRacalculate(double transformScale, double deg, System.Windows.Threading.Dispatcher uiDispatcher, 
+            Action<string> showProgressCallback, int nWidth, int nHeight, 
+            Point mid, int transfornationSqwere, 
+            int from, int to)
+        {
+            double theta, radius;
+            double newX, newY;
+
             int f5Percent = nWidth / 18;
-            int nextPercentage = 0; 
+            int nextPercentage = 0;
             int nextPercentageStep = 0;
 
-            for (int x = 1; x < nWidth; ++x)
+            for (int x = from; x < to; x++) 
             {
                 for (int y = 1; y < nHeight; ++y)
                 {
@@ -296,12 +350,6 @@ namespace PhotoQwrekster.Service
                 }
 
             }
-
-
-            OffsetFilterAntiAlias(bitmap, source, fp);
-
-            return true;
-
         }
 
         public static bool OffsetFilterAntiAlias(WriteableBitmap processed, WriteableBitmap source, FloatPoint[,] fp)

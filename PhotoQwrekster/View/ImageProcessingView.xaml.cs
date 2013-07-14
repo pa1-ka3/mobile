@@ -252,7 +252,9 @@ namespace PhotoQwrekster.View
                 flickData.Visibility = System.Windows.Visibility.Visible;
                 flickData.Text = "image is very large. there would be performance difficulties";
             }
-            imageRecalculator.RunWorkerAsync();
+            //imageRecalculator.RunWorkerAsync();
+            uiDispatcher = Deployment.Current.Dispatcher;
+            DoCalculation(new object());
         }
 
         private int centrX;
@@ -284,8 +286,8 @@ namespace PhotoQwrekster.View
         {
             DateTime dtStart = DateTime.Now;
             DateTime dtFinish;
-            Runner.Invoke(() =>
-            {
+            //Runner.Invoke(() =>
+            //{
                 imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle,
                         OnUpdateFinished, out dtFinish, uiDispatcher, ShowProgressString);
             
@@ -295,7 +297,7 @@ namespace PhotoQwrekster.View
 #if DEBUG
             Console.WriteLine(ts.ToString());
 #endif
-            });
+            //});
         }
 
         private void ShowProgressString(string progressText)
@@ -400,7 +402,8 @@ namespace PhotoQwrekster.View
                 flickData.Text = "image is very large. there would be performance difficulties";
             }
             if(!imageRecalculator.IsBusy)
-                imageRecalculator.RunWorkerAsync(); 
+                //imageRecalculator.RunWorkerAsync(); 
+                DoCalculation(new object());
         }
 
         private void OnUpdateFinished()

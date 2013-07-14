@@ -204,7 +204,7 @@
                    Width="480" Height="640"
                    Stretch="Fill" 
                    Tap="imgSelectedPhoto_Tap"
-                   MouseLeftButtonDown="imgSelectedPhoto_MouseLeftButtonDown"
+              
                Visibility="Visible" d:LayoutOverrides="VerticalMargin" >
 
                 <toolkit:GestureService.GestureListener>

@@ -343,7 +343,6 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsMenuEnabled="False" BackgroundColor="{StaticResource ApplicationBarBackgroundColor}" ForegroundColor="Black">
-            <shell:ApplicationBarIconButton x:Name="Load" IconUri="/Resources/OpenFile.png" Text="Load" Click="Load_Click"/>
             <shell:ApplicationBarIconButton x:Name="Save" IconUri="/Resources/AppBarSave.png" Text="Save" Click="Save_Click" />
             <shell:ApplicationBarIconButton x:Name="Undo" IconUri="/Resources/Undo.png" Text="Undo" Click="Undo_Click"/>
             <shell:ApplicationBarIconButton x:Name="Share" IconUri="/Resources/Share.png" Text="Share" Click="Share_Click" />

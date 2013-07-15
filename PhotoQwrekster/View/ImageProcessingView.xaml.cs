@@ -55,15 +55,15 @@ namespace PhotoQwrekster.View
 
         private void SetSelectedPhotoSource()
         {
-            ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = false; //Undo
+            ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = false; //Undo
             
          
             System.Windows.Media.ImageSource img = imageProcessingViewModel.GetCurrentImage();
             if (img != null)
             {
                 imgSelectedPhoto.Source = img;
-                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = true;  //"Save" 
-                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = true;  //"Share" 
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true;  //"Save" 
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = true;  //"Share" 
                 flickData.Visibility = System.Windows.Visibility.Visible;
                 flickData.Text = "try to transform image with gesture";
                 Size s = imageProcessingViewModel.GetImageRecalculatedSize();
@@ -76,8 +76,8 @@ namespace PhotoQwrekster.View
                 imgSelectedPhoto.Source = null;
                 flickData.Visibility = System.Windows.Visibility.Visible;
                 flickData.Text = "No image selected";
-                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = false;  //"Save" 
-                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = false;  //"Share"       
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = false;  //"Save" 
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = false;  //"Share"       
             }
         }
 
@@ -303,11 +303,6 @@ namespace PhotoQwrekster.View
             //MessageBox.Show("completed");
         }
 
-        private void Load_Click(object sender, EventArgs e)
-        {
-            imageProcessingViewModel.LoadImageFromLibrary(SetSelectedPhotoSource);
-        }
-
         private void Save_Click(object sender, EventArgs e)
         {
             save_panel.IsOpen = true;
@@ -353,7 +348,7 @@ namespace PhotoQwrekster.View
         private void Undo_Click(object sender, EventArgs e)
         {
             imageProcessingViewModel.UndoClicked();
-            ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
+            ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
         }
 
         private void TransformMode_Checked(object sender, RoutedEventArgs e)
@@ -409,7 +404,7 @@ namespace PhotoQwrekster.View
             Runner.Invoke(() =>
             {
                 imageProcessingViewModel.GetBitmapAfterCalculation();
-                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
+                ((Microsoft.Phone.Shell.ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = imageProcessingViewModel.CanUndoClick; //Undo
                 //performanceProgressBar.Visibility = System.Windows.Visibility.Collapsed;
                 flickData.Visibility = System.Windows.Visibility.Collapsed;
          //       CalculatingPanel.Visibility = System.Windows.Visibility.Collapsed;

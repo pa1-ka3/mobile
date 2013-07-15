@@ -101,7 +101,7 @@ namespace PhotoQwrekster.Helpers
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Some error while trying to retrieve OAuth token code.\n\n" + e.Message);
+                    MessageBox.Show("Unable to connect with facebook.\n\n" + e.Message);
                 }
             });
         }

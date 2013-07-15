@@ -146,5 +146,15 @@ namespace PhotoQwrekster
         {
             cameraViewModel.skip_clicked();
         }
+
+        private void Load_Click(object sender, EventArgs e)
+        {
+            cameraViewModel.LoadImageFromLibrary(NavigateToProcessingPage);
+        }
+
+        private void NavigateToProcessingPage()
+        {   
+            cameraViewModel.skip_clicked();
+        }
     }
 }

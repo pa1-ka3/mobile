@@ -170,25 +170,57 @@ namespace PhotoQwrekster.Service
 
         }
 
-        internal static bool StretchInOneDimension(WriteableBitmap bitmap, WriteableBitmap source,
-            int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<int> showProgressCallback)
+        internal static FloatPoint[,] StretchInOneDimension(int pixelWidth, int pixelHeight,
+            int cx, int cy, double transformScale, int transformationRadius, double deg,
+            BackgroundWorker backgroundWorker)
         {
 
-            int nWidth = bitmap.PixelWidth;
-            int nHeight = bitmap.PixelHeight;
+            int nWidth = pixelWidth;
+            int nHeight = pixelHeight;
 
-            FloatPoint[,] fp = new FloatPoint[nWidth, nHeight];
+            fp = new FloatPoint[nWidth, nHeight];
 
             Point mid = new Point();
             mid.X = cx;
             mid.Y = cy;
 
+            int transfornationSqwere = transformationRadius * transformationRadius;
+
+            Action<object> act = new Action<object>(RunParametrizedStretchInOneDimension);
+            RunTasks(transformScale, deg, backgroundWorker, nWidth, nHeight, mid, transfornationSqwere, act);
+
+            
+            return fp;
+
+        }
+
+        static void RunParametrizedStretchInOneDimension(object par)
+        {
+            List<object> parametr = (List<object>)par;
+            MatrixRacalculateStretchInOneDimension((double)parametr[0],
+                (double)parametr[1], // degree                
+                (int)parametr[2],  // nWidth
+                (int)parametr[3],  // nHeight
+                (Point)parametr[4],
+                (int)parametr[5],  // transfornationSqwere,
+                (int)parametr[6],  // from
+                (int)parametr[7],  // to
+                (BackgroundWorker)parametr[8]);
+        }
+
+        private static void MatrixRacalculateStretchInOneDimension(double transformScale, double deg,
+            int nWidth, int nHeight,
+            Point mid, int transfornationSqwere,
+            int from, int to, BackgroundWorker backgroundWorker)
+        {
             double theta, radius;
             double newX, newY;
 
-            int transfornationSqwere = transformationRadius * transformationRadius;
+            int f5Percent = nWidth / 16;
+            int nextPercentage = 0;
+            int nextPercentageStep = 0;
 
-            for (int x = 1; x < nWidth; ++x)
+            for (int x = from; x < to; ++x)
                 for (int y = 1; y < nHeight; ++y)
                 {
                     int trueX = (int)(x - mid.X);
@@ -199,7 +231,7 @@ namespace PhotoQwrekster.Service
 
                     double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
 
-                    newX = x - transformScale * deltaRadius * Math.Cos(theta+deg) * Math.Cos(deg);
+                    newX = x - transformScale * deltaRadius * Math.Cos(theta + deg) * Math.Cos(deg);
 
                     if (newX > 0 && newX < nWidth)
                     {
@@ -210,7 +242,7 @@ namespace PhotoQwrekster.Service
                         fp[x, y].X = fp[x, y].Y = 0.0;
                     }
 
-                    newY = y + transformScale * deltaRadius * Math.Cos(theta+deg) * Math.Sin(deg);
+                    newY = y + transformScale * deltaRadius * Math.Cos(theta + deg) * Math.Sin(deg);
 
                     if (newY > 0 && newY < nHeight && newX > 0 && newX < nWidth)
                     {
@@ -220,18 +252,19 @@ namespace PhotoQwrekster.Service
                     {
                         fp[x, y].X = fp[x, y].Y = 0.0;
                     }
+                    if (x > nextPercentage)
+                    {
+                        backgroundWorker.ReportProgress(5);
+                        nextPercentage += f5Percent;
+                        nextPercentageStep += 5; // increment 5 procent of progress
+                    }
                 }
-
-
-            OffsetFilterAntiAlias(bitmap, source, fp);
-
-            return true;
 
         }
 
         static FloatPoint[,] fp;
 
-        internal static FloatPoint[,] SqueezeInOneDimension(int pixelWidth, int pixelHeight,  //WriteableBitmap bitmap, WriteableBitmap source,
+        internal static FloatPoint[,] SqueezeInOneDimension(int pixelWidth, int pixelHeight, 
             int cx, int cy, double transformScale, int transformationRadius, double deg, 
             BackgroundWorker backgroundWorker)
         {
@@ -250,6 +283,14 @@ namespace PhotoQwrekster.Service
             transformScale = 1 / transformScale;
 
             Action<object> act = new Action<object>(RunParametrizedSqueezeInOneDimension);
+            RunTasks(transformScale, deg, backgroundWorker, nWidth, nHeight, mid, transfornationSqwere, act);
+
+            return fp;
+
+        }
+
+        private static void RunTasks(double transformScale, double deg, BackgroundWorker backgroundWorker, int nWidth, int nHeight, Point mid, int transfornationSqwere, Action<object> act)
+        {
             Task[] tsk = new Task[2];
             int halfWidth = (int)nWidth / 2;
             tsk[0] = Task.Factory.StartNew(act, (object)(new List<object>() {
@@ -260,7 +301,7 @@ namespace PhotoQwrekster.Service
                 transformScale, deg, 
                 nWidth, nHeight, mid, transfornationSqwere, halfWidth, nWidth, backgroundWorker }));
 
-            
+
             try
             {
                 Task.WaitAll(tsk);
@@ -269,9 +310,7 @@ namespace PhotoQwrekster.Service
             {
                 string str = ex.StackTrace.ToString();
             }
-
-            return fp;
-
+            return;
         }
 
         static void RunParametrizedSqueezeInOneDimension(object par)
@@ -474,7 +513,9 @@ namespace PhotoQwrekster.Service
         }
 
 
-    
 
+
+
+        
     }
 }

@@ -9,7 +9,7 @@ using System;
 using Microsoft.Phone;
 using PhotoQwrekster.Helpers;
 using PhotoQwrekster.Input;
-//using Microsoft.Phone.Tasks;
+using Microsoft.Phone.Tasks;
 using System.Windows;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Media;
@@ -32,6 +32,8 @@ namespace PhotoQwrekster.ViewModel
     {
         private readonly IDataService _dataService;
 
+        PhotoChooserTask photoChooser = null; 
+
         /// <summary>
         /// Initializes a new instance of the ImageProcessingViewModel class.
         /// </summary>
@@ -50,11 +52,38 @@ namespace PhotoQwrekster.ViewModel
 
                 });
 
-            
+            photoChooser = new PhotoChooserTask();
+            photoChooser.Completed += new EventHandler<PhotoResult>(photoChooser_Completed);
             
             _transformMode = _dataService.GetTransformModeSettings();
         }
 
+        void photoChooser_Completed(object sender, PhotoResult e)
+        {            
+            App app = Application.Current as App;
+
+            if (e.TaskResult == TaskResult.OK)
+            {
+                byte[] data;
+                using (var br =  new BinaryReader(e.ChosenPhoto)) 
+                    data = br.ReadBytes((int)e.ChosenPhoto.Length);
+
+                _dataService.SetCupturedImageByte(data);
+
+                if (imageChooseComplete != null)
+                    imageChooseComplete.Invoke();
+                imageChooseComplete = null;             
+            }
+        }
+
+        private Action imageChooseComplete = null;
+
+        internal void LoadImageFromLibrary(Action callback)
+        {
+            imageChooseComplete = callback;
+            photoChooser.ShowCamera = false;
+            photoChooser.Show();
+        }
 
         public WriteableBitmap BitmapImageSource
         {
@@ -207,20 +236,20 @@ namespace PhotoQwrekster.ViewModel
             {
                 if (transformScale > 1)
                     fp = PhotoQwrekster.Service.Filters.StretchAroundPoint(Width, Height,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, backgroundWorker);
+                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), backgroundWorker);
                 else
                     fp = PhotoQwrekster.Service.Filters.SqueezeAroundPoint(Width, Height,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, backgroundWorker);
+                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), backgroundWorker);
             }
             else // transform in one direction
             {
                 if (transformScale > 1)
                     fp = PhotoQwrekster.Service.Filters.StretchInOneDimension(Width, Height,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, backgroundWorker);
+                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), deg, backgroundWorker);
                 else
                 {
                     fp = PhotoQwrekster.Service.Filters.SqueezeInOneDimension(Width, Height,
-                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, backgroundWorker);
+                         (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), deg, backgroundWorker);
                 }
             }
 

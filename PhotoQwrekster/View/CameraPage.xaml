@@ -251,8 +251,9 @@
                                             Text="Take photo" Click="ShutterButton_Click" ></shell:ApplicationBarIconButton>
             <shell:ApplicationBarIconButton x:Name="AFButton" IconUri="/Resources/AutoFocus18.png" 
                                             Text="auto focus" Click="AFButton_Click"></shell:ApplicationBarIconButton>
-            <shell:ApplicationBarIconButton x:Name="Load" IconUri="/Resources/OpenFile.png" Text="Load" Click="Load_Click"/>
-
+            <shell:ApplicationBarIconButton x:Name="SkipButton" IconUri="/Resources/OpenFile.png" Text="Load image"
+                                            Click="SkipButton_Click"></shell:ApplicationBarIconButton>
+            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     

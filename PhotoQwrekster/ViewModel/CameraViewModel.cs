@@ -23,7 +23,6 @@ using PhotoQwrekster.ViewModel;
 using GalaSoft.MvvmLight;
 using PhotoQwrekster.Model;
 using GalaSoft.MvvmLight.Command;
-using Microsoft.Phone.Tasks;
 
 
 
@@ -43,7 +42,6 @@ namespace PhotoQwrekster.ViewModel
 
         private readonly IDataService _dataService;
 
-        PhotoChooserTask photoChooser = null; 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -61,8 +59,7 @@ namespace PhotoQwrekster.ViewModel
                                         
                 });
 
-            photoChooser = new PhotoChooserTask();
-            photoChooser.Completed += new EventHandler<PhotoResult>(photoChooser_Completed); 
+            
         }            
 
         #region ButtonsCommands
@@ -111,7 +108,7 @@ namespace PhotoQwrekster.ViewModel
             INavigationService navigation = App.Container.Resolve<INavigationService>();
             Runner.Invoke(() =>
             {
-                navigation.NavigateTo(new Uri(ViewModelLocator.ImageProcessing, UriKind.RelativeOrAbsolute));
+                navigation.NavigateTo(new Uri(ViewModelLocator.ImageProcessing + "?loadimage=true", UriKind.RelativeOrAbsolute));
             });
         }
 
@@ -894,35 +891,6 @@ namespace PhotoQwrekster.ViewModel
                                               
                                           }));
             }
-        }
-
-        void photoChooser_Completed(object sender, PhotoResult e)
-        {
-            App app = Application.Current as App;
-
-            if (e.TaskResult == TaskResult.OK)
-            {   
-                byte[] data;
-                using (var br = new BinaryReader(e.ChosenPhoto))
-                    data = br.ReadBytes((int)e.ChosenPhoto.Length);
-
-                
-                _dataService.SetCupturedImageByte(data);
-                
-
-                if (imageChooseComplete != null)
-                    imageChooseComplete.Invoke();
-                imageChooseComplete = null;
-            }
-        }
-
-        private Action imageChooseComplete = null;
-
-        internal void LoadImageFromLibrary(Action callback)
-        {
-            imageChooseComplete = callback;
-            photoChooser.ShowCamera = false;
-            photoChooser.Show();
         }
     }
 

@@ -187,10 +187,8 @@ namespace PhotoQwrekster.Model
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/picasa.png", UriKind.Relative))},
                 new ActionDescriptionModel(){ ActionId=ActionDestination.Twitter,
                     UserName = TwitterConfigHelper.UserName,
-                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/twitter.png", UriKind.Relative))},
-                new ActionDescriptionModel(){ ActionId=ActionDestination.Tumblr, Description="tumbler",
-                    UserName = TumblrConfigHelper.UserName,
-                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))}
+                    IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/twitter.png", UriKind.Relative))}
+                
             };
         }
     }

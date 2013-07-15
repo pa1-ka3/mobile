@@ -54,6 +54,9 @@ namespace PhotoQwrekster.View
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
+            while (NavigationService.CanGoBack)
+                NavigationService.RemoveBackEntry();
+            e.Cancel = true;
             var listItems = ActionsListBox.GetItemsInView().ToList();
             // create the list of items to peel
             var peelList = new FrameworkElement[] { TitlePanel }.Union(listItems);

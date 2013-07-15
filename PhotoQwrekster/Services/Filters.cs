@@ -232,7 +232,7 @@ namespace PhotoQwrekster.Service
         static FloatPoint[,] fp;
 
         internal static FloatPoint[,] SqueezeInOneDimension(int pixelWidth, int pixelHeight,  //WriteableBitmap bitmap, WriteableBitmap source,
-            int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<int> showProgressCallback,
+            int cx, int cy, double transformScale, int transformationRadius, double deg, 
             BackgroundWorker backgroundWorker)
         {
 
@@ -249,15 +249,15 @@ namespace PhotoQwrekster.Service
             int transfornationSqwere = transformationRadius * transformationRadius;
             transformScale = 1 / transformScale;
 
-            Action<object> act = new Action<object>(RunParametrized);
+            Action<object> act = new Action<object>(RunParametrizedSqueezeInOneDimension);
             Task[] tsk = new Task[2];
             int halfWidth = (int)nWidth / 2;
             tsk[0] = Task.Factory.StartNew(act, (object)(new List<object>() {
-                transformScale, deg, uiDispatcher, showProgressCallback, 
+                transformScale, deg,  
                 nWidth, nHeight, mid, transfornationSqwere, 0, halfWidth, backgroundWorker }));
 
             tsk[1] = Task.Factory.StartNew(act, (object)(new List<object>() { 
-                transformScale, deg, uiDispatcher, showProgressCallback, 
+                transformScale, deg, 
                 nWidth, nHeight, mid, transfornationSqwere, halfWidth, nWidth, backgroundWorker }));
 
             
@@ -270,38 +270,33 @@ namespace PhotoQwrekster.Service
                 string str = ex.StackTrace.ToString();
             }
 
-
-            //OffsetFilterAntiAlias(bitmap, source, fp);
-
             return fp;
 
         }
 
-        static void RunParametrized(object par)
+        static void RunParametrizedSqueezeInOneDimension(object par)
         {
             List<object> parametr = (List<object>)par;
-            MatrixRacalculate((double)parametr[0],
-                (double)parametr[1],
-                (System.Windows.Threading.Dispatcher)parametr[2],
-                (Action<int>)parametr[3],
-                (int)parametr[4],  // nWidth
-                (int)parametr[5],  // nHeight
-                (Point)parametr[6],
-                (int)parametr[7],  // transfornationSqwere,
-                (int)parametr[8],  // from
-                (int)parametr[9],  // to
-                (BackgroundWorker)parametr[10]);
+            MatrixRacalculateSqueezeInOneDimension((double)parametr[0],
+                (double)parametr[1], // degree                
+                (int)parametr[2],  // nWidth
+                (int)parametr[3],  // nHeight
+                (Point)parametr[4],
+                (int)parametr[5],  // transfornationSqwere,
+                (int)parametr[6],  // from
+                (int)parametr[7],  // to
+                (BackgroundWorker)parametr[8]);
         }
 
-        private static void MatrixRacalculate(double transformScale, double deg, System.Windows.Threading.Dispatcher uiDispatcher, 
-            Action<int> showProgressCallback, int nWidth, int nHeight, 
+        private static void MatrixRacalculateSqueezeInOneDimension(double transformScale, double deg, 
+            int nWidth, int nHeight, 
             Point mid, int transfornationSqwere,
             int from, int to, BackgroundWorker backgroundWorker)
         {
             double theta, radius;
             double newX, newY;
 
-            int f5Percent = nWidth / 18;
+            int f5Percent = nWidth / 16;
             int nextPercentage = 0;
             int nextPercentageStep = 0;
 
@@ -341,12 +336,6 @@ namespace PhotoQwrekster.Service
                 }
                 if (x > nextPercentage)
                 {
-                    //Console.WriteLine(nextPercentageStep.ToString() + "%");
-                   /* if (uiDispatcher.CheckAccess())
-                        showProgressCallback.Invoke(5);
-                    else
-                        uiDispatcher.BeginInvoke(showProgressCallback, 5);
-                    */
                     backgroundWorker.ReportProgress(5);
                     nextPercentage += f5Percent;
                     nextPercentageStep += 5; // increment 5 procent of progress

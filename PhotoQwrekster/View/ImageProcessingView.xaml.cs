@@ -258,16 +258,12 @@ namespace PhotoQwrekster.View
                 flickData.Visibility = System.Windows.Visibility.Visible;
                 flickData.Text = "image is very large. there would be performance difficulties";
             }
-            uiDispatcher = Deployment.Current.Dispatcher;
             imageRecalculator.RunWorkerAsync();
-            
-            //DoCalculation(new object());
         }
 
         private int centrX;
         private int centrY;
         private double angle;
-        System.Windows.Threading.Dispatcher uiDispatcher;
 
         void imageRecalculate_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
@@ -280,8 +276,6 @@ namespace PhotoQwrekster.View
 
         private void DoCalculation(object o)
         {
-            DateTime dtStart = DateTime.Now;
-            DateTime dtFinish;
             if (this.progress == null)
             {
                 this.progress = new ProgressIndicator();
@@ -294,22 +288,11 @@ namespace PhotoQwrekster.View
             progressValue = 0;
             ShowIndicator(true);
                 imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, ScaleX, (int)Radius, angle,
-                        OnUpdateFinished, out dtFinish, uiDispatcher, ShowProgressValue, imageRecalculator);
+                        OnUpdateFinished, imageRecalculator);
             
-            TimeSpan ts = dtFinish - dtStart;
 
-            //MessageBox.Show(ts.ToString());
-#if DEBUG
-            Console.WriteLine(ts.ToString());
-#endif
-            //});
         }
         private int progressValue;
-        private void ShowProgressValue(int addProgress)
-        {
-            progressValue += addProgress;
-            progress.ProgressBar.Value = progressValue;
-        }
 
         void imageRecalculator_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {

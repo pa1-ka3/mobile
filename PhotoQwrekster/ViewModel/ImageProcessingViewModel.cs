@@ -225,7 +225,7 @@ namespace PhotoQwrekster.ViewModel
         public bool isCalculating = false;
 
         internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int radius, double deg,
-            Action callback, out DateTime dt, System.Windows.Threading.Dispatcher uiDispatcher, Action<int> showProgressCallback,
+            Action callback, 
             BackgroundWorker backgroundWorker)
         {
             radius = radius * 5;
@@ -235,22 +235,22 @@ namespace PhotoQwrekster.ViewModel
             {
                 if (transformScale > 1)
                     PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, uiDispatcher, showProgressCallback);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, backgroundWorker);
                 else
                     PhotoQwrekster.Service.Filters.SqueezeAroundPoint(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, uiDispatcher, showProgressCallback);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, backgroundWorker);
             }
             else // transform in one direction
             {
                 if (transformScale > 1)
                     PhotoQwrekster.Service.Filters.StretchInOneDimension(BitmapCalculated, BitmapBackup,
-                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback);
+                        (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, backgroundWorker);
                 else
                 {*/
-                    // PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapCalculated, BitmapBackup,
+            // PhotoQwrekster.Service.Filters.SqueezeInOneDimension(BitmapCalculated, BitmapBackup,
                     //   (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback);
                     FloatPoint[,] fp = PhotoQwrekster.Service.Filters.SqueezeInOneDimension(Width, Height,
-                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, uiDispatcher, showProgressCallback, backgroundWorker);
+                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, backgroundWorker);
                     Runner.Invoke(() =>
                    {
                        GetBitmapCopyForCalculation();
@@ -259,7 +259,6 @@ namespace PhotoQwrekster.ViewModel
                     
              /*   }
             }*/
-            dt = DateTime.Now;
             isCalculating = false;
             Runner.Invoke(() =>
             {

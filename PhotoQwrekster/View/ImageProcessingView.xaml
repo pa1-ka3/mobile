@@ -330,8 +330,8 @@
         <Popup x:Name="indicator_panel" IsOpen="True">
 
         
-            <progressIndicator:ProgressIndicator x:Name="progress" Visibility="Visible" ProgressType="CustomMiddle"  >
-                <ProgressBar Value="30"></ProgressBar>
+            <progressIndicator:ProgressIndicator x:Name="progress" Visibility="Visible" ProgressType="CustomMiddle" ShowLabel="True"  >
+                <ProgressBar Value="0"></ProgressBar>
             </progressIndicator:ProgressIndicator>
         </Popup>
 

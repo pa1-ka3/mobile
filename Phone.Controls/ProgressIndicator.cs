@@ -273,6 +273,7 @@ namespace Phone.Controls
                     {
                         this.textBlockStatus.Visibility = System.Windows.Visibility.Collapsed;
                     }
+                    this.Opacity = 0.8;
                     this.Height = 800;
                     break;
             }

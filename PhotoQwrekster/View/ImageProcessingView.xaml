@@ -248,6 +248,9 @@
                         </RadialGradientBrush.GradientStops>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
+                <Ellipse.RenderTransform>
+                    <CompositeTransform x:Name="nontransform" Rotation="0" />
+                </Ellipse.RenderTransform>
             </Ellipse>
             
             <!--Transformable ellipse -->

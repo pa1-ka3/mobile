@@ -167,18 +167,18 @@ namespace PhotoQwrekster.View
                 Line2.Y2 = centrY - dyL2;
 
 
-                transform.Rotation = (angle * 180) / Math.PI + 90;
+                nontransform.Rotation = transform.Rotation = (angle * 180) / Math.PI + 90;
 
                 double ellipseRadius = 210;
                 double ellipseSemiHeight = 50;
 
-                GestureElipse.Margin = new Thickness(centrX - ellipseRadius,
+                TransformElipse.Margin = GestureElipse.Margin = new Thickness(centrX - ellipseRadius,
                     centrY - ellipseSemiHeight,
                     -ellipseRadius,
                     -ellipseRadius);
 
-                GestureElipse.Height = 2 * ellipseSemiHeight;
-                GestureElipse.Width = 2 * ellipseRadius;
+                TransformElipse.Height = GestureElipse.Height = 2 * ellipseSemiHeight;
+                TransformElipse.Width = GestureElipse.Width = 2 * ellipseRadius;
 
                 /*centerData.Text = string.Format("Center: {0},{1}  Line2 {2},{3} - {4},{5}",
                     centrX, centrY,
@@ -198,12 +198,7 @@ namespace PhotoQwrekster.View
             t.Left = (int)(center.X - radius);
             t.Right = 480 - (int)(center.X + radius);
             t.Bottom = 640 - (int)(center.Y + radius);
-
-            GestureElipse.Margin = t;
-            GestureElipse.Height = GestureElipse.Width = 2 * (int)radius;
-
-            GestureCenter = center;
-            
+                        
             return t;
         }
 
@@ -216,6 +211,7 @@ namespace PhotoQwrekster.View
 
         private void OnPinchDelta(object sender, Input.PinchGestureEventArgs e)
         {
+            
             if (imageProcessingViewModel.isCalculating) return;
             //    transform.Rotation = initialAngle + e.TotalAngleDelta;
             transform.ScaleX = transform.ScaleY = initialScale * e.DistanceRatio;
@@ -225,11 +221,6 @@ namespace PhotoQwrekster.View
 
             TransformElipse.Margin = GetEllipseMargin(p1, p2);
             SetLinesBoundaries(p1, p2);
-
-            //flickData.Text = string.Format("transform.ScaleX: {0}",
-              //transform.ScaleX
-             //  );
-
 
         }
 

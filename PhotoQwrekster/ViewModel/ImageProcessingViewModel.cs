@@ -225,24 +225,24 @@ namespace PhotoQwrekster.ViewModel
         public bool isCalculating = false;
 
         internal void UpdateImageAfterPinchComplete(int x, int y, double transformScale, int radius, double deg,
-            Action callback, 
+            Action callback,
             BackgroundWorker backgroundWorker)
         {
             radius = radius * 5;
             isCalculating = true;
             FloatPoint[,] fp;
-            /*
+
             if (TransformMode) // transform in two directions
             {
                 if (transformScale > 1)
-                    PhotoQwrekster.Service.Filters.StretchAroundPoint(BitmapCalculated, BitmapBackup,
+                    fp = PhotoQwrekster.Service.Filters.StretchAroundPoint(Width, Height,
                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, backgroundWorker);
                 else
-                    PhotoQwrekster.Service.Filters.SqueezeAroundPoint(BitmapCalculated, BitmapBackup,
+                    fp = PhotoQwrekster.Service.Filters.SqueezeAroundPoint(Width, Height,
                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, backgroundWorker);
             }
             else // transform in one direction
-            {*/
+            {
                 if (transformScale > 1)
                     fp = PhotoQwrekster.Service.Filters.StretchInOneDimension(Width, Height,
                         (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, backgroundWorker);
@@ -250,20 +250,19 @@ namespace PhotoQwrekster.ViewModel
                 {
                     fp = PhotoQwrekster.Service.Filters.SqueezeInOneDimension(Width, Height,
                          (int)(Mashtab * x), (int)Mashtab * y, transformScale, (int)Mashtab * radius, deg, backgroundWorker);
-                    
                 }
-            //}
+            }
 
-                Runner.Invoke(() =>
-                {
-                    GetBitmapCopyForCalculation();
-                    Filters.OffsetFilterAntiAlias(BitmapCalculated, BitmapBackup, fp);
+            Runner.Invoke(() =>
+            {
+                GetBitmapCopyForCalculation();
+                Filters.OffsetFilterAntiAlias(BitmapCalculated, BitmapBackup, fp);
 
-                    isCalculating = false;
+                isCalculating = false;
 
-                    if (callback != null)
-                        callback.Invoke();
-                });
+                if (callback != null)
+                    callback.Invoke();
+            });
         }
 
         public bool CanShare { get { return (BitmapImageSource != null); } }

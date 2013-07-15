@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using System.Windows.Media;
 using MetroInMotionUtils;
+using Phone.Controls;
 
 namespace PhotoQwrekster.View
 {
@@ -24,7 +25,10 @@ namespace PhotoQwrekster.View
             InitializeComponent();
             imageProcessingViewModel = this.DataContext as ImageProcessingViewModel;
             imageRecalculator = new System.ComponentModel.BackgroundWorker();
+            imageRecalculator.WorkerReportsProgress = true;
             imageRecalculator.DoWork += new System.ComponentModel.DoWorkEventHandler(imageRecalculate_DoWork);
+            imageRecalculator.ProgressChanged += new ProgressChangedEventHandler(imageRecalculator_ProgressChanged);
+            imageRecalculator.RunWorkerCompleted += new RunWorkerCompletedEventHandler(imageRecalculator_RunWorkerCompleted);
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -231,6 +235,7 @@ namespace PhotoQwrekster.View
 
         private double Radius { get; set; }
         private BackgroundWorker imageRecalculator;
+        private double ScaleX { get; set; }
 
         private void OnPinchCompleted(object sender, Input.PinchGestureEventArgs e)
         {
@@ -245,6 +250,7 @@ namespace PhotoQwrekster.View
 
                 centrX = (int)(p2.X + p1.X) / 2;
                 centrY = (int)(p2.Y + p1.Y) / 2;
+                ScaleX = transform.ScaleX;
             }
             //performanceProgressBar.Visibility = System.Windows.Visibility.Visible;
             if (imageProcessingViewModel.IsImageLarge())
@@ -252,9 +258,10 @@ namespace PhotoQwrekster.View
                 flickData.Visibility = System.Windows.Visibility.Visible;
                 flickData.Text = "image is very large. there would be performance difficulties";
             }
-            //imageRecalculator.RunWorkerAsync();
             uiDispatcher = Deployment.Current.Dispatcher;
-            DoCalculation(new object());
+            imageRecalculator.RunWorkerAsync();
+            
+            //DoCalculation(new object());
         }
 
         private int centrX;
@@ -267,29 +274,27 @@ namespace PhotoQwrekster.View
 #if DEBUG
        //     Console.WriteLine("backgroundSynchronizer_DoWork");
 #endif
-            uiDispatcher = Deployment.Current.Dispatcher;
-            Runner.Dispatcher = Deployment.Current.Dispatcher;
-            Runner.Invoke(() =>
-            {
 
-                imageProcessingViewModel.GetBitmapCopyForCalculation();
-                
-               
-                System.Threading.ThreadPool.QueueUserWorkItem(DoCalculation);
-                
-                
-
-            });
+            DoCalculation(new object());
         }
 
         private void DoCalculation(object o)
         {
             DateTime dtStart = DateTime.Now;
             DateTime dtFinish;
-            //Runner.Invoke(() =>
-            //{
-                imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, transform.ScaleX, (int)Radius, angle,
-                        OnUpdateFinished, out dtFinish, uiDispatcher, ShowProgressString);
+            if (this.progress == null)
+            {
+                this.progress = new ProgressIndicator();
+            }
+            
+           // progress.ProgressBar.Foreground = new SolidColorBrush(Colors.Green);
+            // Change some opacity
+            //progress.Opacity = 0.9;
+            
+            progressValue = 0;
+            ShowIndicator(true);
+                imageProcessingViewModel.UpdateImageAfterPinchComplete((int)centrX, (int)centrY, ScaleX, (int)Radius, angle,
+                        OnUpdateFinished, out dtFinish, uiDispatcher, ShowProgressValue, imageRecalculator);
             
             TimeSpan ts = dtFinish - dtStart;
 
@@ -299,10 +304,27 @@ namespace PhotoQwrekster.View
 #endif
             //});
         }
-
-        private void ShowProgressString(string progressText)
+        private int progressValue;
+        private void ShowProgressValue(int addProgress)
         {
-            flickData.Text = progressText;
+            progressValue += addProgress;
+            progress.ProgressBar.Value = progressValue;
+        }
+
+        void imageRecalculator_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                progressValue += 5;
+                progress.ProgressBar.Value = progressValue;
+            }
+        );
+
+        }
+
+        void imageRecalculator_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //MessageBox.Show("completed");
         }
 
         private void Load_Click(object sender, EventArgs e)
@@ -416,7 +438,24 @@ namespace PhotoQwrekster.View
                 flickData.Visibility = System.Windows.Visibility.Collapsed;
          //       CalculatingPanel.Visibility = System.Windows.Visibility.Collapsed;
                 SetGesturesLinesVisibility(System.Windows.Visibility.Collapsed);
+                ShowIndicator(false);
             });
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            progress.ProgressType = ProgressTypes.CustomMiddle;
+            progress.Text = "Calculating...";
+            ShowIndicator(false);
+        }
+
+        private void ShowIndicator(bool isShow)
+        {
+            Runner.Invoke(() =>
+           {
+               indicator_panel.IsOpen = isShow;
+               progress.Visibility = isShow ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+           });
         }
 
 

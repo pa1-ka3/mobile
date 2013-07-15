@@ -26,7 +26,7 @@ namespace PhotoQwrekster.Service
     public class Filters
     {
         internal static bool StretchAroundPoint(WriteableBitmap bitmap, WriteableBitmap source,
-            int cx, int cy, double transformScale, int transformationRadius, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
+            int cx, int cy, double transformScale, int transformationRadius, System.Windows.Threading.Dispatcher uiDispatcher, Action<int> showProgressCallback)
         {
 
             int nWidth = bitmap.PixelWidth;
@@ -99,7 +99,7 @@ namespace PhotoQwrekster.Service
         }
 
         internal static bool SqueezeAroundPoint(WriteableBitmap bitmap, WriteableBitmap source,
-            int cx, int cy, double transformScale, int transformationRadius, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
+            int cx, int cy, double transformScale, int transformationRadius, System.Windows.Threading.Dispatcher uiDispatcher, Action<int> showProgressCallback)
         {
 
             int nWidth = bitmap.PixelWidth;
@@ -171,7 +171,7 @@ namespace PhotoQwrekster.Service
         }
 
         internal static bool StretchInOneDimension(WriteableBitmap bitmap, WriteableBitmap source,
-            int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
+            int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<int> showProgressCallback)
         {
 
             int nWidth = bitmap.PixelWidth;
@@ -232,7 +232,8 @@ namespace PhotoQwrekster.Service
         static FloatPoint[,] fp;
 
         internal static FloatPoint[,] SqueezeInOneDimension(int pixelWidth, int pixelHeight,  //WriteableBitmap bitmap, WriteableBitmap source,
-            int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<string> showProgressCallback)
+            int cx, int cy, double transformScale, int transformationRadius, double deg, System.Windows.Threading.Dispatcher uiDispatcher, Action<int> showProgressCallback,
+            BackgroundWorker backgroundWorker)
         {
 
             int nWidth = pixelWidth;
@@ -253,11 +254,11 @@ namespace PhotoQwrekster.Service
             int halfWidth = (int)nWidth / 2;
             tsk[0] = Task.Factory.StartNew(act, (object)(new List<object>() {
                 transformScale, deg, uiDispatcher, showProgressCallback, 
-                nWidth, nHeight, mid, transfornationSqwere, 0, halfWidth }));
+                nWidth, nHeight, mid, transfornationSqwere, 0, halfWidth, backgroundWorker }));
 
             tsk[1] = Task.Factory.StartNew(act, (object)(new List<object>() { 
                 transformScale, deg, uiDispatcher, showProgressCallback, 
-                nWidth, nHeight, mid, transfornationSqwere, halfWidth, nWidth }));
+                nWidth, nHeight, mid, transfornationSqwere, halfWidth, nWidth, backgroundWorker }));
 
             
             try
@@ -280,21 +281,22 @@ namespace PhotoQwrekster.Service
         {
             List<object> parametr = (List<object>)par;
             MatrixRacalculate((double)parametr[0],
-                (double)parametr[1], 
+                (double)parametr[1],
                 (System.Windows.Threading.Dispatcher)parametr[2],
-                (Action<string>)parametr[3],
+                (Action<int>)parametr[3],
                 (int)parametr[4],  // nWidth
                 (int)parametr[5],  // nHeight
                 (Point)parametr[6],
                 (int)parametr[7],  // transfornationSqwere,
                 (int)parametr[8],  // from
-                (int)parametr[9]); // to
+                (int)parametr[9],  // to
+                (BackgroundWorker)parametr[10]);
         }
 
         private static void MatrixRacalculate(double transformScale, double deg, System.Windows.Threading.Dispatcher uiDispatcher, 
-            Action<string> showProgressCallback, int nWidth, int nHeight, 
-            Point mid, int transfornationSqwere, 
-            int from, int to)
+            Action<int> showProgressCallback, int nWidth, int nHeight, 
+            Point mid, int transfornationSqwere,
+            int from, int to, BackgroundWorker backgroundWorker)
         {
             double theta, radius;
             double newX, newY;
@@ -339,12 +341,13 @@ namespace PhotoQwrekster.Service
                 }
                 if (x > nextPercentage)
                 {
-                    Console.WriteLine(nextPercentageStep.ToString() + "%");
-                    if (uiDispatcher.CheckAccess())
-                        showProgressCallback.Invoke(nextPercentageStep.ToString() + "%");
+                    //Console.WriteLine(nextPercentageStep.ToString() + "%");
+                   /* if (uiDispatcher.CheckAccess())
+                        showProgressCallback.Invoke(5);
                     else
-                        uiDispatcher.BeginInvoke(showProgressCallback, nextPercentageStep.ToString() + "%");
-
+                        uiDispatcher.BeginInvoke(showProgressCallback, 5);
+                    */
+                    backgroundWorker.ReportProgress(5);
                     nextPercentage += f5Percent;
                     nextPercentageStep += 5; // increment 5 procent of progress
                 }

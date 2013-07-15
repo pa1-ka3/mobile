@@ -8,6 +8,7 @@
                             xmlns:toolkit="clr-namespace:PhotoQwrekster.Input"
                             xmlns:toolkitMain="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
                             xmlns:primitives="clr-namespace:PhotoQwrekster.Primitives"
+                            xmlns:progressIndicator="clr-namespace:Phone.Controls;assembly=Phone.Controls" 
                             mc:Ignorable="d"
                             d:DesignWidth="480"
                             d:DesignHeight="696"
@@ -19,7 +20,7 @@
                             shell:SystemTray.IsVisible="True"
                             shell:SystemTray.BackgroundColor="{StaticResource SystemTrayColor}"
                             DataContext="{Binding ImageViewModel, Source={StaticResource Locator}}" 
-                            >
+                            Loaded="PhoneApplicationPage_Loaded">
 
     <phone:PhoneApplicationPage.Resources>
     	<SolidColorBrush Color="#FF606060" x:Key="GrayColor"/>
@@ -326,13 +327,19 @@
                 </StackPanel>
             </Border>
         </Popup>
+        <Popup x:Name="indicator_panel" IsOpen="True">
 
-      
+        
+            <progressIndicator:ProgressIndicator x:Name="progress" Visibility="Visible" ProgressType="CustomMiddle"  >
+                <ProgressBar Value="30"></ProgressBar>
+            </progressIndicator:ProgressIndicator>
+        </Popup>
+
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False" BackgroundColor="{StaticResource ApplicationBarBackgroundColor}" ForegroundColor="Black">
+        <shell:ApplicationBar IsMenuEnabled="False" BackgroundColor="{StaticResource ApplicationBarBackgroundColor}" ForegroundColor="Black">
             <shell:ApplicationBarIconButton x:Name="Load" IconUri="/Resources/OpenFile.png" Text="Load" Click="Load_Click"/>
             <shell:ApplicationBarIconButton x:Name="Save" IconUri="/Resources/AppBarSave.png" Text="Save" Click="Save_Click" />
             <shell:ApplicationBarIconButton x:Name="Undo" IconUri="/Resources/Undo.png" Text="Undo" Click="Undo_Click"/>

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hammock.WindowsPhone", "ham
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib.WindowsPhone", "hammock-master\src\net40\ICSharpCode.SharpZipLib.WindowsPhone\ICSharpCode.SharpZipLib.WindowsPhone.csproj", "{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phone.Controls", "Phone.Controls\Phone.Controls.csproj", "{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,16 @@ Global
 		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BF04A546-D681-4F5A-AC41-CFC67CAEC66E}.Release|x86.ActiveCfg = Release|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

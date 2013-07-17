@@ -221,8 +221,8 @@
 
 
             <TextBlock x:Name="flickData" Text="try to transform image with gesture" Foreground="{StaticResource CameraButtonColorBrush}"
-                       Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="40" 
-                       TextWrapping="Wrap" FontSize="24" FontWeight="ExtraBold" Margin="12,0,12,40" />
+                       Style="{StaticResource PhoneTextNormalStyle}" VerticalAlignment="Bottom" Height="74" 
+                       TextWrapping="Wrap" FontSize="24" FontWeight="ExtraBold" Margin="12,0,12,6" />
             <!-- First ellipse, non transformable -->
             <Ellipse Name="GestureElipse" 
                      Margin="0,130,-200,-200" 
@@ -283,14 +283,14 @@
                 <Border.BorderBrush>
                     <SolidColorBrush Color="{StaticResource BorderColor}"/>
                 </Border.BorderBrush>
-                <StackPanel Background="{StaticResource CameraButtonColorBrush}" >
+                <StackPanel Background="{StaticResource DialogBackgroungColorBrush}" >
 
                     <TextBlock Text="save image as:" TextAlignment="Left" FontSize="32" Margin="10,0"  Foreground="{StaticResource ButtonTextColorBrush}" />
                     <TextBox x:Name="ImageNameEditBox" Margin="10,10"></TextBox>
                     <StackPanel Orientation="Horizontal" Margin="0,10">
                         <Button x:Name="btn_save_continue"  
                                 Content="save" Width="215" 
-                                Click="btn_save_continue_Click" 
+                                Click="btn_save_continue_Click"
                                 BorderBrush="{StaticResource DialogButtonborderColorBrush}" 
                                 Background="{StaticResource DialogButtonColorBrush}"  
                                 Foreground="{StaticResource ButtonTextColorBrush}"/>

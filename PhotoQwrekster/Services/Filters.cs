@@ -68,9 +68,8 @@ namespace PhotoQwrekster.Service
             double newX, newY;
 
             int f5Percent = nWidth / 16;
-            int nextPercentage = 0;
-            int nextPercentageStep = 0;
-
+            int nextPercentage = from + f5Percent;
+            
             for (int x = from; x < to; ++x)
             {
                 for (int y = 0; y < nHeight; ++y)
@@ -120,7 +119,6 @@ namespace PhotoQwrekster.Service
                 {
                     backgroundWorker.ReportProgress(5);
                     nextPercentage += f5Percent;
-                    nextPercentageStep += 5; // increment 5 procent of progress
                 }
             }
         }
@@ -173,8 +171,7 @@ namespace PhotoQwrekster.Service
             double newX, newY;
 
             int f5Percent = nWidth / 16;
-            int nextPercentage = 0;
-            int nextPercentageStep = 0;
+            int nextPercentage = from + f5Percent;
 
             for (int x = from; x < to; ++x)
             {
@@ -223,7 +220,6 @@ namespace PhotoQwrekster.Service
                 {
                     backgroundWorker.ReportProgress(5);
                     nextPercentage += f5Percent;
-                    nextPercentageStep += 5; // increment 5 procent of progress
                 }
             }
         }
@@ -272,8 +268,7 @@ namespace PhotoQwrekster.Service
             double newX, newY;
 
             int f5Percent = nWidth / 16;
-            int nextPercentage = 0;
-            int nextPercentageStep = 0;
+            int nextPercentage = from + f5Percent;
 
             for (int x = from; x < to; ++x)
             {
@@ -314,7 +309,6 @@ namespace PhotoQwrekster.Service
                 {
                     backgroundWorker.ReportProgress(5);
                     nextPercentage += f5Percent;
-                    nextPercentageStep += 5; // increment 5 procent of progress
                 }
             }
         }
@@ -389,8 +383,7 @@ namespace PhotoQwrekster.Service
             double newX, newY;
 
             int f5Percent = nWidth / 16;
-            int nextPercentage = 0;
-            int nextPercentageStep = 0;
+            int nextPercentage = from + f5Percent;
 
             for (int x = from; x < to; x++) 
             {
@@ -430,7 +423,6 @@ namespace PhotoQwrekster.Service
                 {
                     backgroundWorker.ReportProgress(5);
                     nextPercentage += f5Percent;
-                    nextPercentageStep += 5; // increment 5 procent of progress
                 }
 
             }
@@ -518,57 +510,7 @@ namespace PhotoQwrekster.Service
                 }
             }
 
-   
             return true;
         }
-
-
-        public static bool OffsetFilterAbs(WriteableBitmap processed, Point[,] offset)
-        {
-            WriteableBitmap source = new WriteableBitmap(processed);
-
-            // GDI+ still lies to us - the return format is BGR, NOT RGB.
-      
-            //unsafe
-            {
-            //    byte* processedPixels = (byte*)(void*)Scan0;
-              //  byte* sourcePixels = (byte*)(void*)SrcScan0;
-
-          //      int nOffset = bmData.Stride - processed.Width * 3;
-                int nWidth = processed.PixelWidth;
-                int nHeight = processed.PixelHeight;
-
-                int xOffset, yOffset;
-
-                for (int y = 0; y < nHeight; ++y)
-                {
-                    for (int x = 0; x < nWidth; ++x)
-                    {
-                        int processedIndex = x + y * processed.PixelWidth;
-                        xOffset = (int)offset[x, y].X;
-                        yOffset = (int)offset[x, y].Y;
-                        int sourceIndex = xOffset + yOffset * source.PixelWidth;
-
-                        if (yOffset >= 0 && yOffset < nHeight && xOffset >= 0 && xOffset < nWidth)
-                        {
-                            processed.Pixels[processedIndex] = source.Pixels[sourceIndex];
-                           
-                        }
-
-                       
-                    }
-                    
-                }
-            }
-
-       
-            return true;
-        }
-
-
-
-
-
-        
     }
 }

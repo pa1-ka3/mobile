@@ -20,7 +20,7 @@
 	<phone:PhoneApplicationPage.Resources>
 		<Style x:Key="RoundCornerButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource CameraButtonColorBrushDark}"/>
-			<Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CameraButtonBorderColorBrush}"/>
 			<Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
 			<Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
 			<Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
@@ -99,8 +99,11 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
             <Grid.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#FFcad3e2" Offset="0.0" />
+                    <GradientStop Color="#FFaab3c2" Offset="1.0" />
+                </LinearGradientBrush> 
 
-                <ImageBrush ImageSource="/PhotoQwrekster;component/Resources/GridBackGround.png"  ></ImageBrush>
                 
             </Grid.Background>
             	

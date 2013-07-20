@@ -445,6 +445,7 @@ namespace PhotoQwrekster.View
         {
             Runner.Invoke(() =>
            {
+               progress.ProgressBar.Value = 0;
                indicator_panel.IsOpen = isShow;
                progress.Visibility = isShow ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
            });

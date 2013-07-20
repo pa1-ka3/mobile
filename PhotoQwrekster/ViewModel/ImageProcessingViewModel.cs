@@ -212,13 +212,17 @@ namespace PhotoQwrekster.ViewModel
 
             BitmapCalculated = new WriteableBitmap(BitmapImageSource.PixelWidth, BitmapImageSource.PixelHeight);
             BitmapImageSource.Pixels.CopyTo(BitmapCalculated.Pixels, 0);
-
         }
 
         internal void GetBitmapAfterCalculation()
         {
             BitmapCalculated.Pixels.CopyTo(BitmapImageSource.Pixels, 0);
-
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Extensions.SaveJpeg(BitmapCalculated, ms, BitmapCalculated.PixelWidth, BitmapCalculated.PixelHeight, 0, 100);
+                byte[] buffer = ms.ToArray();
+                _dataService.SetCupturedImageByte(buffer);
+            }
             BitmapImageSource.Invalidate();
         }
 
@@ -381,17 +385,6 @@ namespace PhotoQwrekster.ViewModel
             if (BitmapImageSource.PixelHeight > 1000 || BitmapImageSource.PixelWidth > 1000)
                 return true;
             else return false;
-        }
-
-        
-
-        internal void RunMillion(BackgroundWorker worker)
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                System.Threading.Thread.Sleep(200);
-                worker.ReportProgress(i);
-            }
         }
     }
 }

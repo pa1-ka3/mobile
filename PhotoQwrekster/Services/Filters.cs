@@ -67,7 +67,7 @@ namespace PhotoQwrekster.Service
             double radius;
             double newX, newY;
 
-            int f5Percent = nWidth / 16;
+            int f5Percent = nWidth / 18;
             int nextPercentage = from + f5Percent;
             
             for (int x = from; x < to; ++x)
@@ -170,7 +170,7 @@ namespace PhotoQwrekster.Service
             double radius;
             double newX, newY;
 
-            int f5Percent = nWidth / 16;
+            int f5Percent = nWidth / 18;
             int nextPercentage = from + f5Percent;
 
             for (int x = from; x < to; ++x)
@@ -267,7 +267,7 @@ namespace PhotoQwrekster.Service
             double theta, radius;
             double newX, newY;
 
-            int f5Percent = nWidth / 16;
+            int f5Percent = nWidth / 18;
             int nextPercentage = from + f5Percent;
 
             for (int x = from; x < to; ++x)
@@ -382,7 +382,7 @@ namespace PhotoQwrekster.Service
             double theta, radius;
             double newX, newY;
 
-            int f5Percent = nWidth / 16;
+            int f5Percent = nWidth / 18;
             int nextPercentage = from + f5Percent;
 
             for (int x = from; x < to; x++) 

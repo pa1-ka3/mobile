@@ -155,13 +155,14 @@ namespace PhotoQwrekster.Service
                 (int)parametr[6],  // transformationRadius
                 (int)parametr[7],  // from
                 (int)parametr[8],  // to
-                (BackgroundWorker)parametr[9]);
+                (BackgroundWorker)parametr[9],
+                (double)parametr[10]); //mashtab
         }
 
         private static void MatrixRacalculateSqueezeAroundPoint(double invertedTransformScale, double deg,
             int nWidth, int nHeight,
             int midX, int midY, int transformationRadius,
-            int from, int to, BackgroundWorker backgroundWorker)
+            int from, int to, BackgroundWorker backgroundWorker, double mashtab)
         {
             double radius;
             double newX, newY;
@@ -176,9 +177,9 @@ namespace PhotoQwrekster.Service
                     int trueX = x - midX;
                     int trueY = y - midY;
 
-                    radius = Math.Sqrt(trueX * trueX + trueY * trueY);
+                    radius = (Math.Sqrt(trueX * trueX + trueY * trueY)) / mashtab;
 
-                    double deltaRadius = (Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius)));
+                    double deltaRadius = Math.Log(1.7 + radius) * (Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius)));
 
                     double newRadius = radius + invertedTransformScale * deltaRadius;
 

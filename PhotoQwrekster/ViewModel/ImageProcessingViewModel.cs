@@ -69,6 +69,7 @@ namespace PhotoQwrekster.ViewModel
                     data = br.ReadBytes((int)e.ChosenPhoto.Length);
 
                 _dataService.SetCupturedImageByte(data);
+                _dataService.SetImageName(String.Empty);
 
                 if (imageChooseComplete != null)
                     imageChooseComplete.Invoke();

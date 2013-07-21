@@ -240,20 +240,20 @@ namespace PhotoQwrekster.ViewModel
             {
                 if (transformScale > 1)
                     fp = PhotoQwrekster.Service.Filters.StretchAroundPoint(Width, Height,
-                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), backgroundWorker);
+                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), backgroundWorker, Mashtab);
                 else
                     fp = PhotoQwrekster.Service.Filters.SqueezeAroundPoint(Width, Height,
-                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), backgroundWorker);
+                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), backgroundWorker, Mashtab);
             }
             else // transform in one direction
             {
                 if (transformScale > 1)
                     fp = PhotoQwrekster.Service.Filters.StretchInOneDimension(Width, Height,
-                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), deg, backgroundWorker);
+                        (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), deg, backgroundWorker, Mashtab);
                 else
                 {
                     fp = PhotoQwrekster.Service.Filters.SqueezeInOneDimension(Width, Height,
-                         (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), deg, backgroundWorker);
+                         (int)(Mashtab * x), (int)(Mashtab * y), transformScale, (int)(Mashtab * radius), deg, backgroundWorker, Mashtab);
                 }
             }
 

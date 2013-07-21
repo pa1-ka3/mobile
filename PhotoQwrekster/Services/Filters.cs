@@ -27,7 +27,7 @@ namespace PhotoQwrekster.Service
     {
         internal static FloatPoint[,] StretchAroundPoint(int pixelWidth, int pixelHeight,
             int midX, int midY, double transformScale, int transformationRadius,
-            BackgroundWorker backgroundWorker)
+            BackgroundWorker backgroundWorker, double mashtab)
         {
 
             int nWidth = pixelWidth;
@@ -38,7 +38,7 @@ namespace PhotoQwrekster.Service
             int transfornationSqwere = transformationRadius * transformationRadius;
 
             Action<object> act = new Action<object>(RunParametrizedStretchAroundPoint);
-            RunTasks(transformScale, 0, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act);
+            RunTasks(transformScale, 0, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act, mashtab);
 
 
             return fp;
@@ -126,7 +126,7 @@ namespace PhotoQwrekster.Service
 
         internal static FloatPoint[,] SqueezeAroundPoint(int pixelWidth, int pixelHeight,
             int midX, int midY, double transformScale, int transformationRadius,
-            BackgroundWorker backgroundWorker)
+            BackgroundWorker backgroundWorker, double mashtab)
         {
 
             int nWidth = pixelWidth;
@@ -140,7 +140,7 @@ namespace PhotoQwrekster.Service
 
 
             Action<object> act = new Action<object>(RunParametrizedSqueezeAroundPoint);
-            RunTasks(invertedTransformScale, 0, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act);
+            RunTasks(invertedTransformScale, 0, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act, mashtab);
 
 
             return fp;
@@ -226,7 +226,7 @@ namespace PhotoQwrekster.Service
 
         internal static FloatPoint[,] StretchInOneDimension(int pixelWidth, int pixelHeight,
             int midX, int midY, double transformScale, int transformationRadius, double deg,
-            BackgroundWorker backgroundWorker)
+            BackgroundWorker backgroundWorker, double mashtab)
         {
 
             int nWidth = pixelWidth;
@@ -237,7 +237,7 @@ namespace PhotoQwrekster.Service
             int transfornationSqwere = transformationRadius * transformationRadius;
 
             Action<object> act = new Action<object>(RunParametrizedStretchInOneDimension);
-            RunTasks(transformScale, deg, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act);
+            RunTasks(transformScale, deg, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act, mashtab);
 
             
             return fp;
@@ -317,7 +317,7 @@ namespace PhotoQwrekster.Service
 
         internal static FloatPoint[,] SqueezeInOneDimension(int pixelWidth, int pixelHeight, 
             int midX, int midY, double transformScale, int transformationRadius, double deg, 
-            BackgroundWorker backgroundWorker)
+            BackgroundWorker backgroundWorker, double mashtab)
         {
 
             int nWidth = pixelWidth;
@@ -328,27 +328,30 @@ namespace PhotoQwrekster.Service
          //   if (transformationRadius > 1200)
            //     transformationRadius = 1024;
 
-            int transfornationSqwere = transformationRadius;
+            
             transformScale = 1 / transformScale;
 
             Action<object> act = new Action<object>(RunParametrizedSqueezeInOneDimension);
-            RunTasks(transformScale, deg, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act);
+            RunTasks(transformScale, deg, backgroundWorker, nWidth, nHeight, midX, midY, transformationRadius, act, mashtab);
 
             return fp;
 
         }
 
-        private static void RunTasks(double transformScale, double deg, BackgroundWorker backgroundWorker, int nWidth, int nHeight, int midX, int midY, int transfornationSqwere, Action<object> act)
+        private static void RunTasks(double transformScale, double deg, BackgroundWorker backgroundWorker, int nWidth, int nHeight, int midX, int midY, int transfornationSqwere, Action<object> act, double mashtab)
         {
             Task[] tsk = new Task[2];
             int halfWidth = (int)nWidth / 2;
+            
+            mashtab = 2 * mashtab;  // mashtab recalculate regurds to 320x240
+            transfornationSqwere = (int)(transfornationSqwere / mashtab);
             tsk[0] = Task.Factory.StartNew(act, (object)(new List<object>() {
                 transformScale, deg,  
-                nWidth, nHeight, midX, midY, transfornationSqwere, 0, halfWidth, backgroundWorker }));
+                nWidth, nHeight, midX, midY, transfornationSqwere, 0, halfWidth, backgroundWorker, mashtab }));
 
             tsk[1] = Task.Factory.StartNew(act, (object)(new List<object>() { 
                 transformScale, deg, 
-                nWidth, nHeight, midX, midY, transfornationSqwere, halfWidth, nWidth, backgroundWorker }));
+                nWidth, nHeight, midX, midY, transfornationSqwere, halfWidth, nWidth, backgroundWorker, mashtab }));
 
 
             try
@@ -374,19 +377,21 @@ namespace PhotoQwrekster.Service
                 (int)parametr[6],  // transfornationSqwere,
                 (int)parametr[7],  // from
                 (int)parametr[8],  // to
-                (BackgroundWorker)parametr[9]);
+                (BackgroundWorker)parametr[9],
+                (double)parametr[10]); //mashtab
         }
 
         private static void MatrixRacalculateSqueezeInOneDimension(double transformScale, double deg, 
             int nWidth, int nHeight, 
-            int midX, int midY, int transfornationSqwere,
-            int from, int to, BackgroundWorker backgroundWorker)
+            int midX, int midY, int transformationRadius,
+            int from, int to, BackgroundWorker backgroundWorker, double mashtab)
         {
             double theta, radius;
             double newX, newY;
 
             int f5Percent = nWidth / 18;
             int nextPercentage = from + f5Percent;
+            int transformationSqware = transformationRadius ;
 
             for (int x = from; x < to; x++) 
             {
@@ -396,7 +401,7 @@ namespace PhotoQwrekster.Service
                     int trueY = (int)(y - midY);
                     theta = Math.Atan2((trueY), (trueX));
 
-                    radius = Math.Sqrt(trueX * trueX + trueY * trueY);
+                    radius = (Math.Sqrt(trueX * trueX + trueY * trueY))/mashtab;
 
                     double deltaRadius = 0;
 
@@ -406,7 +411,8 @@ namespace PhotoQwrekster.Service
                     {
                         try
                         {
-                            deltaRadius = Math.Log(1.7 + radius) * Math.Pow(2, (-Math.Pow(radius, 2) / (transfornationSqwere )));
+                            deltaRadius = Math.Log(1.7 + radius) * Math.Pow(2, (-Math.Pow(radius, 2) / (transformationSqware)));
+                            deltaRadius = deltaRadius * mashtab;
                         }
                         catch (System.OverflowException e)
                         {

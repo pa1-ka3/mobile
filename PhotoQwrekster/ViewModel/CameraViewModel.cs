@@ -772,13 +772,7 @@ namespace PhotoQwrekster.ViewModel
         private IEnumerable<Size> GetRestrictedResolutionsList()
         {
             IEnumerable<Size> resAvailableList = cam.AvailableResolutions;
-            List<Size> resList = new List<Size>();
-            foreach(Size item in resAvailableList)
-            {
-                if (item.Height < 1200 && item.Width < 1200)
-                    resList.Add(item);
-            }
-            return resList;
+            return resAvailableList;
         }
 
         // Provide auto-focus with a half button press using the hardware shutter button.

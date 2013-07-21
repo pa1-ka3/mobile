@@ -231,14 +231,11 @@ namespace PhotoQwrekster.View
         {
             
             if (imageProcessingViewModel.isCalculating) return;
-           
             transform.ScaleX = transform.ScaleY = initialScale * Math.Sqrt(e.DistanceRatio);
-           
 
             Point p1 = e.GetPosition(ContentPanel, 0);
             Point p2 = e.GetPosition(ContentPanel, 1);
 
-       
             SetLinesBoundaries(p1, p2);
 
         }

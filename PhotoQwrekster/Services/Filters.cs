@@ -250,13 +250,14 @@ namespace PhotoQwrekster.Service
                 (int)parametr[6],  // transformationRadius
                 (int)parametr[7],  // from
                 (int)parametr[8],  // to
-                (BackgroundWorker)parametr[9]);
+                (BackgroundWorker)parametr[9],
+                (double)parametr[10]); //mashtab
         }
 
         private static void MatrixRacalculateStretchInOneDimension(double transformScale, double deg,
             int nWidth, int nHeight,
             int midX, int midY, int transformationRadius,
-            int from, int to, BackgroundWorker backgroundWorker)
+            int from, int to, BackgroundWorker backgroundWorker, double mashtab)
         {
             double theta, radius;
             double newX, newY;
@@ -272,9 +273,10 @@ namespace PhotoQwrekster.Service
                     int trueY = (int)(y - midY);
                     theta = Math.Atan2((trueY), (trueX));
 
-                    radius = Math.Sqrt(trueX * trueX + trueY * trueY);
+                    radius = (Math.Sqrt(trueX * trueX + trueY * trueY)) / mashtab;
 
-                    double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius));
+                    double deltaRadius = Math.Log(1.7 + radius) * Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius));
+                    deltaRadius = deltaRadius * mashtab;
 
                     newX = x - transformScale * deltaRadius * Math.Cos(theta + deg) * Math.Cos(deg);
 
@@ -399,20 +401,17 @@ namespace PhotoQwrekster.Service
 
                     double deltaRadius = 0;
 
-                   // if (radius > 1200) deltaRadius = 0;
-                  //  radius = radius / 10;
-                  //  else
-                    {
+                   
                         try
                         {
                             deltaRadius = Math.Log(1.7 + radius) * Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius));
                             deltaRadius = deltaRadius * mashtab;
                         }
-                        catch (System.OverflowException e)
+                        catch (System.OverflowException)
                         {
                             deltaRadius = 0;
                         }
-                    }
+                    
 
                    
 

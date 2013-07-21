@@ -35,10 +35,8 @@ namespace PhotoQwrekster.Service
 
             fp = new FloatPoint[nWidth, nHeight];
 
-            int transfornationSqwere = transformationRadius * transformationRadius;
-
             Action<object> act = new Action<object>(RunParametrizedStretchAroundPoint);
-            RunTasks(transformScale, 0, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act, mashtab);
+            RunTasks(transformScale, 0, backgroundWorker, nWidth, nHeight, midX, midY, transformationRadius, act, mashtab);
 
 
             return fp;
@@ -53,7 +51,7 @@ namespace PhotoQwrekster.Service
                 (int)parametr[3],  // nHeight
                 (int)parametr[4],  // midX
                 (int)parametr[5],  // midY
-                (int)parametr[6],  // transfornationSqwere,
+                (int)parametr[6],  // transformationRadius,
                 (int)parametr[7],  // from
                 (int)parametr[8],  // to
                 (BackgroundWorker)parametr[9]);
@@ -61,7 +59,7 @@ namespace PhotoQwrekster.Service
 
         private static void MatrixRacalculateStretchAroundPoint(double transformScale, double deg,
             int nWidth, int nHeight,
-            int midX, int midY, int transfornationSqwere,
+            int midX, int midY, int transformationRadius,
             int from, int to, BackgroundWorker backgroundWorker)
         {
             double radius;
@@ -80,7 +78,7 @@ namespace PhotoQwrekster.Service
 
                     radius = Math.Sqrt(trueX * trueX + trueY * trueY);
 
-                    double deltaRadius = (Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere)));
+                    double deltaRadius = (Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius)));
 
                     double newRadius = radius - transformScale * deltaRadius;
 
@@ -134,13 +132,11 @@ namespace PhotoQwrekster.Service
 
             fp = new FloatPoint[nWidth, nHeight];
        
-            int transfornationSqwere = transformationRadius * transformationRadius;
-
             double invertedTransformScale = 1 / transformScale;
 
 
             Action<object> act = new Action<object>(RunParametrizedSqueezeAroundPoint);
-            RunTasks(invertedTransformScale, 0, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act, mashtab);
+            RunTasks(invertedTransformScale, 0, backgroundWorker, nWidth, nHeight, midX, midY, transformationRadius, act, mashtab);
 
 
             return fp;
@@ -156,7 +152,7 @@ namespace PhotoQwrekster.Service
                 (int)parametr[3],  // nHeight
                 (int)parametr[4],  // midX
                 (int)parametr[5],  // midY
-                (int)parametr[6],  // transfornationSqwere,
+                (int)parametr[6],  // transformationRadius
                 (int)parametr[7],  // from
                 (int)parametr[8],  // to
                 (BackgroundWorker)parametr[9]);
@@ -164,7 +160,7 @@ namespace PhotoQwrekster.Service
 
         private static void MatrixRacalculateSqueezeAroundPoint(double invertedTransformScale, double deg,
             int nWidth, int nHeight,
-            int midX, int midY, int transfornationSqwere,
+            int midX, int midY, int transformationRadius,
             int from, int to, BackgroundWorker backgroundWorker)
         {
             double radius;
@@ -182,7 +178,7 @@ namespace PhotoQwrekster.Service
 
                     radius = Math.Sqrt(trueX * trueX + trueY * trueY);
 
-                    double deltaRadius = (Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere)));
+                    double deltaRadius = (Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius)));
 
                     double newRadius = radius + invertedTransformScale * deltaRadius;
 
@@ -234,10 +230,8 @@ namespace PhotoQwrekster.Service
 
             fp = new FloatPoint[nWidth, nHeight];
 
-            int transfornationSqwere = transformationRadius * transformationRadius;
-
             Action<object> act = new Action<object>(RunParametrizedStretchInOneDimension);
-            RunTasks(transformScale, deg, backgroundWorker, nWidth, nHeight, midX, midY, transfornationSqwere, act, mashtab);
+            RunTasks(transformScale, deg, backgroundWorker, nWidth, nHeight, midX, midY, transformationRadius, act, mashtab);
 
             
             return fp;
@@ -253,7 +247,7 @@ namespace PhotoQwrekster.Service
                 (int)parametr[3],  // nHeight
                 (int)parametr[4],  // midX
                 (int)parametr[5],  // midY
-                (int)parametr[6],  // transfornationSqwere,
+                (int)parametr[6],  // transformationRadius
                 (int)parametr[7],  // from
                 (int)parametr[8],  // to
                 (BackgroundWorker)parametr[9]);
@@ -261,7 +255,7 @@ namespace PhotoQwrekster.Service
 
         private static void MatrixRacalculateStretchInOneDimension(double transformScale, double deg,
             int nWidth, int nHeight,
-            int midX, int midY, int transfornationSqwere,
+            int midX, int midY, int transformationRadius,
             int from, int to, BackgroundWorker backgroundWorker)
         {
             double theta, radius;
@@ -280,7 +274,7 @@ namespace PhotoQwrekster.Service
 
                     radius = Math.Sqrt(trueX * trueX + trueY * trueY);
 
-                    double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
+                    double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius));
 
                     newX = x - transformScale * deltaRadius * Math.Cos(theta + deg) * Math.Cos(deg);
 
@@ -338,20 +332,20 @@ namespace PhotoQwrekster.Service
 
         }
 
-        private static void RunTasks(double transformScale, double deg, BackgroundWorker backgroundWorker, int nWidth, int nHeight, int midX, int midY, int transfornationSqwere, Action<object> act, double mashtab)
+        private static void RunTasks(double transformScale, double deg, BackgroundWorker backgroundWorker, int nWidth, int nHeight, int midX, int midY, int transformationRadius, Action<object> act, double mashtab)
         {
             Task[] tsk = new Task[2];
             int halfWidth = (int)nWidth / 2;
             
             mashtab = 2 * mashtab;  // mashtab recalculate regurds to 320x240
-            transfornationSqwere = (int)(transfornationSqwere / mashtab);
+            transformationRadius = (int)(transformationRadius / mashtab);
             tsk[0] = Task.Factory.StartNew(act, (object)(new List<object>() {
                 transformScale, deg,  
-                nWidth, nHeight, midX, midY, transfornationSqwere, 0, halfWidth, backgroundWorker, mashtab }));
+                nWidth, nHeight, midX, midY, transformationRadius, 0, halfWidth, backgroundWorker, mashtab }));
 
             tsk[1] = Task.Factory.StartNew(act, (object)(new List<object>() { 
                 transformScale, deg, 
-                nWidth, nHeight, midX, midY, transfornationSqwere, halfWidth, nWidth, backgroundWorker, mashtab }));
+                nWidth, nHeight, midX, midY, transformationRadius, halfWidth, nWidth, backgroundWorker, mashtab }));
 
 
             try
@@ -374,7 +368,7 @@ namespace PhotoQwrekster.Service
                 (int)parametr[3],  // nHeight
                 (int)parametr[4],  // midX
                 (int)parametr[5],  // midY
-                (int)parametr[6],  // transfornationSqwere,
+                (int)parametr[6],  // transformationRadius,
                 (int)parametr[7],  // from
                 (int)parametr[8],  // to
                 (BackgroundWorker)parametr[9],
@@ -391,7 +385,7 @@ namespace PhotoQwrekster.Service
 
             int f5Percent = nWidth / 18;
             int nextPercentage = from + f5Percent;
-            int transformationSqware = transformationRadius ;
+            
 
             for (int x = from; x < to; x++) 
             {
@@ -411,7 +405,7 @@ namespace PhotoQwrekster.Service
                     {
                         try
                         {
-                            deltaRadius = Math.Log(1.7 + radius) * Math.Pow(2, (-Math.Pow(radius, 2) / (transformationSqware)));
+                            deltaRadius = Math.Log(1.7 + radius) * Math.Pow(2, (-Math.Pow(radius, 2) / transformationRadius));
                             deltaRadius = deltaRadius * mashtab;
                         }
                         catch (System.OverflowException e)

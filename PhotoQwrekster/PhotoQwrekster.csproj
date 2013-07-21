@@ -196,16 +196,10 @@
     <Content Include="Libs\BugSense.dll" />
     <Content Include="Libs\Newtonsoft.Json.dll" />
     <Content Include="Libs\RestSharp.WindowsPhone.dll" />
-    <Resource Include="Resources\appbar.add.rest.png" />
-    <Resource Include="Resources\appbar.cancel.rest.png" />
-    <Resource Include="Resources\appbar.check.rest.png" />
     <Content Include="Resources\AppBarSave.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\appbar.feature.camera.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\appbar.transport.ff.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\AutoFocus18.png">
@@ -219,13 +213,7 @@
     <Resource Include="Resources\NoFlash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Photo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\flickr.png" />
-    <Resource Include="Resources\GridBackGround.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Content Include="Resources\OpenFile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

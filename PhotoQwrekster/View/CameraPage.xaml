@@ -150,13 +150,24 @@
 
 
 
-        <Canvas x:Name="viewfinderCanvas" Width="480" Height="640" Grid.Row="1"	
+        <Grid x:Name="viewfinderCanvas" Width="480" Height="640" Grid.Row="1"	
                    HorizontalAlignment="Left" >
 
             <!--Camera viewfinder -->
-            <Canvas.Background>
+            <Grid.Background>
                 <VideoBrush x:Name="viewfinderBrush"  />
-            </Canvas.Background>
+            </Grid.Background>
+            <Grid>
+            <Grid.Background>
+                <ImageBrush x:Name="BackgroundImageBrush"
+        Stretch="UniformToFill" Opacity="0" AlignmentX="Left" AlignmentY="Top">
+                    <ImageBrush.Transform>
+                        <CompositeTransform Rotation="90" TranslateX="480"/>
+                    </ImageBrush.Transform>
+                </ImageBrush>
+            </Grid.Background>
+            </Grid>
+
             <!-- Brackets for Touch Focus -->
             <TextBlock 
                 x:Name="focusBrackets" 
@@ -166,9 +177,9 @@
                 FontSize="40"
                 Foreground="{StaticResource CameraButtonColorBrush}"
                 Visibility="{Binding FocusBracketsVisibility}"/>
-            <TextBlock Text="{Binding TextDebug}" Height="40" Name="txtDebug" Width="626" FontSize="24" FontWeight="ExtraBold" Canvas.Left="12" Canvas.Top="560"
-                       Foreground="{StaticResource CameraButtonColorBrush}" />
-        </Canvas>
+            <TextBlock Text="{Binding TextDebug}" Height="40" Name="txtDebug" Width="460" FontSize="24" FontWeight="ExtraBold" 
+                       Foreground="{StaticResource CameraButtonColorBrush}" Margin="18,553,10,47" />
+        </Grid>
 
         <!--Button StackPanel to the right of viewfinder>-->
         <!--

@@ -124,5 +124,17 @@ namespace PhotoQwrekster.Design
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/facebook.png", UriKind.Relative))}
             };
        }
+
+
+       public void MakeScreenshot()
+       {
+           throw new NotImplementedException();
+       }
+
+
+       public void MakeScreenshot(Microsoft.Phone.Controls.PhoneApplicationPage page)
+       {
+           throw new NotImplementedException();
+       }
     }
 }

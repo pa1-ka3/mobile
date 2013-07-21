@@ -325,7 +325,10 @@ namespace PhotoQwrekster.Service
 
             fp = new FloatPoint[nWidth, nHeight];
 
-            int transfornationSqwere = transformationRadius * transformationRadius;
+         //   if (transformationRadius > 1200)
+           //     transformationRadius = 1024;
+
+            int transfornationSqwere = transformationRadius;
             transformScale = 1 / transformScale;
 
             Action<object> act = new Action<object>(RunParametrizedSqueezeInOneDimension);
@@ -395,7 +398,23 @@ namespace PhotoQwrekster.Service
 
                     radius = Math.Sqrt(trueX * trueX + trueY * trueY);
 
-                    double deltaRadius = Math.Pow(2, (-Math.Pow(radius, 2) / transfornationSqwere));
+                    double deltaRadius = 0;
+
+                   // if (radius > 1200) deltaRadius = 0;
+                  //  radius = radius / 10;
+                  //  else
+                    {
+                        try
+                        {
+                            deltaRadius = Math.Log(1.7 + radius) * Math.Pow(2, (-Math.Pow(radius, 2) / (transfornationSqwere )));
+                        }
+                        catch (System.OverflowException e)
+                        {
+                            deltaRadius = 0;
+                        }
+                    }
+
+                   
 
                     newX = x + transformScale * deltaRadius * Math.Cos(theta + deg) * Math.Cos(deg);
 

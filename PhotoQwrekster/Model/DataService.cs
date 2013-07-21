@@ -5,6 +5,9 @@ using Microsoft.Devices;
 using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
 using PhotoQwrekster.Helpers;
+using System.Windows.Media;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Phone.Controls;
 
 namespace PhotoQwrekster.Model
 {
@@ -190,6 +193,51 @@ namespace PhotoQwrekster.Model
                     IconImage = new BitmapImage(new Uri("/PhotoQwrekster;component/Resources/twitter.png", UriKind.Relative))}
                 
             };
+        }
+
+
+        public void MakeScreenshot(PhoneApplicationPage page)
+        {
+            var ui = Application.Current.RootVisual;
+            try
+            {
+                if (ui != null)
+                {
+
+                    WriteableBitmap bmp = new WriteableBitmap((int)page.ActualWidth, (int)page.ActualHeight);
+                    bmp.Render(page, null);
+                    bmp.Invalidate();
+
+                        
+                        //wb.Render(ui, new TranslateTransform());
+                        byte[] bb = EncodeToJpeg(bmp);
+
+                        MediaLibrary library = new MediaLibrary();
+
+                        string fileName = "PQScreenshot-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".jpg";
+                        library.SavePictureToCameraRoll(fileName, bb);
+                        
+                        //Debug.WriteLine("Saved screenshot to " + filename);
+                   
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public byte[] EncodeToJpeg(WriteableBitmap wb)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                wb.SaveJpeg(
+                    stream,
+                    wb.PixelWidth,
+                    wb.PixelHeight,
+                    0,
+                    85);
+                return stream.ToArray();
+            }
         }
     }
 }

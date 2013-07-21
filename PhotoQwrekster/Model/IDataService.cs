@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
+using Microsoft.Phone.Controls;
 
 namespace PhotoQwrekster.Model
 {
@@ -42,5 +43,7 @@ namespace PhotoQwrekster.Model
         string GetImageName();
 
         ObservableCollection<ActionDescriptionModel> GetActionsList();
+
+        void MakeScreenshot(PhoneApplicationPage page);
     }
 }

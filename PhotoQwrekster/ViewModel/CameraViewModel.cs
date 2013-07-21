@@ -458,7 +458,7 @@ namespace PhotoQwrekster.ViewModel
         private void SetCameraResolutionFromSettings()
         {
             Size res = _dataService.GetResolutionSetting();
-            IEnumerable<Size> resList = cam.AvailableResolutions;
+            IEnumerable<Size> resList = GetRestrictedResolutionsList();
             int resCount = resList.Count<Size>();
 
             if (resList.Contains<Size>(res))
@@ -627,98 +627,104 @@ namespace PhotoQwrekster.ViewModel
         // Cycle through flash mode options when the flash button is pressed.
         private void changeFlash_Clicked()
         {
-            // Holds the current flash mode.
-            string currentFlashMode = string.Empty;
-
-
-            switch (cam.FlashMode)
+            if (cam != null)
             {
-                case FlashMode.Off:
-                    if (cam.IsFlashModeSupported(FlashMode.On))
-                    {
-                        // Specify that flash should be used.
-                        cam.FlashMode = FlashMode.On;
-                        FlashButtonContent ="Flash.png";
-                        currentFlashMode = "Flash mode: On";
-                    }
-                    break;
-                case FlashMode.On:
-                    if (cam.IsFlashModeSupported(FlashMode.RedEyeReduction))
-                    {
-                        // Specify that the red-eye reduction flash should be used.
-                        cam.FlashMode = FlashMode.RedEyeReduction;
-                        FlashButtonContent = "Fl:RER";
-                        currentFlashMode = "Flash mode: RedEyeReduction";
-                    }
-                    else if (cam.IsFlashModeSupported(FlashMode.Auto))
-                    {
-                        // If red-eye reduction is not supported, specify automatic mode.
-                        cam.FlashMode = FlashMode.Auto;
-                        FlashButtonContent = "FlashA.png";
-                        currentFlashMode = "Flash mode: Auto";
-                    }
-                    else
-                    {
-                        // If automatic is not supported, specify that no flash should be used.
-                        cam.FlashMode = FlashMode.Off;
-                        FlashButtonContent = "NoFlash.png";
-                        currentFlashMode = "Flash mode: Off";
-                    }
-                    break;
-                case FlashMode.RedEyeReduction:
-                    if (cam.IsFlashModeSupported(FlashMode.Auto))
-                    {
-                        // Specify that the flash should be used in the automatic mode.
-                        cam.FlashMode = FlashMode.Auto;
-                        FlashButtonContent = "FlashA.png";
-                        currentFlashMode = "Flash mode: Auto";
-                    }
-                    else
-                    {
-                        // If automatic is not supported, specify that no flash should be used.
-                        cam.FlashMode = FlashMode.Off;
-                        FlashButtonContent = "NoFlash.png";
-                        currentFlashMode = "Flash mode: Off";
-                    }
-                    break;
-                case FlashMode.Auto:
-                    if (cam.IsFlashModeSupported(FlashMode.Off))
-                    {
-                        // Specify that no flash should be used.
-                        cam.FlashMode = FlashMode.Off;
-                        FlashButtonContent = "NoFlash.png";
-                        currentFlashMode = "Flash mode: Off";
-                    }
-                    break;
+                // Holds the current flash mode.
+                string currentFlashMode = string.Empty;
+
+
+                switch (cam.FlashMode)
+                {
+                    case FlashMode.Off:
+                        if (cam.IsFlashModeSupported(FlashMode.On))
+                        {
+                            // Specify that flash should be used.
+                            cam.FlashMode = FlashMode.On;
+                            FlashButtonContent = "Flash.png";
+                            currentFlashMode = "Flash mode: On";
+                        }
+                        break;
+                    case FlashMode.On:
+                        if (cam.IsFlashModeSupported(FlashMode.RedEyeReduction))
+                        {
+                            // Specify that the red-eye reduction flash should be used.
+                            cam.FlashMode = FlashMode.RedEyeReduction;
+                            FlashButtonContent = "Fl:RER";
+                            currentFlashMode = "Flash mode: RedEyeReduction";
+                        }
+                        else if (cam.IsFlashModeSupported(FlashMode.Auto))
+                        {
+                            // If red-eye reduction is not supported, specify automatic mode.
+                            cam.FlashMode = FlashMode.Auto;
+                            FlashButtonContent = "FlashA.png";
+                            currentFlashMode = "Flash mode: Auto";
+                        }
+                        else
+                        {
+                            // If automatic is not supported, specify that no flash should be used.
+                            cam.FlashMode = FlashMode.Off;
+                            FlashButtonContent = "NoFlash.png";
+                            currentFlashMode = "Flash mode: Off";
+                        }
+                        break;
+                    case FlashMode.RedEyeReduction:
+                        if (cam.IsFlashModeSupported(FlashMode.Auto))
+                        {
+                            // Specify that the flash should be used in the automatic mode.
+                            cam.FlashMode = FlashMode.Auto;
+                            FlashButtonContent = "FlashA.png";
+                            currentFlashMode = "Flash mode: Auto";
+                        }
+                        else
+                        {
+                            // If automatic is not supported, specify that no flash should be used.
+                            cam.FlashMode = FlashMode.Off;
+                            FlashButtonContent = "NoFlash.png";
+                            currentFlashMode = "Flash mode: Off";
+                        }
+                        break;
+                    case FlashMode.Auto:
+                        if (cam.IsFlashModeSupported(FlashMode.Off))
+                        {
+                            // Specify that no flash should be used.
+                            cam.FlashMode = FlashMode.Off;
+                            FlashButtonContent = "NoFlash.png";
+                            currentFlashMode = "Flash mode: Off";
+                        }
+                        break;
+                }
+
+                _dataService.SaveFlashModeSettings(cam.FlashMode);
+
+                // Display current flash mode.            
+                TextDebug = currentFlashMode;
             }
-
-            _dataService.SaveFlashModeSettings(cam.FlashMode);
-
-            // Display current flash mode.            
-            TextDebug = currentFlashMode;
         }
 
         // Provide auto-focus in the viewfinder.
         public void focus_Clicked()
         {
-            if (cam.IsFocusSupported == true)
+            if (cam != null)
             {
-                //Focus when a capture is not in progress.
-                try
+                if (cam.IsFocusSupported == true)
                 {
-                    cam.Focus();
-                }
-                catch (Exception focusError)
-                {
-                    // Cannot focus when a capture is in progress.
-                    TextDebug = focusError.Message;
+                    //Focus when a capture is not in progress.
+                    try
+                    {
+                        cam.Focus();
+                    }
+                    catch (Exception focusError)
+                    {
+                        // Cannot focus when a capture is in progress.
+                        TextDebug = focusError.Message;
 
+                    }
                 }
-            }
-            else
-            {
-                // Write message to UI.
-                TextDebug = "Camera does not support programmable auto focus.";
+                else
+                {
+                    // Write message to UI.
+                    TextDebug = "Camera does not support programmable auto focus.";
+                }
             }
         }
 
@@ -738,26 +744,41 @@ namespace PhotoQwrekster.ViewModel
 
         private void changeRes_Clicked()
         {
-            // Variables
-            IEnumerable<Size> resList = cam.AvailableResolutions;
-            int resCount = resList.Count<Size>();
-            Size res;
-
-            // Poll for available camera resolutions.
-            for (int i = 0; i < resCount; i++)
+            if (cam != null)
             {
-                res = resList.ElementAt<Size>(i);
+                // Variables
+                IEnumerable<Size> resList = GetRestrictedResolutionsList();
+                int resCount = resList.Count<Size>();
+                Size res;
+
+                // Poll for available camera resolutions.
+                for (int i = 0; i < resCount; i++)
+                {
+                    res = resList.ElementAt<Size>(i);
+                }
+
+                // Set the camera resolution.
+                res = resList.ElementAt<Size>((currentResIndex + 1) % resCount);
+                cam.Resolution = res;
+                currentResIndex = (currentResIndex + 1) % resCount;
+
+                // Update the UI.
+                TextDebug = String.Format("Setting capture resolution: {0}x{1}", res.Width, res.Height);
+                ResButtonContent = res.Width + "x" + res.Height;
+                _dataService.SaveResolutionSettings(res);
             }
+        }
 
-            // Set the camera resolution.
-            res = resList.ElementAt<Size>((currentResIndex + 1) % resCount);
-            cam.Resolution = res;
-            currentResIndex = (currentResIndex + 1) % resCount;
-
-            // Update the UI.
-            TextDebug = String.Format("Setting capture resolution: {0}x{1}", res.Width, res.Height);
-            ResButtonContent = res.Width + "x" + res.Height;
-            _dataService.SaveResolutionSettings(res);
+        private IEnumerable<Size> GetRestrictedResolutionsList()
+        {
+            IEnumerable<Size> resAvailableList = cam.AvailableResolutions;
+            List<Size> resList = new List<Size>();
+            foreach(Size item in resAvailableList)
+            {
+                if (item.Height < 1200 && item.Width < 1200)
+                    resList.Add(item);
+            }
+            return resList;
         }
 
         // Provide auto-focus with a half button press using the hardware shutter button.
@@ -891,6 +912,31 @@ namespace PhotoQwrekster.ViewModel
                                               
                                           }));
             }
+        }
+
+        public void MakeSkreenshot(PhoneApplicationPage page)
+        {
+            _dataService.MakeScreenshot(page);
+        }
+
+        public WriteableBitmap PrepareScreenShot()
+        {
+            // Create capture buffer.
+            var ARGBPx = new int[(int)cam.PreviewResolution.Width *
+                            (int)cam.PreviewResolution.Height];
+
+            // Copies the current viewfinder frame into a buffer.
+            cam.GetPreviewBufferArgb32(ARGBPx);
+
+            // Copy to preview image into a writable bitmap.
+            var wb = new WriteableBitmap((int)cam.PreviewResolution.Width,
+                                         (int)cam.PreviewResolution.Height);
+            ARGBPx.CopyTo(wb.Pixels, 0);
+            wb.Invalidate();
+
+            return wb;
+
+            
         }
     }
 

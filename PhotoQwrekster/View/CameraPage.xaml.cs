@@ -139,8 +139,20 @@ namespace PhotoQwrekster
 
         private void AFButton_Click(object sender, EventArgs e)
         {
-            cameraViewModel.focus_Clicked();
+            //cameraViewModel.focus_Clicked();
+            PrepareScreenShot();
+            cameraViewModel.MakeSkreenshot(this);
         }
+
+        private void PrepareScreenShot()
+        {
+            
+
+            // Display that on the screen
+            BackgroundImageBrush.ImageSource = cameraViewModel.PrepareScreenShot();
+            BackgroundImageBrush.Opacity = 1;
+        }
+
 
         private void SkipButton_Click(object sender, EventArgs e)
         {

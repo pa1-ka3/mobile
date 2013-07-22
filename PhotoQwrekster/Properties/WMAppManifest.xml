@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
   <App xmlns="" ProductID="{781bca13-4b21-4167-b9c2-0e937fb56062}" Title="Photo Qwrekster" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="PhotoQwrekster author" Description="Sample description" Publisher="PhotoQwrekster publisher">
-    <IconPath IsRelative="true" IsResource="false">ApplicationIcon.jpg</IconPath>
+    <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
@@ -25,7 +25,7 @@
     <Tokens>
       <PrimaryToken TokenID="PhotoQwreksterToken" TaskName="_default">
         <TemplateType5>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Background.jpg</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
           <Count>0</Count>
           <Title>Photo Qwrekster</Title>
         </TemplateType5>

@@ -23,6 +23,7 @@ using PhotoQwrekster.ViewModel;
 using GalaSoft.MvvmLight;
 using PhotoQwrekster.Model;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Phone.Tasks;
 
 
 
@@ -41,6 +42,7 @@ namespace PhotoQwrekster.ViewModel
     {
 
         private readonly IDataService _dataService;
+        PhotoChooserTask photoChooser = null; 
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -58,9 +60,39 @@ namespace PhotoQwrekster.ViewModel
                     }
                                         
                 });
+            photoChooser = new PhotoChooserTask();
+            photoChooser.Completed += new EventHandler<PhotoResult>(photoChooser_Completed);
 
             
-        }            
+        }
+
+        void photoChooser_Completed(object sender, PhotoResult e)
+        {
+            App app = Application.Current as App;
+
+            if (e.TaskResult == TaskResult.OK)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(e.ChosenPhoto))
+                    data = br.ReadBytes((int)e.ChosenPhoto.Length);
+
+                _dataService.SetCupturedImageByte(data);
+                _dataService.SetImageName(String.Empty);
+
+                if (imageChooseComplete != null)
+                    imageChooseComplete.Invoke(data);
+                imageChooseComplete = null;
+            }
+        }
+
+        private Action<byte[]> imageChooseComplete = null;
+
+        internal void LoadImageFromLibrary(Action<byte[]> callback)
+        {
+            imageChooseComplete = callback;
+            photoChooser.ShowCamera = false;
+            photoChooser.Show();
+        }
 
         #region ButtonsCommands
 

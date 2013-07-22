@@ -157,13 +157,11 @@
             <Grid.Background>
                 <VideoBrush x:Name="viewfinderBrush"  />
             </Grid.Background>
-            <Grid>
+            <Grid  Width="480" Height="640">
             <Grid.Background>
-                <ImageBrush x:Name="BackgroundImageBrush"
-        Stretch="UniformToFill" Opacity="0" AlignmentX="Left" AlignmentY="Top">
-                    <ImageBrush.Transform>
-                        <CompositeTransform Rotation="90" TranslateX="480"/>
-                    </ImageBrush.Transform>
+                    <ImageBrush x:Name="BackgroundImageBrush" 
+                   Stretch="Fill"  Opacity="0" AlignmentX="Left" AlignmentY="Top">
+                    
                 </ImageBrush>
             </Grid.Background>
             </Grid>

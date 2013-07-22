@@ -139,9 +139,53 @@ namespace PhotoQwrekster
 
         private void AFButton_Click(object sender, EventArgs e)
         {
-            cameraViewModel.focus_Clicked();
+            //cameraViewModel.focus_Clicked();
             //PrepareScreenShot();
-            //cameraViewModel.MakeSkreenshot(this);
+            cameraViewModel.LoadImageFromLibrary(SetBackgroundFromLibrary);
+        }
+
+        void SetBackgroundFromLibrary(byte[] img)
+        {
+            MemoryStream capturedStream = new MemoryStream(img);
+            BitmapImage bmpImg = new BitmapImage();
+            bmpImg.SetSource(capturedStream);
+            WriteableBitmap wbitmp = new WriteableBitmap(bmpImg);
+
+            BackgroundImageBrush.ImageSource = wbitmp;// RotateBitmap(wbitmp, wbitmp.PixelWidth,  wbitmp.PixelHeight, 0);
+            BackgroundImageBrush.Opacity = 1;
+        }
+
+        private WriteableBitmap RotateBitmap(WriteableBitmap source,
+           int width, int height, int angle)
+        {
+            var target = new WriteableBitmap(width, height);
+
+            int sourceIndex = 0;
+            int targetIndex = 0;
+            for (int x = 0; x < source.PixelWidth; x++)
+            {
+                for (int y = 0; y < source.PixelHeight; y++)
+                {
+                    sourceIndex = x + y * source.PixelWidth;
+                    switch (angle)
+                    {
+                        case 90:
+                            targetIndex = (source.PixelHeight - y - 1)
+                                + x * target.PixelWidth;
+                            break;
+                        case 180:
+                            targetIndex = (source.PixelWidth - x - 1)
+                                + (source.PixelHeight - y - 1) * source.PixelWidth;
+                            break;
+                        case 270:
+                            targetIndex = y + (source.PixelWidth - x - 1)
+                                * target.PixelWidth;
+                            break;
+                    }
+                    target.Pixels[targetIndex] = source.Pixels[sourceIndex];
+                }
+            }
+            return target;
         }
 
         private void PrepareScreenShot()

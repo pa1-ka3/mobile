@@ -1,0 +1,42 @@
+﻿<Application x:Class="PhotoQwrekster.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:PhotoQwrekster.ViewModel">
+
+    <Application.Resources>
+        <!--Global View Model Locator-->
+        <vm:ViewModelLocator x:Key="Locator"
+                             d:IsDataSource="True" />
+        <Color x:Key="NavyBlueColor">#FF2b3c59</Color>
+		<Color x:Key="ButtonTextColor">#FF00070E</Color>
+        <SolidColorBrush x:Key="ButtonTextColorBrush" Color="#FF00070E" />
+        <SolidColorBrush x:Key="PhoneBackgroundColorBrush" Color="#FF090909" />
+        <SolidColorBrush x:Key="CameraButtonColorBrush" Color="#FFbcc7d8" />
+        <Color x:Key="SystemTrayColor">#FF80a1cf</Color>
+        <Color x:Key="ApplicationBarBackgroundColor">#FFbcc7d8</Color>
+        <SolidColorBrush x:Key="ApplicationBarColorBrush" Color="#FF292929" />
+        <Color x:Key="BorderColor">#FF8591a2</Color>
+        <Color x:Key="ImageTransformPanelBackground">#FF9caac1</Color> 
+        <SolidColorBrush x:Key="DialogBackgroungColorBrush" Color="#FF254d6d" />
+        <SolidColorBrush x:Key="DialogButtonColorBrush" Color="#FF20496a" />
+        <SolidColorBrush x:Key="DialogButtonborderColorBrush" Color="#FF194060" />
+        <SolidColorBrush x:Key="CameraButtonColorBrushDark" Color="#FF9caac1" />
+        <SolidColorBrush x:Key="CameraButtonBorderColorBrush" Color="#FF8591a2" />
+		<SolidColorBrush x:Key="CameraTrayBackgroundColor" Color="#FF40556f" />
+        <SolidColorBrush x:Key="TransformSwitchBorder" Color="#FF203040" />
+    </Application.Resources>
+
+    <Application.ApplicationLifetimeObjects>
+        <!--Required object that handles lifetime events for the application-->
+        <shell:PhoneApplicationService Launching="Application_Launching"
+                                       Closing="Application_Closing"
+                                       Activated="Application_Activated"
+                                       Deactivated="Application_Deactivated" />
+    </Application.ApplicationLifetimeObjects>
+
+</Application>

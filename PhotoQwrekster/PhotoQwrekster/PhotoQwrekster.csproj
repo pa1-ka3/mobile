@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{97D87EAF-89F3-41B4-A649-F8095999173A}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PhotoQwrekster</RootNamespace>
+    <AssemblyName>PhotoQwrekster</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>PhotoQwrekster.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>PhotoQwrekster.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.0.30816.0</ExpressionBlendVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BugSense, Version=0.9.8.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="GalaSoft.MvvmLight.WP71">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Laurent Bugnion (GalaSoft)\Mvvm Light Toolkit\Binaries\WP71\GalaSoft.MvvmLight.WP71.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WP71">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Laurent Bugnion (GalaSoft)\Mvvm Light Toolkit\Binaries\WP71\GalaSoft.MvvmLight.Extras.WP71.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Laurent Bugnion (GalaSoft)\Mvvm Light Toolkit\Binaries\WP71\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System.Threading.Tasks.WP71">
+      <HintPath>..\packages\System.Threading.Tasks.3.0.1\lib\sl4-wp71\System.Threading.Tasks.WP71.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Laurent Bugnion (GalaSoft)\Mvvm Light Toolkit\Binaries\WP71\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="mscorlib.extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\FlashImageConverter.cs" />
+    <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="Helpers\FacebookConfigHelper.cs" />
+    <Compile Include="Helpers\FacebookHelper.cs" />
+    <Compile Include="Helpers\FacebookOAuthHelper.cs" />
+    <Compile Include="Helpers\FlickrConfigHelper.cs" />
+    <Compile Include="Helpers\FlickrHelper.cs" />
+    <Compile Include="Helpers\FlickrOAuthHelper.cs" />
+    <Compile Include="Helpers\GoogleHelper.cs" />
+    <Compile Include="Helpers\GoogleOAuthHelper.cs" />
+    <Compile Include="Helpers\GoogleConfigHelper.cs" />
+    <Compile Include="Helpers\HelperUtility.cs" />
+    <Compile Include="Helpers\IOAuthHelper.cs" />
+    <Compile Include="Helpers\IOAuthV1Helper.cs" />
+    <Compile Include="Helpers\OAuthFlickrAccessToken.cs" />
+    <Compile Include="Helpers\OAuthFlickrRequestToken.cs" />
+    <Compile Include="Helpers\TumblrConfigHelper.cs" />
+    <Compile Include="Helpers\TumblrHelper.cs" />
+    <Compile Include="Helpers\TumblrOAuthHelper.cs" />
+    <Compile Include="Helpers\TwitterConfigHelper.cs" />
+    <Compile Include="Helpers\TwitterHelper.cs" />
+    <Compile Include="Helpers\TwitterOAuthHelper.cs" />
+    <Compile Include="Input\GestureHelperEventArgs.cs" />
+    <Compile Include="Input\GestureListener.cs" />
+    <Compile Include="Input\GestureListenerStatic.cs" />
+    <Compile Include="Input\GestureService.cs" />
+    <Compile Include="Input\MathHelpers.cs" />
+    <Compile Include="Input\SafeRaise.cs" />
+    <Compile Include="LinqToVisualTree.cs" />
+    <Compile Include="MetroInMotion.cs" />
+    <Compile Include="Model\ActionDescriptionModel.cs" />
+    <Compile Include="Model\InstagramFirstPhase.cs" />
+    <Compile Include="NetworkChecker.cs" />
+    <Compile Include="Services\Filters.cs" />
+    <Compile Include="SettingsData.cs" />
+    <Compile Include="Converters\LoginLogoutConverter.cs" />
+    <Compile Include="ViewModel\ImageProcessingViewModel.cs" />
+    <Compile Include="ViewModel\INavigationService.cs" />
+    <Compile Include="ViewModel\NavigationService.cs" />
+    <Compile Include="ViewModel\Runner.cs" />
+    <Compile Include="ViewModel\ShareInNetViewModel.cs" />
+    <Compile Include="View\CameraPage.xaml.cs">
+      <DependentUpon>CameraPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DataItem.cs" />
+    <Compile Include="Model\DataService.cs" />
+    <Compile Include="Model\IDataService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\CameraViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\ImageProcessingView.xaml.cs">
+      <DependentUpon>ImageProcessingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\OAuthFlickrLogin.xaml.cs">
+      <DependentUpon>OAuthFlickrLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\OAuthLogin.xaml.cs">
+      <DependentUpon>OAuthLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ShareInNetView.xaml.cs">
+      <DependentUpon>ShareInNetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ToggleSwitchButton.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="View\CameraPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ImageProcessingView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\OAuthFlickrLogin.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\OAuthLogin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ShareInNetView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Background.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Background.png" />
+    <Content Include="Libs\BugSense.dll" />
+    <Content Include="Libs\Newtonsoft.Json.dll" />
+    <Content Include="Libs\RestSharp.WindowsPhone.dll" />
+    <Content Include="Resources\AppBarSave.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\appbar.feature.camera.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AutoFocus18.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\facebook.png" />
+    <Content Include="Resources\Flash.png" />
+    <Content Include="Resources\FlashA.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\NoFlash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\flickr.png" />
+    <Content Include="Resources\OpenFile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\picasa.png" />
+    <Content Include="Resources\Share.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\twitter.png" />
+    <Content Include="Resources\Undo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SplashScreenImage.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\hammock-master\src\net40\Hammock.WindowsPhone\Hammock.WindowsPhone.csproj">
+      <Project>{3059FD1C-4B4B-4460-A0D4-53C84CCE6CAC}</Project>
+      <Name>Hammock.WindowsPhone</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Phone.Controls\Phone.Controls.csproj">
+      <Project>{CD17660D-E7B5-48F8-9CB4-B57A5A12EE03}</Project>
+      <Name>Phone.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RestSharp-master\RestSharp.WindowsPhone\RestSharp.WindowsPhone.csproj">
+      <Project>{F4D48DF6-316E-4963-B5C1-59CA39B431B7}</Project>
+      <Name>RestSharp.WindowsPhone</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExifLib\ExifLib.csproj">
+      <Project>{727AA615-47F2-4606-8042-F346746599A0}</Project>
+      <Name>ExifLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Funq\Core\Funq\Funq.csproj">
+      <Project>{56656B0F-90BB-44D1-8A70-D004F940E0D2}</Project>
+      <Name>Funq</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+</Project>
